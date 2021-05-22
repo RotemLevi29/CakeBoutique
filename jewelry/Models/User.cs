@@ -45,7 +45,10 @@ namespace jewelry.Models
 
         public UserType Type { get; set; } = UserType.Client;
 
-        public List<Product> Products { get; set; }//List of history orders
         public Cart Cart { get; set; }
+
+        public Address Address { get; set; }
+
+        public List<Order> Orders { get; set; }//List of history orders
     }
 }

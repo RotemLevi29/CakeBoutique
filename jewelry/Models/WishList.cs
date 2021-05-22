@@ -12,6 +12,6 @@ namespace jewelry.Models
         public List<Product> Products { get; set; }
 
         public User User { get; set; }
-
+        
     }
 }
