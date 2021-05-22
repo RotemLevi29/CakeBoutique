@@ -11,6 +11,7 @@ namespace jewelry.Models
         public int Id { get; set; }
 
         public List<ProductCart> ProductCart { get; set; }
+        
         [Required]
         public User User { get; set; }
 

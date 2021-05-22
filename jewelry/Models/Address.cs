@@ -8,6 +8,7 @@ namespace jewelry.Models
 {
     public class Address
     {
+        //master changes
         public int  Id { get; set; }
 
         [DataType(DataType.PhoneNumber)]
