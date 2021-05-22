@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace jewelry.Models
 {
+    //blah blah
     public class Address
     {
         public int  Id { get; set; }
