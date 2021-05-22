@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace jewelry.Models
 {
-    //blah blah
+    //blah
     public class Address
     {
         //master changes
