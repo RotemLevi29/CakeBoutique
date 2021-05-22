@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace jewelry.Models
 {
-    //blah 
     public class Address
     {
-        //master changes
         public int  Id { get; set; }
 
         [DataType(DataType.PhoneNumber)]
