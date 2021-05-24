@@ -4,4 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Design\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\MainDesign.css" />
+  </ItemGroup>
+
 </Project>
