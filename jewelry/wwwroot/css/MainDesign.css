@@ -14,6 +14,7 @@
     border: none;
     cursor: pointer;
     overflow: hidden;
+    margin-bottom:3px;
 }
 .transparent-button:focus{
     outline: none;
@@ -24,14 +25,27 @@
     width: 170px;
 }
 
-.carousel-image{
-   max-width:30%;
+/*using for the carousle banner framework*/
+.carousel-frame{
+    width:auto;
+    max-height:200px;
 }
-.red{
-    font-size:large;
-    background-color:red;
-  color:red;
+
+/*using for banner images carousel*/
+.fit-image {
+    width: 100%;
+    height: 230px;
 }
+
+/*using for navbar navigation categories*/
+.category-nav:hover {
+    background-color: #ffcc99;
+}
+
+
+
+
+
 
 
 

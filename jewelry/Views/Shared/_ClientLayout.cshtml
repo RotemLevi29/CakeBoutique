@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - jewelry</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link href="~/css/MainDesign.css" rel="stylesheet">
-    @RenderSection("Stylesheets", required: true)
+    <link rel="stylesheet" href="/css/site.css" type="text/css" />
+    <link href="/css/MainDesign.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
     <header>
@@ -18,13 +18,13 @@
                     <div class="col-md-4 text-center">
                         <div>
                             <a asp-area="" asp-controller="Home" asp-action="Privacy">
-                                <img class="logo-image pos-center" src="~/lib/icons/logo.svg"  />
+                                <img class="logo-image pos-center" src="~/lib/icons/logo.svg" />
                             </a>
                         </div>
                     </div>
                     <div class="col-md-4 rtl mt-4 d-sm-flex ">
                         <div class="flex-grow-1 row text-center justify-content-center">
-                          
+
                             <div class="col-md-2 col-sm">
                                 <button data-toggle="dropdown" class="transparent-button">
                                     <img src="~/lib/icons/heart.svg" width="30" />
@@ -47,14 +47,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>    
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
