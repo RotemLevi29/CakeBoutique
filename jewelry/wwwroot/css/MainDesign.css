@@ -23,9 +23,15 @@
 .logo-image {
     width: 170px;
 }
-/*using for 3 logo of cart,heart,user*/
-.nav-design{
-    margin-right:5px;
+
+.carousel-image{
+   max-width:30%;
 }
+.red{
+    font-size:large;
+    background-color:red;
+  color:red;
+}
+
 
 

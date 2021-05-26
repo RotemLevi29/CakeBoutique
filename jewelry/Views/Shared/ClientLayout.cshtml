@@ -6,8 +6,8 @@
     <title>@ViewData["Title"] - jewelry</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link href="~/css/MainDesign.css" rel="stylesheet" >
-
+    <link href="~/css/MainDesign.css" rel="stylesheet">
+    @RenderSection("Stylesheets", required: true)
 </head>
 <body>
     <header>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 rtl mt-4 d-sm-flex ">
-                        <div class="nav-design flex-grow-1 row text-center justify-content-center">
+                        <div class="flex-grow-1 row text-center justify-content-center">
                           
                             <div class="col-md-2 col-sm">
                                 <button data-toggle="dropdown" class="transparent-button">
@@ -47,56 +47,12 @@
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
-                            
-                            
+                            </div>    
                         </div>
-
-                        
                     </div>
-
                 </div>
-                
-
             </div>
-           
         </section>
-
-        @*<nav class="navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 rtl ">
-                    <a class="col-md-6 text-center" asp-area="" asp-controller="Home" asp-action="Privacy">
-                        <img class="svg" src="~/lib/icons/log1.svg" width="200" />
-                    </a> 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li>
-                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                <div class="btn-group" role="group">
-                                    <button data-toggle="dropdown" class="transparent-button">
-                                        <img src="~/lib/icons/person.svg" width="30" />
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <a class="dropdown-item" href="#">Login</a>
-                                        <a class="dropdown-item" href="#">Register</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </li>
-                        <li class="nav-item">
-                            <button data-toggle="dropdown" class="transparent-button">
-                                <img src="~/lib/icons/cart4.svg" width="30" />
-                            </button>
-                        </li>
-                        <li>
-                            <button data-toggle="dropdown" class="transparent-button">
-                                <img src="~/lib/icons/heart.svg" width="30" />
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-
-        </nav>*@
     </header>
     <div class="container">
         <main role="main" class="pb-3">

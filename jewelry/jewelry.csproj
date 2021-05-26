@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Design\" />
+    <Folder Include="wwwroot\lib\images\" />
   </ItemGroup>
 
   <ItemGroup>

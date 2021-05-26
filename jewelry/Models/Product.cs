@@ -44,6 +44,9 @@ namespace jewelry.Models
         public List<User> Users { get; set; }
 
         public int Orders { get; set; }
+
+        public int StoreQuantity { get; set; }
+        public List<string> ImagesLinks { get; set; }
     }
    
 }
