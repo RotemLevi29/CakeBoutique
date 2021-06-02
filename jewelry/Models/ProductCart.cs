@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
+/**
+ * This product cart holding product ID,
+ * in addition it's holding the attributes as size color and price.
+ * it will also has a field for which userCart it belongs as CartId,
+ */
 namespace jewelry.Models
 {
     public class ProductCart
@@ -26,6 +31,12 @@ namespace jewelry.Models
 
         [Required]
         public ProductColor Color { get; set; }
+
+        [Required]
+        public int ProductId { get; set; }
+
+
+        public int CartId { get; set; }
 
     }
 }

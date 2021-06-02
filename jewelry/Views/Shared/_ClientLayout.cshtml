@@ -42,8 +42,16 @@
                                             <img src="~/lib/icons/person.svg" width="30" />
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            <a class="dropdown-item" href="#">Login</a>
-                                            <a class="dropdown-item" href="#">Register</a>
+                                            @if (Context.User != null && Context.User.Claims != null && Context.User.Claims.Count() > 0)
+                                            {
+                                                <a asp-controller="Users" asp-action="Logout" class="dropdown-item">Logout</a>
+
+                                            }
+                                            else
+                                            {
+                                                <a asp-controller="Users" asp-action="Login" class="dropdown-item">Login</a>
+                                                <a asp-controller="Users" asp-action="Register" class="dropdown-item">Register</a>
+                                            }
                                         </div>
                                     </div>
                                 </div>

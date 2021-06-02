@@ -42,6 +42,19 @@
     background-color: #ffcc99;
 }
 
+.default-hide{
+    display:none;
+}
+
+.search-form{
+    padding:3px;
+}
+
+.input-search-product{
+    width:200px;
+    height:30px;
+}
+
 
 
 
