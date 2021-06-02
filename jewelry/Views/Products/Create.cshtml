@@ -35,7 +35,6 @@
                     <option value="1">Ring</option>
                     <option value="2">Bracelet</option>
                     <option value="3">Earrings</option>
-
                 </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
@@ -81,7 +80,7 @@
             </div>
             <div>
                 <label class="control-label">Upload Silver Image:</label>
-                <input type="file" />
+                <input type="file" name="file" required />
                 <button>Upload</button>
             </div>
 

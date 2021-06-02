@@ -30,6 +30,8 @@ namespace jewelry.Models
         [Required]
         public List<ProductCart> OrderProducts { get; set; }
 
+        public Boolean Sended { get; set; }//
+
         //payment implementation
 
     }

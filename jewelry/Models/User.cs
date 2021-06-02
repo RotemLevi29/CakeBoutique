@@ -11,7 +11,7 @@ namespace jewelry.Models
     public class User
     {
 
-        public enum sex
+        public enum gender
         {
             male,
             female
@@ -30,21 +30,21 @@ namespace jewelry.Models
 
 
         [Required(ErrorMessage = "Please enter the user name")]
-        [StringLength(maximumLength:20)]
+        [StringLength(maximumLength: 20)]
         [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = "";
 
 
         [Required(ErrorMessage = "Please enter your first name")]
         [StringLength(maximumLength: 20)]
         [Display(Name = "First Name")]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = "";
 
 
         [Required(ErrorMessage = "Please enter your last name")]
         [StringLength(maximumLength: 20)]
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = "";
 
 
         [Required(ErrorMessage ="Enter minimum lower case letter, upper case letter and a number" )]
@@ -64,7 +64,7 @@ namespace jewelry.Models
         public DateTime Birthdate { get; set; }
 
         [Required]
-        public sex Sex { get; set; }//True = male, False = female
+        public gender Gender { get; set; } = 0;//0 = male, 1 = female
 
 
         [Required]
@@ -74,6 +74,6 @@ namespace jewelry.Models
 
         public Address Address { get; set; }
 
-        public List<Order> Orders { get; set; }//List of history orders
+        public List<Order> Orders { get; set; } = null; //List of history orders
     }
 }

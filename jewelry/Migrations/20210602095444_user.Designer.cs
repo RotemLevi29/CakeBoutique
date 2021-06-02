@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jewelry.Data;
 
 namespace jewelry.Migrations
 {
     [DbContext(typeof(jewelryContext))]
-    partial class jewelryContextModelSnapshot : ModelSnapshot
+    [Migration("20210602095444_user")]
+    partial class user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,27 +55,6 @@ namespace jewelry.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Address");
-                });
-
-            modelBuilder.Entity("jewelry.Models.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("LastUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("jewelry.Models.Image", b =>
@@ -118,9 +99,6 @@ namespace jewelry.Migrations
                     b.Property<string>("Payment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Sended")
-                        .HasColumnType("bit");
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
@@ -211,8 +189,6 @@ namespace jewelry.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
-
                     b.HasIndex("OrderId");
 
                     b.ToTable("ProductCart");
@@ -299,12 +275,6 @@ namespace jewelry.Migrations
 
             modelBuilder.Entity("jewelry.Models.ProductCart", b =>
                 {
-                    b.HasOne("jewelry.Models.Cart", null)
-                        .WithMany("ProductCartId")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("jewelry.Models.Order", null)
                         .WithMany("OrderProducts")
                         .HasForeignKey("OrderId");
@@ -317,11 +287,6 @@ namespace jewelry.Migrations
                         .HasForeignKey("AddressId");
 
                     b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("jewelry.Models.Cart", b =>
-                {
-                    b.Navigation("ProductCartId");
                 });
 
             modelBuilder.Entity("jewelry.Models.Order", b =>

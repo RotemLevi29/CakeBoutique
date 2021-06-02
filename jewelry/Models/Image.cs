@@ -28,5 +28,6 @@ namespace jewelry.Models
         public int ProductId { get; set; }
 
         public ImageType Type { get; set; }
+
     }
 }

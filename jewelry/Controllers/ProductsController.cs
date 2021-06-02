@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
 using jewelry.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace jewelry.Controllers
 {
@@ -54,7 +55,7 @@ namespace jewelry.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -119,7 +120,7 @@ namespace jewelry.Controllers
         /**
          * type = 0 : input is product name
          * type = 1 : input is product price
-         * type = 2 : input is product date
+         * type = 2 : input is product type
          */
         public async Task<IActionResult> Search(string input,string type)
         {
@@ -127,7 +128,14 @@ namespace jewelry.Controllers
             {
                 case "0":
                     {
+                        if(input != null)
+                        { 
                         return PartialView(await _context.Product.Where(a => a.ProductName.Contains(input)).ToListAsync());
+                        }
+                        else
+                        {
+                            return PartialView(await _context.Product.ToListAsync());
+                        }
                     }
                 case "1":
                     {

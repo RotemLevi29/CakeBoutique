@@ -58,6 +58,7 @@ namespace jewelry.Models
          *4-rose
          *5-silver
         */
+        
 
         public int ImagesNumber { get; set; } = 5;
 

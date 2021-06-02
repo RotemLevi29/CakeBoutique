@@ -10,7 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
+    
 namespace jewelry
 {
     public class Startup
@@ -30,9 +31,19 @@ namespace jewelry
             services.AddDbContext<jewelryContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("jewelryContext")));
 
-           
+            // Enabling sessions for users
+            services.AddSession(options => {
+                // Allowing the user 10 minutes for the session
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+            });
 
-           
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.LoginPath = "/Users/Login";
+                    options.AccessDeniedPath = "/Users/AccessDenied";
+                });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +63,10 @@ namespace jewelry
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

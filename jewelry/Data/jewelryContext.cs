@@ -17,5 +17,9 @@ namespace jewelry.Data
         public DbSet<jewelry.Models.Product> Product { get; set; }
 
         public DbSet<jewelry.Models.Image> Image { get; set; }
+
+        public DbSet<jewelry.Models.User> User { get; set; }
+
+        public DbSet<jewelry.Models.Cart> Cart { get; set; }
     }
 }
