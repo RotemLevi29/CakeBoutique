@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
 using jewelry.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace jewelry.Controllers
 {
@@ -45,6 +46,8 @@ namespace jewelry.Controllers
         }
 
         // GET: Products/Create
+
+        [Authorize(Roles="Admin,Editor")]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +58,7 @@ namespace jewelry.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, IFormFile file)
         {
             if (ModelState.IsValid)
@@ -66,7 +70,9 @@ namespace jewelry.Controllers
             return View(product);
         }
 
+
         // GET: Products/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,6 +93,8 @@ namespace jewelry.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Editor")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product)
         {
             if (id != product.Id)

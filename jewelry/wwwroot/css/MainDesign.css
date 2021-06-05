@@ -55,8 +55,67 @@
     height:30px;
 }
 
+.categoryDiv{
+  
+    margin-left:20%;
+    margin-right:20%;
+}
 
+.w-250{
+    width:250px;
+}
 
+.textDesign{
+    font-family:sans-serif;
+    font-weight:bold;
+}
+
+.categoryButton {
+    background-color: Transparent;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.cardBorder:hover {
+    border: 3px solid #d6d6d6;
+    transition: 0.5s;
+}
+
+.imgCategory {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.containerImg:hover .imgCategory {
+    opacity: 0.3;
+}
+
+.containerImg:hover .middle {
+    opacity: 1;
+}
+
+.text {
+    background-color: #8d8b8b;
+    color: white;
+    font-size: 20px;
+    padding: 5px 5px 5px 5px;
+    border: 2px solid #d6d6d6;
+}
 
 
 
