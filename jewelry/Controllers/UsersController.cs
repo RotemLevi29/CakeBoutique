@@ -10,6 +10,7 @@ using jewelry.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace jewelry.Controllers
 {
@@ -69,6 +70,7 @@ namespace jewelry.Controllers
         }
 
         // GET: Users/Edit/5
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,6 +91,7 @@ namespace jewelry.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,FirstName,LastName,Password,Email,Birthdate,Gender,Type,CartId")] User user)
         {
             if (id != user.Id)
@@ -120,6 +123,7 @@ namespace jewelry.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -173,6 +177,14 @@ namespace jewelry.Controllers
             return View();
         }
 
+        //AccessDenied
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        
+
         //login
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -204,13 +216,16 @@ namespace jewelry.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(Index),"Home");
         }
+
+       
         //Signin
         private async void Signin(User account)
         {
             var claims = new List<Claim>
         {
-                new Claim(ClaimTypes.Email, account.Email)
-        ,new Claim(ClaimTypes.Role, account.Type.ToString()),
+            new Claim(ClaimTypes.Email, account.Email),
+            new Claim("FullName", account.FirstName),
+            new Claim(ClaimTypes.Role, account.Type.ToString())
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
@@ -224,6 +239,7 @@ namespace jewelry.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _context.User.FindAsync(id);

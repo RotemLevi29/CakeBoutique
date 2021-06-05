@@ -1,15 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Design\" />
-    <Folder Include="wwwroot\lib\images\" />
+    <Content Remove="wwwroot\css\AdminLayout.css" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Design\" />
+    <Folder Include="wwwroot\lib\images\Categories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\AdminLayout.css" />
     <None Include="wwwroot\css\MainDesign.css" />
   </ItemGroup>
 

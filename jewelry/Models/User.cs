@@ -75,5 +75,7 @@ namespace jewelry.Models
         public Address Address { get; set; }
 
         public List<Order> Orders { get; set; } = null; //List of history orders
+
+        
     }
 }
