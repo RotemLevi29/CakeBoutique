@@ -51,19 +51,6 @@ namespace jewelry.Models
 
         public int StoreQuantity { get; set; }
 
-        /**
-         *The order of the product images will be:
-         *1-gold - 18k
-         *2-gold - 14k
-         *3-white gold
-         *4-rose
-         *5-silver
-        */
-        
-
-        public int ImagesNumber { get; set; } = 5;
-
-        public List<Image> Images { get; set; }
 
         //product attributes
         [Display(Name ="Name option")]

@@ -14,14 +14,6 @@ namespace jewelry.Models
     public class ProductCart
     {
         public int Id { get; set; }
-        public enum ProductColor
-        {
-            Gold_18k,
-            Gold_14k,
-            White_Gold,
-            Rose,
-            Silver
-        }
 
         [Required]
         public double size { get; set; }
@@ -30,11 +22,7 @@ namespace jewelry.Models
         public int Quantity { get; set; } = 1;
 
         [Required]
-        public ProductColor Color { get; set; }
-
-        [Required]
         public int ProductId { get; set; }
-
 
         public int CartId { get; set; }
 

@@ -35,6 +35,30 @@ namespace jewelry.Controllers
 
 
         // GET: Products
+        public async Task<IActionResult> ProductPage(int? id)
+        {
+            
+
+
+            {
+                //if (id == null)
+                //{
+                //    return NotFound();
+                //}
+
+                var product = await _context.Product
+                    .FirstOrDefaultAsync(m => m.Id == 31);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                List<string> pathes =_context.Image.Where(a => a.ProductId.Equals(31)).Select(column=>column.imagePath).ToList();
+                Tuple<Product, List<string>> tuple = new Tuple<Product, List<string>>(product, pathes);
+                return View(tuple);
+            }
+        }
+
+        // GET: Products
         public async Task<IActionResult> Index()
         {
             return View(await _context.Product.ToListAsync());
@@ -85,24 +109,25 @@ namespace jewelry.Controllers
                 //images
                 string folder = "/lib/images/products/";
                 string wwwRootpath = _hostEnvironment.WebRootPath + folder;
+                int i = 0;
                 foreach (IFormFile postedFile in postedFiles)
                 {
-                    //string filename = Path.GetFileName(postedFile.FileName);
                     string productName = product.ProductName;
                     productName = productName.Replace(" ", "");
                     string idString = Convert.ToString(product.Id);
-                    using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, productName + idString + ".jpeg"), FileMode.Create))
+                    productName = productName + idString + i.ToString();
+                    using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, productName + ".jpeg"), FileMode.Create))
                     {
                         postedFile.CopyTo(stream); //saving in the right folder
 
                         Image image = new Image();
-                        image.imagePath = folder + productName + idString + ".jpeg";
+                        image.imagePath = folder + productName + ".jpeg";
                         image.Name = productName;
                         image.ProductId = product.Id;
                         _context.Add(image);
                     };
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    i++;
                 }
 
 
