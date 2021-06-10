@@ -9,6 +9,7 @@ namespace jewelry.Data
 {
     public class jewelryContext : DbContext
     {
+
         public jewelryContext (DbContextOptions<jewelryContext> options)
             : base(options)
         {
@@ -21,5 +22,8 @@ namespace jewelry.Data
         public DbSet<jewelry.Models.User> User { get; set; }
 
         public DbSet<jewelry.Models.Cart> Cart { get; set; }
+
+        public DbSet<jewelry.Models.CarouselImage> CarouselImage { get; set; }
+
     }
 }

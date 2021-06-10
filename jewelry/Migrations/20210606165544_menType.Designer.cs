@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jewelry.Data;
 
 namespace jewelry.Migrations
 {
     [DbContext(typeof(jewelryContext))]
-    partial class jewelryContextModelSnapshot : ModelSnapshot
+    [Migration("20210606165544_menType")]
+    partial class menType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,27 +57,6 @@ namespace jewelry.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("jewelry.Models.CarouselImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CarImageId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Width")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarouselImage");
-                });
-
             modelBuilder.Entity("jewelry.Models.Cart", b =>
                 {
                     b.Property<int>("Id")
@@ -107,7 +88,7 @@ namespace jewelry.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -296,7 +277,9 @@ namespace jewelry.Migrations
                 {
                     b.HasOne("jewelry.Models.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("jewelry.Models.Order", b =>

@@ -1,9 +1,17 @@
 ﻿@model jewelry.Models.Image
 
-@{
-    ViewData["Title"] = "Create";
-}
 
+@{
+    if (Context.User != null && Context.User.Claims != null &&
+       Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+    }
+}
 <h1>Create</h1>
 
 <h4>Image</h4>
@@ -24,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductId" class="control-label"></label>
-                <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>

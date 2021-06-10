@@ -119,15 +119,24 @@
     border: 2px solid #d6d6d6;
 }
 
+.pinkActive:focus:hover:active:visited {
+    background-color: #ffcc99;
+}
+
+
+.whiteSmoke {
+    background-color: whitesmoke;
+}
 
 /*Login pattern*/
 
-.loginFont{
-    font-style:italic;
+.loginFont {
+    font-style: italic;
     font-size: 15px;
-    font-display:auto;
-    font-size-adjust:inherit;
+    font-display: auto;
+    font-size-adjust: inherit;
 }
+
 .loginFont2 {
     font-style: italic;
     font-size: 20px;
@@ -135,24 +144,20 @@
     font-size-adjust: inherit;
 }
 
-.mainFont{
-    font-family:Calibri;
+.mainFont {
+    font-family: Calibri;
     font-style: italic;
-    font-size:35px;
+    font-size: 35px;
 }
 
-.placeholder{
-    font-style:italic;
+.placeholder {
+    font-style: italic;
 }
 
-.buttonColor:hover{
-  
-    background-color:antiquewhite;
+.buttonColor:hover {
+    background-color: antiquewhite;
 }
 
 * {
     box-sizing: border-box;
 }
-
-
-

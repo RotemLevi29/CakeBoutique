@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +9,7 @@
     <link rel="stylesheet" href="/css/site.css" type="text/css" />
     <link href="/css/MainDesign.css" rel="stylesheet" type="text/css" />
     <link href="/css/AdminLayout.css" rel="stylesheet" type="text/css" />
-    
+
 </head>
 <body>
     <header>
@@ -21,39 +22,26 @@
                 <a class="opt" href="#">Contact</a>
             </div>
 
-
-            @*<button class="navbar-toggler transparent-button" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#clients">Clients</a>
-            <a href="#contact">Contact</a>
-            <button class="dropdown-btn">
-                Dropdown
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-            <a href="#contact">Search</a>*@
         </div>
         <div id="main">
             <section class="">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4 col-sm-1">
-                            <button id="opennavbar" class="openbtn" onclick="openNav()">&#9776 Menu</button>
 
                             @if (Context.User != null && Context.User.Claims != null &&
-                                    Context.User.Claims.Count() > 0)
+                                  Context.User.Claims.Count() > 0)
                             {
                                 <div class="m-3 textDesign">
                                     Hello @Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
                                 </div>
                             }
+                            <button id="opennavbar" src="" class="openbtn" onclick="openNav()">
+                                Menu
+                                <img class="" src="~/lib/icons/caret-right-fill.svg" />
+
+                            </button>
+
                         </div>
                         <div class="col-md-4 text-center">
                             <div>
@@ -84,7 +72,7 @@
                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                 @if (Context.User != null && Context.User.Claims != null && Context.User.Claims.Count() > 0)
                                                 {
-                                                    <a asp-controller="Users" asp-action="Logout" class="dropdown-item">Logout</a>
+                                                    <a asp-controller="Users" asp-action="Logout" class="dropdown-item pinkActive">Logout</a>
 
                                                 }
                                                 else

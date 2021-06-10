@@ -6,13 +6,19 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\css\AdminLayout.css" />
+    <Content Remove="wwwroot\css\ImageUploader.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Views\Design\" />
+    <Folder Include="wwwroot\js\NewFolder\" />
+    <Folder Include="wwwroot\lib\images\Categories\" />
+    <Folder Include="wwwroot\lib\images\MainCarousel\" />
+    <Folder Include="wwwroot\lib\images\products\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\ImageUploader.css" />
     <None Include="wwwroot\css\AdminLayout.css" />
     <None Include="wwwroot\css\MainDesign.css" />
   </ItemGroup>

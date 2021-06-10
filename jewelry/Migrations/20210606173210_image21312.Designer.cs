@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jewelry.Data;
 
 namespace jewelry.Migrations
 {
     [DbContext(typeof(jewelryContext))]
-    partial class jewelryContextModelSnapshot : ModelSnapshot
+    [Migration("20210606173210_image21312")]
+    partial class image21312
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,16 +64,18 @@ namespace jewelry.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CarImageId")
+                    b.Property<int?>("CarImageId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Height")
+                    b.Property<int>("Height")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Width")
+                    b.Property<int>("Width")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarImageId");
 
                     b.ToTable("CarouselImage");
                 });
@@ -107,7 +111,7 @@ namespace jewelry.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -292,11 +296,22 @@ namespace jewelry.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("jewelry.Models.CarouselImage", b =>
+                {
+                    b.HasOne("jewelry.Models.Image", "CarImage")
+                        .WithMany()
+                        .HasForeignKey("CarImageId");
+
+                    b.Navigation("CarImage");
+                });
+
             modelBuilder.Entity("jewelry.Models.Image", b =>
                 {
                     b.HasOne("jewelry.Models.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("jewelry.Models.Order", b =>

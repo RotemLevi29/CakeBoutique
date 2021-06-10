@@ -14,9 +14,10 @@ namespace jewelry.Models
             Necklace,
             Ring,
             Bracelet,
-            Earrings
+            Earrings,
+            Men
         }
-
+        
         
         [Required]
         [Key]
@@ -36,7 +37,7 @@ namespace jewelry.Models
         public ProductType Type { get; set; }
 
         [Range(0, 100)]
-        public int Discount { get; set; }//precent
+        public int Discount { get; set; } = 0;//precent
 
 
         //The rate will be = RateSum/Rates
@@ -65,6 +66,7 @@ namespace jewelry.Models
         public List<Image> Images { get; set; }
 
         //product attributes
+        [Display(Name ="Name option")]
         public int NameOption { get; set; }//1=option for word, 0=reguler, no option for word
 
     }
