@@ -117,7 +117,13 @@
     border: 2px solid #d6d6d6;
 }
 
+.pinkActive:focus:hover:active:visited {
+    background-color: #ffcc99;
+}
 
+.CarouselSize{}
 
-
+.whiteSmoke {
+    background-color: whitesmoke;
+}
 

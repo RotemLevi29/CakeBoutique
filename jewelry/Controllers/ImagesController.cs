@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
 using jewelry.Models;
+using System.IO;
 
 namespace jewelry.Controllers
 {
@@ -18,6 +19,8 @@ namespace jewelry.Controllers
         {
             _context = context;
         }
+
+        
 
         // GET: Images
         public async Task<IActionResult> Index()
@@ -143,9 +146,21 @@ namespace jewelry.Controllers
             _context.Image.Remove(image);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+
         }
 
-        private bool ImageExists(int id)
+        public async void regularDelete(int id, string root)
+        {
+            var image = await _context.Image.FindAsync(id);
+            string fullpath = root + image.imagePath;
+            if (System.IO.File.Exists(fullpath))
+            {
+                System.IO.File.Delete(fullpath);
+                _context.Image.Remove(image);
+                //await _context.SaveChangesAsync(); //saving changes in the calling functions
+            }
+        }
+            private bool ImageExists(int id)
         {
             return _context.Image.Any(e => e.Id == id);
         }

@@ -25,7 +25,7 @@ namespace jewelry.Models
 
         public string imagePath { get; set; }
 
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         public ImageType Type { get; set; }
 

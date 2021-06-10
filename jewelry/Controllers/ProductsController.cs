@@ -9,17 +9,30 @@ using jewelry.Data;
 using jewelry.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using System.Web;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting;
 
 namespace jewelry.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly jewelryContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ProductsController(jewelryContext context)
+        public ProductsController(jewelryContext context,IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
+        
+        // GET: Catergory Products
+        public async Task<IActionResult> CategoryPage(Product.ProductType type)
+        {
+            return View(nameof(CategoryPage),await _context.Product.Where(a => a.Type.Equals(type)).ToListAsync());
+        }
+
 
         // GET: Products
         public async Task<IActionResult> Index()
@@ -59,15 +72,43 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
         {
+           
+         // WE NEED TO TAKE CARE TO THE IMAGE TYPE 
+
             if (ModelState.IsValid)
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+
+                //images
+                string folder = "/lib/images/products/";
+                string wwwRootpath = _hostEnvironment.WebRootPath + folder;
+                foreach (IFormFile postedFile in postedFiles)
+                {
+                    //string filename = Path.GetFileName(postedFile.FileName);
+                    string productName = product.ProductName;
+                    productName = productName.Replace(" ", "");
+                    string idString = Convert.ToString(product.Id);
+                    using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, productName + idString + ".jpeg"), FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream); //saving in the right folder
+
+                        Image image = new Image();
+                        image.imagePath = folder + productName + idString + ".jpeg";
+                        image.Name = productName;
+                        image.ProductId = product.Id;
+                        _context.Add(image);
+                    };
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -183,7 +224,12 @@ namespace jewelry.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Product.FindAsync(id);
-            _context.Product.Remove(product);
+            var productImages = _context.Image.Where(a => a.ProductId.Equals(id)).ToList();
+            foreach(var image in productImages)
+            {
+                 new ImagesController(_context).regularDelete(image.Id, _hostEnvironment.WebRootPath);
+            }
+             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jewelry.Data;
 
 namespace jewelry.Migrations
 {
     [DbContext(typeof(jewelryContext))]
-    partial class jewelryContextModelSnapshot : ModelSnapshot
+    [Migration("20210606171844_carousel")]
+    partial class carousel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,27 +57,6 @@ namespace jewelry.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("jewelry.Models.CarouselImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CarImageId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Width")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarouselImage");
-                });
-
             modelBuilder.Entity("jewelry.Models.Cart", b =>
                 {
                     b.Property<int>("Id")
@@ -104,10 +85,14 @@ namespace jewelry.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -121,6 +106,8 @@ namespace jewelry.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Image");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Image");
                 });
 
             modelBuilder.Entity("jewelry.Models.Order", b =>
@@ -292,11 +279,29 @@ namespace jewelry.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("jewelry.Models.CarouselImage", b =>
+                {
+                    b.HasBaseType("jewelry.Models.Image");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ImageNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("CarouselImage");
+                });
+
             modelBuilder.Entity("jewelry.Models.Image", b =>
                 {
                     b.HasOne("jewelry.Models.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("jewelry.Models.Order", b =>
