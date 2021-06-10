@@ -10,3 +10,5 @@ function closeNav() {
     document.getElementById("main").style.marginLeft = "0";
     document.getElementById("opennavbar").style.display = "block"
 }
+
+document.getElementById("regurlarexpressionID").style.visibility = "hidden";

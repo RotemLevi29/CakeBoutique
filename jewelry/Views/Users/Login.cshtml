@@ -4,23 +4,27 @@
     ViewData["Title"] = "Login";
     Layout = "_ClientLayout";
 }
+<head>
+   
+</head>
+<h1 class=" mainFont">My Account </h1>
+<br />
+<h2 class="mainFont">Login</h2>
 
-<h1>Register</h1>
-
-<h4>User</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Login">
+            <h6 class=" loginFont"> Please enter your email and password to access your account </h6>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <label asp-for="Email" clas ="control-label" ></label>
+                <input asp-for="Email" class="form-control loginFont" placeholder="email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control loginFont" placeholder="password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,7 +35,7 @@
     </div>
 </div>
 <div>
-    Not registered? <a asp-action="Register">Click here</a>to login
+    Not registered? <a asp-action="Login">Click here</a> to login
 </div>
 
 <div>
