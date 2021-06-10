@@ -5,13 +5,13 @@
     Layout = "_ClientLayout";
 }
 
-<h1>Register</h1>
+<h1 class="mainFont">Register</h1>
 
-<h4>User</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Register">
+            <h4 class="loginFont2"> Create An Account </h4>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
@@ -57,7 +57,7 @@
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Register" class="btn btn-primary" />
+                <input type="submit" value="Register" class="btn btn-primary buttonColor" />
             </div>
         </form>
     </div>

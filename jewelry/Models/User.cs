@@ -47,8 +47,8 @@ namespace jewelry.Models
         public string LastName { get; set; } = "";
 
 
-        [Required(ErrorMessage ="Enter minimum lower case letter, upper case letter and a number" )]
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")]
+        [Required(ErrorMessage = "Please enter a password")]
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", ErrorMessage = "Enter minimum lower case letter, upper case letter and a number")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

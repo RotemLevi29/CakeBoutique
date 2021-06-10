@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Design\" />
-    <Folder Include="wwwroot\lib\images\Categories\" />
   </ItemGroup>
 
   <ItemGroup>
