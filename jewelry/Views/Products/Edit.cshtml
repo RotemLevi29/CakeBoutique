@@ -30,10 +30,21 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control"></select>
-                <span asp-validation-for="Type" class="text-danger"></span>
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" asp-items="@ViewBag.Categries" class="form-control"> </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+            <label asp-for="Type" class="control-label"></label>
+            <select asp-for="Type" class="form-control">
+                <option value="0">Necklace</option>
+                <option value="1">Ring</option>
+                <option value="2">Bracelet</option>
+                <option value="3">Earrings</option>
+                <option value="4">Men</option>
+            </select>
+            <span asp-validation-for="Type" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <label asp-for="Discount" class="control-label"></label>
                 <input asp-for="Discount" class="form-control" />
@@ -61,7 +72,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="NameOption" class="control-label"></label>
-                <input asp-for="NameOption" class="form-control" />
+                <select asp-for="NameOption" class="form-control">
+                    <option value="0">No name</option>
+                    <option value="1">Name maximum 10 letters</option>
+                    <option value="2">One letter</option>
+                </select>
                 <span asp-validation-for="NameOption" class="text-danger"></span>
             </div>
             <div class="form-group">

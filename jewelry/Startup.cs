@@ -28,6 +28,7 @@ namespace jewelry
         {
             services.AddControllersWithViews();
 
+
             services.AddDbContext<jewelryContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("jewelryContext")));
 

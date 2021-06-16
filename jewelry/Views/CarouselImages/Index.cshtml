@@ -13,38 +13,52 @@
         Layout = "_ClientLayout";
     }
 }
-<h1 class="text-center">Banner Images For The Main Carousel</h1>
+<div class="container">
 
-<div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
-    @{
-        var i = 0;
-        foreach (KeyValuePair<string, int> item in ViewBag.pathes)
-        {
-            <div class="col">
-                <div class="card h-100 w-250 my-3">
-                    @*@Html.ActionLink("", "CategoryPage", "Products",
-                        new { type = Product.ProductType.Necklace }, null)*@
-                    <div class="containerImg">
-                        <img src="@item.Key" class="card-img-top imgCategory" alt="..." />
-                    </div>
-                    <div class="card-body row">
-                        <h5 class="card-title col">Banner - @(i+1)</h5>
-                        <a class="col" onclick="location.href='@Url.Action("Delete", "CarouselImages",new { id = item.Value  })'">
-                            <input type="submit" value="Delete" class="btn btn-danger" />
-                        </a>
+    <h1 class="text-center">Banner Images For The Main Carousel</h1>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center ">
+        @{
+            var i = 0;
+            foreach (KeyValuePair<string, int> item in ViewBag.pathes)
+            {
+                <div class="col">
+                    <div class="card h-100 w-250 my-3">
+                        @*@Html.ActionLink("", "CategoryPage", "Products",
+                            new { type = Product.ProductType.Necklace }, null)*@
+                        <div class="containerImg">
+                            <img src="@item.Key" class="card-img-top imgCategory" alt="..." />
+                        </div>
+                        <div class="card-body row">
+                            <h5 class="card-title col">Banner - @(i+1)</h5>
+                            <a class="col" onclick="location.href='@Url.Action("Delete", "CarouselImages",new { id = item.Value  })'">
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            i++;
+                i++;
 
+            }
         }
-    }
-</div>
-<div class="justify-content-center text-center my-3">
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<button class="btn btn-primary">Carousel Preview</button>
+    </div>
+    <div id="carou">
+
+    </div>
+    <div class="justify-content-center text-center my-3">
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <a asp-controller="CarouselImages" asp-action="Preview">
+            <button id="preview" class="btn btn-primary">
+                Carousel Preview
+            </button>
+        </a>
+
+
+    </div>
 
 </div>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/CarouselImageIndex - Copy.js"></script>

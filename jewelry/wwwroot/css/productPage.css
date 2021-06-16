@@ -1,0 +1,44 @@
+﻿/*using for the extra images*/
+.imagePeview{
+    width:90px;
+    height:90px;
+}
+
+#mainImage {
+    width: 350px;
+    height: 350px;
+    border-radius: 5px;
+}
+
+.productpageBox{
+    border-color:lightgray;
+    border-style:solid;
+    border-radius:0.5px;
+    padding:6px;
+}
+
+
+.text-area {
+    resize: none;
+    height: 175px;
+    width: 400px;
+    color: black;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.productname {
+    color: black;
+    font-family: 'Times New Roman', cursive;
+    font-size: 50px;
+    font-weight: normal;
+    line-height: 60px;
+    margin: 5px 0 20px;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.form-control{
+    width:50%;
+}

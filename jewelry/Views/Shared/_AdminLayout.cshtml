@@ -9,85 +9,27 @@
     <link rel="stylesheet" href="/css/site.css" type="text/css" />
     <link href="/css/MainDesign.css" rel="stylesheet" type="text/css" />
     <link href="/css/AdminLayout.css" rel="stylesheet" type="text/css" />
-
 </head>
 <body>
     <header>
         <div class="sidenav">
             <div id="mySidebar" class="sidebar">
                 <a class="opt" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                <a class="opt" href="#">About</a>
-                <a class="opt" href="#">Services</a>
-                <a class="opt" href="#">Clients</a>
-                <a class="opt" href="#">Contact</a>
+                <a class="opt" asp-controller="Products" asp-action="Index">Manage Products</a>
+                <a class="opt" asp-controller="CarouselImages" asp-action="Index">Edit Banner Images</a>
+                <a class="opt" asp-controller="Users" asp-action="Index">Edit Users</a>
+                <a class="opt" asp-controller="" asp-action="">Statistics</a>
             </div>
-
         </div>
         <div id="main">
+            <section>
+                @await Component.InvokeAsync("TopLayout")
+            </section>
             <section class="">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-1">
-
-                            @if (Context.User != null && Context.User.Claims != null &&
-                                  Context.User.Claims.Count() > 0)
-                            {
-                                <div class="m-3 textDesign">
-                                    Hello @Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
-                                </div>
-                            }
-                            <button id="opennavbar" src="" class="openbtn" onclick="openNav()">
-                                Menu
-                                <img class="" src="~/lib/icons/caret-right-fill.svg" />
-
-                            </button>
-
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <div>
-                                <a asp-area="" asp-controller="Home" asp-action="Index">
-                                    <img class="logo-image pos-center" src="~/lib/icons/logo.svg" />
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4 rtl mt-4 d-sm-flex ">
-                            <div class="flex-grow-1 row text-center justify-content-center">
-
-                                <div class="col-md-2 col-sm">
-                                    <button data-toggle="dropdown" class="transparent-button">
-                                        <img src="~/lib/icons/heart.svg" width="30" />
-                                    </button>
-                                </div>
-                                <div class="col-md-2 col-sm">
-                                    <button data-toggle="dropdown" class="transparent-button">
-                                        <img src="~/lib/icons/cart4.svg" width="30" />
-                                    </button>
-                                </div>
-                                <div class="col-md-2 col-sm">
-                                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                        <div class="btn-group" role="group">
-                                            <button data-toggle="dropdown" class="transparent-button">
-                                                <img src="~/lib/icons/person.svg" width="30" />
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                @if (Context.User != null && Context.User.Claims != null && Context.User.Claims.Count() > 0)
-                                                {
-                                                    <a asp-controller="Users" asp-action="Logout" class="dropdown-item pinkActive">Logout</a>
-
-                                                }
-                                                else
-                                                {
-                                                    <a asp-controller="Users" asp-action="Login" class="dropdown-item">Login</a>
-                                                    <a asp-controller="Users" asp-action="Register" class="dropdown-item">Register</a>
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button id="opennavbar" src="" class="openbtn" onclick="openNav()">
+                    Menu
+                    <img class="" src="~/lib/icons/caret-right-fill.svg" />
+                </button>
             </section>
             <div class="container-fluid">
                 <main role="main" class="pb-3">
@@ -95,19 +37,18 @@
                 </main>
             </div>
 
-            <footer class="border-top footer text-muted">
-                <div class="container">
-                    &copy; 2021 - jewelry - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </div>
-            </footer>
+            <section>
+                @await Component.InvokeAsync("ButtomLayout")
+            </section>
         </div>
 
     </header>
-    <script src="~/js/AdminLayout.js"></script>
-
+ 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/AdminLayout.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

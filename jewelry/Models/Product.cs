@@ -17,17 +17,19 @@ namespace jewelry.Models
             Earrings,
             Men
         }
-        
-        
+
         [Required]
         [Key]
         public int Id { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
 
         [Required]
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public double Price { get; set; }
 
         [Required]
@@ -49,12 +51,12 @@ namespace jewelry.Models
         public int Orders { get; set; } = 0;//++1 for each oreder with this product
 
 
-        public int StoreQuantity { get; set; }
+        public int StoreQuantity { get; set; } = 100;
 
 
         //product attributes
         [Display(Name ="Name option")]
-        public int NameOption { get; set; }//1=option for word, 0=reguler, no option for word
+        public int NameOption { get; set; }//2=option for letter,1=option for word, 0=reguler, no option for word
 
     }
    

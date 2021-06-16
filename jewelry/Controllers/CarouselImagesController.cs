@@ -10,6 +10,7 @@ using jewelry.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace jewelry.Controllers
 {
@@ -18,15 +19,15 @@ namespace jewelry.Controllers
     {
         private readonly jewelryContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
-        private jewelryContext jewelryContext;
         public CarouselImagesController(jewelryContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
             this._hostEnvironment = hostEnvironment;
         }
-       
+
 
         // GET: CarouselImages
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
             Dictionary<string,int> pathes = new Dictionary<string, int>();
@@ -43,8 +44,9 @@ namespace jewelry.Controllers
             ViewBag.pathes = pathes;
             return View(await _context.CarouselImage.ToListAsync());
         }
-        
+
         // GET: CarouselImages/Details/5
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -63,8 +65,10 @@ namespace jewelry.Controllers
         }
 
         // GET: CarouselImages/Create
+        [Authorize(Roles = "Admin,Editor")]
         public IActionResult Create()
         {
+            ViewData["count"] = _context.CarouselImage.Count();
             return View();
         }
 
@@ -73,6 +77,7 @@ namespace jewelry.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Create([Bind("Id,Width,Height")] CarouselImage carouselImage, List<IFormFile> postedFiles)
         {
             if(carouselImage.Width == 0 || carouselImage.Height == 0)//using default sizes
@@ -88,9 +93,10 @@ namespace jewelry.Controllers
                 string wwwRootpath = _hostEnvironment.WebRootPath + folder;
                 foreach (IFormFile postedFile in postedFiles)
                 {
+                    string originalName = postedFile.FileName.Replace(" ", "");
                     //string filename = Path.GetFileName(postedFile.FileName);
                     int imageNumber = _context.CarouselImage.Count();
-                    string imageName = "carousel" + imageNumber.ToString() +".jpeg";
+                    string imageName = "carousel" + imageNumber.ToString() + originalName + ".jpeg";
                     using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, imageName), FileMode.Create))
                     {
                         postedFile.CopyTo(stream); //saving in the right folder
@@ -115,6 +121,7 @@ namespace jewelry.Controllers
         }
 
         // GET: CarouselImages/Edit/5
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -135,6 +142,7 @@ namespace jewelry.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Width,Height")] CarouselImage carouselImage)
         {
             if (id != carouselImage.Id)
@@ -165,7 +173,15 @@ namespace jewelry.Controllers
             return View(carouselImage);
         }
 
+        //Preview
+        [HttpGet]
+        public IActionResult Preview()
+        {
+            return View();
+        }
+
         // GET: CarouselImages/Delete/5
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -186,6 +202,7 @@ namespace jewelry.Controllers
         // POST: CarouselImages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var carouselImage = await _context.CarouselImage.FindAsync(id);
@@ -199,14 +216,10 @@ namespace jewelry.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool CarouselImageExists(int id)
         {
             return _context.CarouselImage.Any(e => e.Id == id);
         }
-
-
-
         public List<string> getImages()
         {
             List<string> pathes = new List<string>();

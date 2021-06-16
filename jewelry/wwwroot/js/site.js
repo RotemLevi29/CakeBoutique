@@ -5,9 +5,3 @@
 
 //client layout
 
-    $(document).ready(function () {
-        (function () {
-            var url = $("#foo-view").data("url");
-            $("#foo-view").load(url);
-        })();
-    });

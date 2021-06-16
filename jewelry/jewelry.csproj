@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="Views\Design\" />
     <Folder Include="wwwroot\js\NewFolder\" />
+    <Folder Include="wwwroot\lib\images\CarouselImages\" />
     <Folder Include="wwwroot\lib\images\Categories\" />
     <Folder Include="wwwroot\lib\images\MainCarousel\" />
     <Folder Include="wwwroot\lib\images\products\" />

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<jewelry.Models.Category>
+@{
     ViewData["Title"] = "Home Page";
 
     if (Context.User != null && Context.User.Claims != null &&
@@ -9,55 +10,49 @@
     else
     {
         Layout = "_ClientLayout";
+        <section>
+            @await Component.InvokeAsync("CarouselManager")
+        </section>
     }
 }
+<link href="~/css/MainDesign.css" type="text/css" rel="stylesheet">
 
 <body>
-    <link href="~/css/MainDesign.css" type="text/css" rel="stylesheet">
-    <script src="~/js/carousel.js"></script>
-    <!--<section>
-        <div>
-            <nav class=" navbar-expand-lg navbar-light bg-light">
-                <div class="text-center">-->
-    @*<a class="navbar-brand" href="#">Women</a>
-        <a class="navbar-brand" href="#">Men</a>*@
-
-    <!--<button class="navbar-toggler transparent-button" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                        <ul class="navbar-nav ">
-                            <li class="nav-item active category-nav">
-                                <a class="nav-link" href="#">Necklaces <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="nav-item active category-nav">
-                                <a class="nav-link" href="#">Rings</a>
-                            </li>
-                            <li class="nav-item active category-nav">
-                                <a class="nav-link" href="#">Earrings</a>
-                            </li>
-                            <li class="nav-item active category-nav">
-                                <a class="nav-link" href="#">Bracelets</a>
-                            </li>
-                            <li class="nav-item active category-nav">
-                                <a class="nav-link" href="#">Men's jewelry</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </section>-->
-    <section class="text-center">
-        <h1>כותרת משהו משהו....</h1>
-    </section>
     <div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
+        @{
+            List<string> pathes = ViewBag.ImagePathes;
+            int i = 0;//interator for pathes
+            foreach (var cat in Model)
+            {
+                <a onclick="location.href='@Url.Action("CategoryPage", "Products", new { categoryId = cat.Id })'">
+                    <div class="col">
+                        <div class="card h-75 w-250 my-3 cardBorder categoryButton">
+
+                            <div class="containerImg">
+                                <img src=@pathes[i] class="card-img-top imgCategory" alt="..." />
+                                <div class="card-body whiteSmoke">
+                                    <h5 class="card-title">@cat.CategoryName</h5>
+                                </div>
+                                <div class="middle">
+                                    <div class="text">Shop Now</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                i++;
+            }
+        }
+
+
+    </div>
+    <!--<div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
         <a onclick="location.href='@Url.Action("CategoryPage", "Products",new { type = Product.ProductType.Necklace })'">
             <div class="col">
-                <div class="card h-75 w-250 my-3 cardBorder categoryButton">
-                    @*@Html.ActionLink("", "CategoryPage", "Products",
-                        new { type = Product.ProductType.Necklace }, null)*@
-                    <div class="containerImg">
+                <div class="card h-75 w-250 my-3 cardBorder categoryButton">-->
+    @*@Html.ActionLink("", "CategoryPage", "Products",
+        new { type = Product.ProductType.Necklace }, null)*@
+    <!--<div class="containerImg">
                         <img src="~/lib/images/Categories/Neckalce.jpeg" class="card-img-top imgCategory" alt="..." />
                         <div class="card-body whiteSmoke">
                             <h5 class="card-title">Necklace</h5>
@@ -145,7 +140,7 @@
                 </div>
             </div>
         </a>
-    </div>
+    </div>-->
 
 
     @section Scripts

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<jewelry.Models.Product>
+﻿@model Tuple<List<Product>, List<string>>
 @{
     if (Context.User != null && Context.User.Claims != null &&
        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
@@ -11,122 +11,32 @@
     }
 }
 
-<section>
-    @*<div>
-            <label class="mx-2">Search product: </label>
-            <input id="TitleInput" placeholder="product name"/>
-        </div>*@
-    <div id="searchForm" class="form-row search-form">
-        <label class="mx-2">Search by: </label>
-        <select class="mx-2" id="selectSearchType" onchange="searchType()">
-            <option value="0">Title</option>
-            <option value="1">Price</option>
-            <option value="2">type</option>
-        </select>
-        <div class="mx-2" id="searchFormTitlediv">
-            <input class="input-search-product" id="searchFormTitle" name="inputTitle" placeholder="Product name" />
-        </div>
-        <div id="searchFormPricediv" class="default-hide mx-2">
-            <input id="searchFormPrice" searchInput name="inputPrice" placeholder="Product price" />
-        </div>
-        <div class="default-hide mx-2" id="searchFormTypediv">
-            <select id="searchFormType" class="input-search-product" name="inputType"
-                    placeholder="Product date">
-                <option value="0">Necklace</option>
-                <option value="1">Ring</option>
-                <option value="2">Bracelet</option>
-                <option value="3">Earrings</option>
-            </select>
-        </div>
-        <div class="mx-2">
-            <input class="btn btn-primary" type="submit" id="submit-btn" value="search" />
-        </div>
-    </div>
+@{
+    int i = 0;
+    <div class="row row-cols-1 row-cols-md-3 g-3 categoryDiv justify-content-center">
 
-</section>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Discount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RateSum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rates)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Orders)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreQuantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NameOption)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+        @foreach (var product in Model.Item1)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Discount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RateSum)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rates)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Orders)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StoreQuantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NameOption)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+            <a onclick="location.href='@Url.Action("ProductPage", "Products", new { id = product.Id })'">
+                <div class="col">
+                    <div class="card h-75 w-250 my-3 cardBorder categoryButton">
+                        <div class="containerImg">
+                            <img src="@Model.Item2[i]" class="card-img-top imgCategory" alt="..." />
+                            <div class="card-body whiteSmoke">
+                                <h5 class="card-title">@product.ProductName</h5>
+                                <div class="font-italic font-weight-bold">
+                                    Price: @product.Price &#8362
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </a>
+            i++;
         }
-    </tbody>
-</table>
-
+    </div>
+}
 @section Scripts{
 
     <script src="~/js/searchProduct.js"></script>

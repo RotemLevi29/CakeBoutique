@@ -29,24 +29,6 @@ namespace jewelry.Controllers
             return View(await _context.User.ToListAsync());
         }
 
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
         // GET: Users/Create
         public IActionResult Create()
         {
@@ -140,9 +122,38 @@ namespace jewelry.Controllers
 
             return View(user);
         }
-        //Register
-        public async Task<IActionResult> Register([Bind("Id,UserName,FirstName,LastName,Password,Email,Birthdate,Gender,Type,CartId")] User user)
+
+        // GET: Users
+        [HttpGet]
+        public async Task<IActionResult> Register()
         {
+            return View();
+        }
+        //Register
+        [HttpPost]
+        public async Task<IActionResult> Register([Bind("Id,UserName,FirstName,LastName,Password,PasswordConfirm,Email,Birthdate,Gender,Type,CartId")] User user)
+        {
+            
+            // Validates the input data
+            if (user.FirstName == null || user.LastName == null || user.Email == null || user.Password == null || user.PasswordConfirm == null)
+            {
+                ViewData["error"] = "Please make sure you enter data to all the fields.";
+                return View();
+            }
+
+            // Check if the password matches the repeated one
+            if (user.Password != user.PasswordConfirm)
+            {
+                ViewData["error"] = "Passwords don't match.";
+                return View();
+            }
+
+            // Check if account already exists
+            if (_context.User.FirstOrDefault(u => u.Email == user.Email) != null)
+            {
+                ViewData["error"] = "Email already exists.";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 var q = _context.User.FirstOrDefault(u => u.UserName == user.UserName); //checking if there is username with the same name it will return null if doesnt, if there is the object
@@ -183,30 +194,36 @@ namespace jewelry.Controllers
             return View();
         }
 
-        
-
         //login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult>Login([Bind("Id,Email,Password")] User user)
+        public IActionResult Login([Bind("Id,Email,Password")] User user,string ReturnUrl)
         {
-            
-                var q = from u in _context.User
-                        where u.Email == user.Email && u.Password == user.Password
-                        select u;
-                //   same same             var q = _context.User.FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password); //checking if there is username with the same name it will return null if doesnt, if there is the object
-                if (q.Count() > 0)
-                {
-                    //HttpContext.Session.SetString("username", q.First().Username);
-                    Signin(q.First());
-                    return RedirectToAction(nameof(Index), "Home");
-                }
-                else
-                {
-                    ViewData["Error"] = "Username and/or password are incorrect";
-                }
 
-            return View(user);
+            var q = from u in _context.User
+                    where u.Email == user.Email &&
+                    u.Password == user.Password
+                    select u;
+            //   same same             var q = _context.User.FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password); //checking if there is username with the same name it will return null if doesnt, if there is the object
+            if (q.Count() > 0)
+            {
+                //HttpContext.Session.SetString("username", q.First().Username);
+                Signin(q.First());
+
+            }
+            else
+            {
+                ViewData["Error"] = "Username and/or password are incorrect";
+                return View();
+            }
+            if (ReturnUrl!=null)
+            {
+                return Redirect(ReturnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index), "Home");
+            }
         }
 
         //Logout
@@ -234,6 +251,22 @@ namespace jewelry.Controllers
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity), authProperties);
+        }
+
+        public async Task<IActionResult> Search(string input)
+        {
+            if (input != null)
+            {
+                return PartialView(await _context.User.Where(a => (a.UserName.Contains(input)||
+                a.Email.Contains(input)||
+                a.FirstName.Contains(input)||
+                a.LastName.Contains(input)
+                )).ToListAsync());
+            }
+            else
+            {
+                return PartialView(await _context.User.ToListAsync());
+            }
         }
 
         // POST: Users/Delete/5

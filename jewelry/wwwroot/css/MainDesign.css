@@ -3,9 +3,9 @@
     direction:rtl;
 }
 
-.bg-primary{
+/*.bg-primary{
     background-color:fuchsia;
-}
+}*/
 
 /*using for the login/register icon*/
 .transparent-button {
@@ -28,7 +28,7 @@
 /*using for the carousle banner framework*/
 .carousel-frame {
     width: 100%;
-    height: 500px;
+    height: 350px;
 }
 
 /*using for banner images carousel*/
@@ -36,7 +36,7 @@
     /*width: 100%;
     height: 230px;*/
     width: 100%;
-    height:500px;
+    height:350px;
 }
 
 /*using for navbar navigation categories*/
@@ -120,7 +120,7 @@
 }
 
 .pinkActive:focus:hover:active:visited {
-    background-color: #ffcc99;
+    background-color: #f6b778;
 }
 
 
@@ -161,3 +161,39 @@
 * {
     box-sizing: border-box;
 }
+
+
+/*using for best quality best servie.....*/
+.text-box {
+    font-style: italic;
+    font-size:30px;
+    font-weight:bold;
+    padding:3px;
+    background-color:transparent;
+    
+}
+
+.pink {
+    color: #f6b778;
+}
+/*using for client nav bar
+*/
+.text-nav {
+    font-style: italic;
+    font-size: 20px;
+    padding:0;
+}
+
+/*info for admin or user*/
+.info {
+    background-color: #e6f3ff;
+    border-left: 6px solid #f44336;
+    font-weight: lighter;
+    width: 35%;
+    text-align: center;
+    position: center;
+    border: 2px solid #c9c9c9;
+    border-radius: 25px;
+}
+
+

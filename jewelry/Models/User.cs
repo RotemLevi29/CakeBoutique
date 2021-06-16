@@ -33,19 +33,19 @@ namespace jewelry.Models
         [Required(ErrorMessage = "Please enter the user name")]
         [StringLength(maximumLength: 20)]
         [Display(Name = "User Name")]
-        public string UserName { get; set; } = "";
+        public string UserName { get; set; }
 
 
         [Required(ErrorMessage = "Please enter your first name")]
         [StringLength(maximumLength: 20)]
         [Display(Name = "First Name")]
-        public string FirstName { get; set; } = "";
+        public string FirstName { get; set; }
 
 
         [Required(ErrorMessage = "Please enter your last name")]
         [StringLength(maximumLength: 20)]
         [Display(Name = "Last Name")]
-        public string LastName { get; set; } = "";
+        public string LastName { get; set; }
 
 
         [Required(ErrorMessage = "Please enter a password")]
@@ -53,6 +53,9 @@ namespace jewelry.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", ErrorMessage = "Enter minimum lower case letter, upper case letter and a number")]
+        [Compare("Password",ErrorMessage ="Passwords does not match")]
+        public string PasswordConfirm { get; set; }
 
         [Required(ErrorMessage = "Please enter a valid email adrress")]
         [StringLength(50)]

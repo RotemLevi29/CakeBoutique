@@ -12,7 +12,7 @@ margin-top:10px;
     text-align: center;
 }
 
-#preview {
+#preview #preview2 #preview3 {
     max-height: 256px;
     height: auto;
     width: auto;
@@ -28,6 +28,13 @@ margin-top:10px;
     width: auto;
 }
 
+.imgContainer {
+    width:150px;
+    height:150px;
+    border-radius: 5px;
+    margin-top: 5px;
+    width: auto;
+}
 .input-group {
     margin-top: 10px;
     margin-buttom:10px;

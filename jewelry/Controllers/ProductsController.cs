@@ -28,43 +28,57 @@ namespace jewelry.Controllers
         }
         
         // GET: Catergory Products
-        public async Task<IActionResult> CategoryPage(Product.ProductType type)
+        public async Task<IActionResult> CategoryPage(int categoryId)
         {
-            return View(nameof(CategoryPage),await _context.Product.Where(a => a.Type.Equals(type)).ToListAsync());
+            List<Product> products = _context.Product.Where(a => a.CategoryId.Equals(categoryId)).ToList();
+            List<string> pathes = new List<string>();
+            foreach (Product p in products)
+            {
+                string path = (_context.Image.Where(a => a.ProductId.Equals(p.Id)).
+                    Select(column => column.imagePath).FirstOrDefault());
+                pathes.Add(path);
+            }
+            ViewData["pathes"] = pathes;
+            Tuple<List<Product>, List<string>> tuple = new Tuple<List<Product>, List<string>>(products, pathes); 
+            return View(nameof(CategoryPage), tuple);
         }
 
 
         // GET: Products
+        [HttpGet]
         public async Task<IActionResult> ProductPage(int? id)
         {
-            
-
-
             {
-                //if (id == null)
-                //{
-                //    return NotFound();
-                //}
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
                 var product = await _context.Product
-                    .FirstOrDefaultAsync(m => m.Id == 31);
+                    .FirstOrDefaultAsync(m => m.Id == id);
                 if (product == null)
                 {
                     return NotFound();
                 }
-                List<string> pathes =_context.Image.Where(a => a.ProductId.Equals(31)).Select(column=>column.imagePath).ToList();
+                List<string> pathes =_context.Image.Where(a => a.ProductId.Equals(id)).Select(column=>column.imagePath).ToList();
                 Tuple<Product, List<string>> tuple = new Tuple<Product, List<string>>(product, pathes);
                 return View(tuple);
             }
         }
 
+
+
         // GET: Products
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Product.ToListAsync());
         }
 
+
+
         // GET: Products/Details/5
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -87,6 +101,7 @@ namespace jewelry.Controllers
         [Authorize(Roles="Admin,Editor")]
         public IActionResult Create()
         {
+            ViewData["Categries"] = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
             return View();
         }
 
@@ -96,9 +111,13 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
+        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
         {
-           
+            if (postedFiles.Count() > 3)
+            {
+                ViewData["error"] = "You can upload only 3 images!";
+                return View();
+            }
          // WE NEED TO TAKE CARE TO THE IMAGE TYPE 
 
             if (ModelState.IsValid)
@@ -151,6 +170,7 @@ namespace jewelry.Controllers
             {
                 return NotFound();
             }
+            ViewData["Categries"] = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
             return View(product);
         }
 
@@ -160,8 +180,7 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product)
         {
             if (id != product.Id)
             {
@@ -218,8 +237,8 @@ namespace jewelry.Controllers
                     }
                 case "2":
                     {
-                        Product.ProductType theType = (Product.ProductType)Enum.Parse(typeof(Product.ProductType),input);
-                        return PartialView(await _context.Product.Where(a => a.Type.Equals(theType)).ToListAsync());
+/*                        int theType = (Product.ProductType)Enum.Parse(typeof(Product.ProductType),input);
+*/                        return PartialView(await _context.Product.Where(a => a.CategoryId.Equals(input)).ToListAsync());
                     }
             }
             return null;

@@ -25,5 +25,7 @@ namespace jewelry.Data
 
         public DbSet<jewelry.Models.CarouselImage> CarouselImage { get; set; }
 
+        public DbSet<jewelry.Models.Category> Category { get; set; }
+
     }
 }

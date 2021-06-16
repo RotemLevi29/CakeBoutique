@@ -1,0 +1,18 @@
+﻿/*using for buttom section in al pages*/
+.buttomSection {
+    background-color: #3b434a;
+    margin-top:3px;
+}
+.fontH {
+    color: #f6b778;
+    font-style: italic;
+}
+.regularFont {
+    color: white;
+    font-style: italic;
+}
+.icon{
+    width:45px;
+    height:auto;
+    margin-right:3px;
+}

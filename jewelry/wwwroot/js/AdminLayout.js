@@ -1,6 +1,4 @@
-﻿$(document).ready(function () {
-    openNav();
-});
+﻿
 
 function openNav() {
     document.getElementById("mySidebar").style.width = "170px";
@@ -15,4 +13,3 @@ function closeNav() {
     document.getElementById("opennavbar").style.display = "block"
 }
 
-document.getElementById("regurlarexpressionID").style.visibility = "hidden";

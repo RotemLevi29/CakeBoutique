@@ -97,6 +97,24 @@ namespace jewelry.Migrations
                     b.ToTable("Cart");
                 });
 
+            modelBuilder.Entity("jewelry.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("jewelry.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -163,6 +181,9 @@ namespace jewelry.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -196,6 +217,8 @@ namespace jewelry.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
                 });
@@ -269,6 +292,9 @@ namespace jewelry.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordConfirm")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -301,6 +327,15 @@ namespace jewelry.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("jewelry.Models.Product", b =>
+                {
+                    b.HasOne("jewelry.Models.Category", null)
+                        .WithMany("products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("jewelry.Models.ProductCart", b =>
                 {
                     b.HasOne("jewelry.Models.Cart", null)
@@ -326,6 +361,11 @@ namespace jewelry.Migrations
             modelBuilder.Entity("jewelry.Models.Cart", b =>
                 {
                     b.Navigation("ProductCartId");
+                });
+
+            modelBuilder.Entity("jewelry.Models.Category", b =>
+                {
+                    b.Navigation("products");
                 });
 
             modelBuilder.Entity("jewelry.Models.Order", b =>
