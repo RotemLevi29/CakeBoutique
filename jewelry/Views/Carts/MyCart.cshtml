@@ -1,4 +1,4 @@
-﻿@model IEnumerable<jewelry.Models.Cart>
+﻿@model jewelry.Models.User
 @{
     ViewData["Title"] = "Home Page";
 
@@ -14,10 +14,27 @@
             @await Component.InvokeAsync("CarouselManager")
         </section>
     }
+    <link href="~/css/cart.css" type="text/css" rel="stylesheet">
+
 }
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="cart col-md-6">
+            Cart
+        </div>
+        <div class="cart-summary col-md-4">
+
+        </div>
+
+    </div>
+
+</div>
 
 
+
+
+@*
     <p>
         <a asp-action="Create">Create New</a>
     </p>
@@ -58,3 +75,4 @@
             }
         </tbody>
     </table>
+*@

@@ -40,11 +40,18 @@
             </div>
             <div class="col-md-4 rtl mt-4 d-sm-flex ">
                 <div class="flex-grow-1 row text-center justify-content-center">
+                    @if(Context.User != null && Context.User.Claims != null &&
+                    Context.User.Claims.Count() > 0)
+                        {
                     <div class="col-md-2 col-sm">
-                        <button data-toggle="dropdown" class="transparent-button">
-                            <img src="~/lib/icons/cart4.svg" width="30" />
-                        </button>
+                        <a onclick="location.href='@Url.Action("MyCart", "Carts", new { id = @Context.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value })'">
+                            <button data-toggle="dropdown" class="transparent-button">
+                                <img src="~/lib/icons/cart4.svg" width="30" />
+                            </button>
+                        </a>
                     </div>
+
+                        }
                     <div class="col-md-2 col-sm">
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                             <div class="btn-group" role="group">

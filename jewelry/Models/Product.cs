@@ -25,6 +25,7 @@ namespace jewelry.Models
         public int CategoryId { get; set; }
 
         [Required]
+        [StringLength(maximumLength: 38)]
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
 

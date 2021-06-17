@@ -91,6 +91,12 @@ namespace jewelry.Controllers
             {
                 string folder = "/lib/images/MainCarousel/";
                 string wwwRootpath = _hostEnvironment.WebRootPath + folder;
+                string dir = wwwRootpath;
+                // If directory does not exist, create it
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
                 foreach (IFormFile postedFile in postedFiles)
                 {
                     string originalName = postedFile.FileName.Replace(" ", "");

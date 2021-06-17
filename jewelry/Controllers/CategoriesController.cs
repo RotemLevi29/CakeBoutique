@@ -67,16 +67,23 @@ namespace jewelry.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 string folder = "/lib/images/Categories/";
                 string wwwRootpath = _hostEnvironment.WebRootPath + folder;
+                string dir = wwwRootpath;
+                // If directory does not exist, create it
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
 
-                
                 foreach (IFormFile postedFile in postedFiles)
                 {
                     string categoryName = category.CategoryName;
                     categoryName = categoryName.Replace(" ", "");
                     string idString = Convert.ToString(category.Id);
                     categoryName = categoryName + idString;
+
                     using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, categoryName + ".jpeg"), FileMode.Create))
                     {
                         postedFile.CopyTo(stream); //saving in the right folder

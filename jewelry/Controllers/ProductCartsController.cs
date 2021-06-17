@@ -7,39 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
 using jewelry.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace jewelry.Controllers
 {
-    public class CartsController : Controller
+    public class ProductCartsController : Controller
     {
         private readonly jewelryContext _context;
 
-        public CartsController(jewelryContext context)
+        public ProductCartsController(jewelryContext context)
         {
             _context = context;
         }
 
-        // GET: Carts
-        public IActionResult MyCart(int? id)
-        {
-            if (id != null)
-            {
-                return View( _context.User.Where(a => a.Id.Equals(id)).FirstOrDefault());
-            }
-            else
-            {
-                return RedirectToAction("Login", "Users");
-            }
-        }
-
-
-        // GET: Carts
+        // GET: ProductCarts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cart.ToListAsync());
+            return View(await _context.ProductCart.ToListAsync());
         }
 
-        // GET: Carts/Details/5
+        // GET: ProductCarts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,40 +34,67 @@ namespace jewelry.Controllers
                 return NotFound();
             }
 
-            var cart = await _context.Cart
+            var productCart = await _context.ProductCart
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cart == null)
+            if (productCart == null)
             {
                 return NotFound();
             }
 
-            return View(cart);
-        }
+            return View(productCart);
+        }   
 
-        // GET: Carts/Create
+        // GET: ProductCarts/Create
         public IActionResult Create()
         {
             return View();
         }
 
-
-        // POST: Carts/Create
+        // POST: ProductCarts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,TotalPrice,LastUpdate")] Cart cart)
+        public async Task<IActionResult> Create([Bind("Id,Quantity,ProductId,ProductName,CustumName,CartId")] ProductCart productCart)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cart);
+                _context.Add(productCart);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cart);
+            return View(productCart);
         }
 
-        // GET: Carts/Edit/5
+        //[Authorize]
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<bool> AddToCart(int productId,string productName, string input,int cartId,string url)
+        {
+
+            if (User.Identity.IsAuthenticated )
+            {
+                ProductCart productcart = new ProductCart();
+                productcart.CustumName = input;
+                productcart.ProductId = productId;
+                productcart.Quantity = 1;
+                productcart.ProductName = productName;
+                productcart.CartId = cartId;
+                _context.Add(productcart);
+                 await _context.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+/*                return RedirectToAction("Login", "Users",new { ReturnUrl = url });
+*/
+            }
+            
+        }
+
+
+        // GET: ProductCarts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,22 +102,22 @@ namespace jewelry.Controllers
                 return NotFound();
             }
 
-            var cart = await _context.Cart.FindAsync(id);
-            if (cart == null)
+            var productCart = await _context.ProductCart.FindAsync(id);
+            if (productCart == null)
             {
                 return NotFound();
             }
-            return View(cart);
+            return View(productCart);
         }
 
-        // POST: Carts/Edit/5
+        // POST: ProductCarts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,TotalPrice,LastUpdate")] Cart cart)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Quantity,ProductId,ProductName,CustumName,CartId")] ProductCart productCart)
         {
-            if (id != cart.Id)
+            if (id != productCart.Id)
             {
                 return NotFound();
             }
@@ -112,12 +126,12 @@ namespace jewelry.Controllers
             {
                 try
                 {
-                    _context.Update(cart);
+                    _context.Update(productCart);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CartExists(cart.Id))
+                    if (!ProductCartExists(productCart.Id))
                     {
                         return NotFound();
                     }
@@ -128,10 +142,10 @@ namespace jewelry.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cart);
+            return View(productCart);
         }
 
-        // GET: Carts/Delete/5
+        // GET: ProductCarts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,30 +153,30 @@ namespace jewelry.Controllers
                 return NotFound();
             }
 
-            var cart = await _context.Cart
+            var productCart = await _context.ProductCart
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cart == null)
+            if (productCart == null)
             {
                 return NotFound();
             }
 
-            return View(cart);
+            return View(productCart);
         }
 
-        // POST: Carts/Delete/5
+        // POST: ProductCarts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cart = await _context.Cart.FindAsync(id);
-            _context.Cart.Remove(cart);
+            var productCart = await _context.ProductCart.FindAsync(id);
+            _context.ProductCart.Remove(productCart);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartExists(int id)
+        private bool ProductCartExists(int id)
         {
-            return _context.Cart.Any(e => e.Id == id);
+            return _context.ProductCart.Any(e => e.Id == id);
         }
     }
 }

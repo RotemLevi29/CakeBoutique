@@ -128,6 +128,12 @@ namespace jewelry.Controllers
                 //images
                 string folder = "/lib/images/products/";
                 string wwwRootpath = _hostEnvironment.WebRootPath + folder;
+                string dir = wwwRootpath;
+                // If directory does not exist, create it
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
                 int i = 0;
                 foreach (IFormFile postedFile in postedFiles)
                 {

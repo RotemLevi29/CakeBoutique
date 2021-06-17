@@ -242,12 +242,14 @@ namespace jewelry.Controllers
         {
             new Claim(ClaimTypes.Email, account.Email),
             new Claim("FullName", account.FirstName),
-            new Claim(ClaimTypes.Role, account.Type.ToString())
+            new Claim(ClaimTypes.Role, account.Type.ToString()),
+            new Claim("UserId", account.Id.ToString()),
+            new Claim("cartId", account.CartId.ToString()),
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
             {
-                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity), authProperties);

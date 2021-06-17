@@ -14,7 +14,6 @@ namespace jewelry.ViewComponents
 
         public TopLayoutViewComponent(jewelryContext context)
         {
-          
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
