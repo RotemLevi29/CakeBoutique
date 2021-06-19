@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace jewelry.Controllers
 {
-    public class AboutUs : Controller
+    public class AboutUsController : Controller
     {
 
         private readonly jewelryContext _context;
 
-        public AboutUs(jewelryContext context)
+        public AboutUsController(jewelryContext context)
         {
             _context = context;
         }

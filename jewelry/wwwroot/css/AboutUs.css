@@ -12,8 +12,8 @@ input[type=text], select, textarea {
     resize: vertical;
 }
 
-input[type=submit] {
-    background-color: #04AA6D;
+/*input[type=submit] {
+    background-color: #ffac5a;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -22,6 +22,18 @@ input[type=submit] {
 
     input[type=submit]:hover {
         background-color: #45a049;
+    }*/
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #ffac5a !important;
+    border-color: #ffc68e !important;
+}
+
+    .btn-primary:active {
+        background-color: #ffa043 !important;
+        border-color: #ffac5a !important;
     }
 
 /* Style the container/contact section */
@@ -59,8 +71,10 @@ input[type=submit] {
 .gmap_canvas {
     overflow: hidden;
     background: none !important;
-    height: 500px;
-    width: 600px;
+    height: 600px;
+    width: 500px;
 }
+
+
 
 
