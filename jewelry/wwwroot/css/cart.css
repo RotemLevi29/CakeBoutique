@@ -9,4 +9,30 @@
     width:40px;
 }
 
+.productInCart {
+    background-color: #ffe7b3;
+    border: solid 1.5px;
+    border-radius: 20px;
+    border-color: #ffefcc;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
 
+.cartProductImage {
+    width: 100px;
+    height: 100px;
+}
+
+.customName{
+    border:solid 1.5px;
+    border-color:lightgray;
+    padding:2px;
+    background-color:darkgray;
+    border-radius:20px;
+}
+
+.prodcutNameCart {
+    font-size: 30px;
+    font-family: 'Javanese Text';
+}

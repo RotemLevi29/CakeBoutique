@@ -16,8 +16,9 @@
     }
 }
 <link href="~/css/MainDesign.css" type="text/css" rel="stylesheet">
-
 <body>
+    <h2 class="mainFont text-center">Choose you style</h2>
+
     <div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
         @{
             List<string> pathes = ViewBag.ImagePathes;
@@ -43,106 +44,7 @@
                 i++;
             }
         }
-
-
     </div>
-    <!--<div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
-        <a onclick="location.href='@Url.Action("CategoryPage", "Products",new { type = Product.ProductType.Necklace })'">
-            <div class="col">
-                <div class="card h-75 w-250 my-3 cardBorder categoryButton">-->
-    @*@Html.ActionLink("", "CategoryPage", "Products",
-        new { type = Product.ProductType.Necklace }, null)*@
-    <!--<div class="containerImg">
-                        <img src="~/lib/images/Categories/Neckalce.jpeg" class="card-img-top imgCategory" alt="..." />
-                        <div class="card-body whiteSmoke">
-                            <h5 class="card-title">Necklace</h5>
-                        </div>
-                        <div class="middle">
-                            <div class="text">Shop Now</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a onclick="location.href='@Url.Action("CategoryPage", "Products",new { type = Product.ProductType.Earrings })'">
-            <div class="col">
-                <div class="card h-75 w-250 my-3 cardBorder categoryButton">
-                    <div class="containerImg">
-                        <img src="~/lib/images/Categories/Earrings.jpeg" class="card-img-top imgCategory" alt="...">
-                        <div class="card-body whiteSmoke">
-                            <h5 class="card-title ">Earrings</h5>
-                        </div>
-                        <div class="middle">
-                            <div class="text">Shop Now</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a onclick="location.href='@Url.Action("CategoryPage", "Products",new { type = Product.ProductType.Bracelet })'">
-            <div class="col">
-                <div class="card h-75 w-250 my-3 cardBorder categoryButton">
-                    <div class="containerImg">
-                        <img src="~/lib/images/Categories/bracelet.png" class="card-img-top imgCategory" alt="...">
-                        <div class="card-body whiteSmoke">
-                            <h5 class="card-title">Bracelet</h5>
-                        </div>
-                        <div class="middle">
-                            <div class="text">Shop Now</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </a>
-        <a onclick="location.href='@Url.Action("CategoryPage", "Products",new { type = Product.ProductType.Ring })'">
-            <div class="col">
-                <div class="card h-75 w-250 my-3 cardBorder categoryButton">
-                    <div class="containerImg">
-                        <img src="~/lib/images/Categories/ring.png" class="card-img-top imgCategory" alt="...">
-                        <div class="card-body whiteSmoke">
-                            <h5 class="card-title">Ring</h5>
-                        </div>
-                        <div class="middle">
-                            <div class="text">Shop Now</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a onclick="location.href='@Url.Action("CategoryPage", "Products",new { type = Product.ProductType.Men })'">
-            <div class="col">
-                <div class="card h-75 w-250 my-3 cardBorder categoryButton">
-                    <div class="containerImg">
-                        <img src="~/lib/images/Categories/men.jpeg" class="card-img-top imgCategory" alt="...">
-                        <div class="card-body whiteSmoke">
-                            <h5 class="card-title">Mens</h5>
-                        </div>
-                        <div class="middle">
-                            <div class="text">Shop Now</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a>
-            <div class="col">
-                <div class="card h-75 w-250 my-3 cardBorder categoryButton">
-                    <div class="containerImg">
-                        <img src="~/lib/images/Categories/bestSellers.jpeg" class="card-img-top imgCategory" alt="...">
-                        <div class="card-body whiteSmoke">
-                            <h5 class="card-title">Best Sellers</h5>
-                        </div>
-                        <div class="middle">
-                            <div class="text">Shop Now</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>-->
-
-
     @section Scripts
     {
         <link href="~/css/MainDesign.css" rel="stylesheet" />

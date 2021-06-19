@@ -66,31 +66,74 @@ namespace jewelry.Controllers
             return View(productCart);
         }
 
+        public void RemoveFromCart(int? id)
+        {
+            if (id != null)
+            {
+                var productToRemove = _context.ProductCart.Find(id);
+                if(productToRemove != null)
+                {
+                    if(productToRemove.Quantity==1)
+                    {
+                        _context.Remove(productToRemove);
+                    }
+                    else
+                    {
+                        productToRemove.Quantity -= 1;
+                    }
+                    _context.SaveChanges();
+
+                }
+            }
+        }
+
         //[Authorize]
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<bool> AddToCart(int productId,string productName, string input,int cartId,string url)
+        public async Task<string> AddToCart(int productId, string productName, string input,int cartId,string url)
         {
-
-            if (User.Identity.IsAuthenticated )
+            // if the product cart exist in this cart +1
+            if (User.Identity.IsAuthenticated)
             {
-                ProductCart productcart = new ProductCart();
-                productcart.CustumName = input;
-                productcart.ProductId = productId;
-                productcart.Quantity = 1;
-                productcart.ProductName = productName;
-                productcart.CartId = cartId;
-                _context.Add(productcart);
-                 await _context.SaveChangesAsync();
-                return true;
+                var productExist = (from u in _context.ProductCart
+                                    where u.ProductId == productId &&
+                                    u.CartId == cartId &&
+                                    u.CustumName == input
+                                    select u).FirstOrDefault();
+                if (productExist != null && _context.Product.Find(productId).StoreQuantity > 0)
+                {
+                    productExist.Quantity += 1;
+                    await _context.SaveChangesAsync();
+                    return "Success";
+                }
+
+                Product product = _context.Product.Find(productId);
+                if (product != null)
+                {
+                    if (product.StoreQuantity > 0)
+                    {
+                        ProductCart productcart = new ProductCart();
+                        productcart.CustumName = input;
+                        productcart.ProductId = productId;
+                        productcart.Quantity = 1;
+                        productcart.ProductName = productName;
+                        productcart.CartId = cartId;
+                        _context.Add(productcart);
+                        await _context.SaveChangesAsync();
+                        return "Success";
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
+                }
+                else
+                {
+                    return "Error";
+                }
             }
             else
-            {
-                return false;
-/*                return RedirectToAction("Login", "Users",new { ReturnUrl = url });
-*/
-            }
-            
+            { return "NotLogin"; }            
         }
 
 

@@ -29,5 +29,9 @@ namespace jewelry.Data
 
         public DbSet<jewelry.Models.ProductCart> ProductCart { get; set; }
 
+        public DbSet<jewelry.Models.Address> Address { get; set; }
+
+        public DbSet<jewelry.Models.Order> Order { get; set; }
+
     }
 }

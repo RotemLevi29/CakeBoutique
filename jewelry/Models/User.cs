@@ -76,7 +76,6 @@ namespace jewelry.Models
 
         public int CartId { get; set; }
 
-        public Address Address { get; set; }
 
         public List<Order> Orders { get; set; } = null; //List of history orders
 

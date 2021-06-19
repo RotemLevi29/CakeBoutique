@@ -24,7 +24,37 @@ namespace jewelry.Controllers
         {
             if (id != null)
             {
-                return View( _context.User.Where(a => a.Id.Equals(id)).FirstOrDefault());
+                double totalPrice = 0;
+                List<double> prices = new List<double>();
+                List<ProductCart> cart =  _context.ProductCart.Where(a => a.CartId.Equals(id)).ToList();
+                List<string> imagePathes = new List<string>();
+                string imagePath = null;
+                foreach(var productCart in cart)
+                {
+                    Image image = _context.Image.Where(a => a.ProductId.Equals(productCart.ProductId)).FirstOrDefault();
+                    if (image != null)
+                    {
+                        imagePath = image.imagePath;
+                    }
+                    imagePathes.Add(imagePath);
+                    Product product= _context.Product.Find(productCart.ProductId);
+                    if (product == null) //אם מחקו את המוצר תסיר אותו מהעגלה גם ואז תקרא לפונצקיה מחדש
+                    {
+                        _context.ProductCart.Remove(productCart);
+                        _context.SaveChangesAsync();
+                        return (MyCart(id));
+                    }
+                    double price = product.Price;
+
+                    prices.Add(price);
+                    totalPrice += price*productCart.Quantity;
+                }
+                _context.Cart.Find(id).TotalPrice = totalPrice;
+                _context.SaveChangesAsync();
+                ViewData["totalPrice"] = totalPrice;
+                ViewData["images"] = imagePathes;
+                Tuple<List<ProductCart>, List<double>> tuple = new Tuple<List<ProductCart>, List<double>>(cart, prices);
+                return PartialView(tuple);
             }
             else
             {

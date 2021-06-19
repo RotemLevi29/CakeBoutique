@@ -16,10 +16,10 @@ namespace jewelry.Models
         public Address Address { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         [Required]
-        public User User { get; set; }
+        public int UserId { get; set; }
         
         [Required]
         public double TotalPrice { get; set; }

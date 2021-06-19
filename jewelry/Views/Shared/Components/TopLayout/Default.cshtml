@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-1">
                 @if (Context.User != null && Context.User.Claims != null &&
-                        Context.User.Claims.Count() > 0)
+                  Context.User.Claims.Count() > 0)
                 {
                     <div class="m-3 textDesign">
                         Hello @Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
@@ -40,18 +40,39 @@
             </div>
             <div class="col-md-4 rtl mt-4 d-sm-flex ">
                 <div class="flex-grow-1 row text-center justify-content-center">
-                    @if(Context.User != null && Context.User.Claims != null &&
-                    Context.User.Claims.Count() > 0)
-                        {
-                    <div class="col-md-2 col-sm">
-                        <a onclick="location.href='@Url.Action("MyCart", "Carts", new { id = @Context.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value })'">
-                            <button data-toggle="dropdown" class="transparent-button">
+                    @if (Context.User != null && Context.User.Claims != null &&
+           Context.User.Claims.Count() > 0)
+                    {
+                        <div class="col-md-2 col-sm">
+                            <button onclick="updateCart()" type="button" class="transparent-button" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
                                 <img src="~/lib/icons/cart4.svg" width="30" />
                             </button>
-                        </a>
+
+                        </div>
+
+                    }
+                    @*************************************8*@
+
+                    @*CartId*@
+                    <input hidden id="cartId" value="@Context.User.Claims.FirstOrDefault(c => c.Type == "cartId")?.Value" />
+                    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalScrollableTitle">@Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value's Cart</h5>
+                                </div>
+                                <div class="modal-body">
+                                </div>
+                                <div class="modal-footer">
+                                    <p1 class="font-italic">Total Price: @ViewData["totalPrice"]$ </p1>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue shopping</button>
+                                    <button type="button" class="btn btn-primary">Checkout</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                        }
+                    @*************************************8*@
                     <div class="col-md-2 col-sm">
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                             <div class="btn-group" role="group">
@@ -78,3 +99,6 @@
         </div>
     </div>
 </section>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+<script src="~/js/cart/MyCart.js"></script>

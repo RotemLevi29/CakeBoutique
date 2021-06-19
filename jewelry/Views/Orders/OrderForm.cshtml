@@ -1,0 +1,75 @@
+﻿
+@********************************************8*@
+
+
+<div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+        <div class="modal-header mainFont font-italic justify-content-center">
+            <h2 class="modal-title font-italic" id="exampleModalScrollableTitle">@Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value's Cart</h2>
+        </div>
+        <div class="modal-body">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="row text-center">
+                        <p class="font-italic font-weight-bold">Total Price:@ViewData["totalprice"]$</p>
+                    </div>
+                    <form asp-action="OrderForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                        <div class="form-group col">
+                            <label class="control-label">Phone number</label>
+                            <input name="PhoneNumber" type="tel" class="form-control" />
+                            <span></span>
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">State</label>
+                            <input name="State" type="text" class="form-control" />
+                        </div>
+
+                        </div>
+
+                        <div class="row">
+
+                        <div class="form-group col">
+                            <label class="control-label">City</label>
+                            <input name="City" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Street</label>
+                            <input name="Street" type="text" class="form-control" />
+                        </div>
+
+                        </div>
+
+                        <div class="row">
+                        <div class="form-group col">
+                            <label class="control-label">Apartment</label>
+                            <input name="Apartment" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Postal Code</label>
+                            <input name="postal" type="text" class="form-control" />
+                        </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Credit Card number</label>
+                            <input name="Payment" type="text" autocomplete="off" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Order" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+<script src="~/js/cart/MyCart.js"></script>

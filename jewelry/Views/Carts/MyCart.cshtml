@@ -1,78 +1,60 @@
-﻿@model jewelry.Models.User
-@{
-    ViewData["Title"] = "Home Page";
+﻿@model Tuple<List<ProductCart>, List<double>>
 
-    if (Context.User != null && Context.User.Claims != null &&
-        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
-    {
-        Layout = "_AdminLayout";
-    }
-    else
-    {
-        Layout = "_ClientLayout";
-        <section>
-            @await Component.InvokeAsync("CarouselManager")
-        </section>
-    }
-    <link href="~/css/cart.css" type="text/css" rel="stylesheet">
+<link href="~/css/cart.css" type="text/css" rel="stylesheet">
 
-}
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="cart col-md-6">
-            Cart
+<div id ="modalScroller" class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+        <div class="modal-header mainFont font-italic justify-content-center">
+            <h2 class="modal-title font-italic" id="exampleModalScrollableTitle">@Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value's Cart</h2>
         </div>
-        <div class="cart-summary col-md-4">
+        <div class="modal-body">
+            @{
+                for (int i = 0; i < Model.Item1.Count(); i++)
+                {
+                    <div class="productInCart">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <a onclick="removeFromCart(@Model.Item1[i].Id)" id="removeFromCart" class="transparent-button">
+                                    <img width="30" src="~/lib/icons/icons8-remove.svg" />
+                                </a>
+                                <p class="text-center font-italic font-weight-bold">@Model.Item1[i].Quantity</p>
+                            </div>
+                            <div class="col-md-2">
+                                @*product image*@
+                                <img class="cartProductImage" src="@ViewBag.images[i]" />
+                            </div>
 
-        </div>
+                            <div class="col-md-2">
+                                @*price*@
+                                <p class="font-italic font-weight-bold">price: @Model.Item2[i]$</p>
+                                <p class="font-italic font-weight-bold">Total: @{var a = Model.Item2[i] * Model.Item1[i].Quantity;}@a$</p>
+                            </div>
 
-    </div>
+                            <div class="col-md-3">
+                                @*custom name*@
+                                @if (Model.Item1[i].CustumName != "")
+                                {
+                                    <p class="customName font-italic font-weight-bold ">Custom Name: @Model.Item1[i].CustumName</p>
+                                }
+                            </div>
 
-</div>
+                            <div class="col-md-4">
+                                @*product name*@
+                                <p class="font-weight-bold prodcutNameCart">@Model.Item1[i].ProductName</p>
+                            </div>
+                        </div>
 
-
-
-
-@*
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TotalPrice)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastUpdate)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalPrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastUpdate)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                    </div>
+                }
             }
-        </tbody>
-    </table>
-*@
+        </div>
+        <div class="modal-footer">
+            <p1 class="font-italic">Total Price: @ViewData["totalPrice"]$ </p1>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue shopping</button>
+            <button onclick='checkout(@Model.Item1.Count(),@Context.User.Claims.FirstOrDefault(c => c.Type == "cartId")?.Value)' type="button" class="btn btn-primary">Checkout</button>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+<script src="~/js/cart/MyCart.js"></script>

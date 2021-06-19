@@ -1,5 +1,5 @@
 ﻿//start
-$('#submitbtn').prop('disabled', true);
+$('#submitbtn').prop('bled', true);
 $('#preview2').hide();
 $('#preview3').hide();
 

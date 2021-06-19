@@ -58,7 +58,7 @@
                         <div class="align-text-bottom py-3">
                             <div class="font-italic font-weight-bold product-price">Price: @Model.Item1.Price &#8362</div>
                             @{
-                                if (Model.Item1.StoreQuantity == 0)
+                                if (Model.Item1.StoreQuantity <= 0)
                                 {
                                     <img src="~/lib/icons/outofstock.jpg" width="60" />
                                     <input hidden value="0" id="outofstock" />
@@ -71,8 +71,8 @@
                             }
                             <hr>
                             <form id="addForm">
-                                <input hidden id="url" value="@Context.Request.Path"
-                                <input hidden id="productId" value=@Model.Item1.Id />
+                                <input hidden id="url" value="@Context.Request.Path" />
+                                <input hidden id="productId" value="@Model.Item1.Id"/>
                                 <input hidden id="productName" value="@Model.Item1.ProductName" />
                                 <input hidden id="cartId" value="@Context.User.Claims.FirstOrDefault(c => c.Type == "cartId")?.Value" />
                                 <div class="row">
@@ -97,7 +97,6 @@
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/js/productPage.js"></script>
 <script src="~/js/cart/AddToCart.js"></script>
 
 

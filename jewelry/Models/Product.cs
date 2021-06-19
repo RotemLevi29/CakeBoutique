@@ -30,7 +30,9 @@ namespace jewelry.Models
         public string ProductName { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         [DataType(DataType.Currency)]
+
         public double Price { get; set; }
 
         [Required]

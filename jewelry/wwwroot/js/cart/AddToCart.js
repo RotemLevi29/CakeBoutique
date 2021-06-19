@@ -1,29 +1,42 @@
 ﻿//run main
+//choosing images from down below
+function imageToMain(path) {
+    $('#mainImage').attr('src', path);
+}
+
+$(document).ready(function () {
+    var outofstock = $('#outofstock').val(); //=0 means that out of stock
+    if (outofstock == 0) {
+        $('#addtocart').prop('disabled', true);
+        $('#nameOnProduct').prop('disabled', true);
+    }
+});
+
+
 //hide this properties first
 $('#shoppingcart').hide();
 $('#error').hide();
 $('#AddedSuccessfully').hide();
-//disable input if there is text-input
-var loop;
+//on keyup(changing the input), remove the aproved adding to cart signs
+$('#nameOnProduct').keyup(function () {
+    $("#shoppingcart").delay(400).fadeOut("slow");
+    $('#AddedSuccessfully').fadeOut("slow");
+    $('#enteraName').removeClass('alert-danger');
+});
 
 $("form#addForm").submit(function (event) {
-    console.log($('#nameOnProduct').val());
-
+    event.preventDefault();
     if ($('#nameOnProduct')) {
         if ($('#nameOnProduct').val() == "") {
-            console.log("empty");
             $('#enteraName').addClass('alert-danger');
-            function blink_text() {
+            for (var i = 0; i < 3; i++) {
                 $('#enteraName').fadeOut(500);
                 $('#enteraName').fadeIn(500);
             }
-            loop = setInterval(blink_text, 100);
-            $('#nameOnProduct').keyup(function () {
-                console.log(loop);
-                clearInterval(loop);
-
-            });
             return false;
+        }
+        else {
+            $('#enteraName').removeClass('alert-danger');
 
         }
     }
@@ -34,6 +47,7 @@ $("form#addForm").submit(function (event) {
     var jscartId = $('#cartId').val();
     var jsinput = $('#nameOnProduct').val();
     console.log('/Users/Login?ReturnUrl=' + jsurl);
+    //calling the addtoccart function, recieving boolean
     $.ajax({
         url: '/ProductCarts/AddToCart',
         type: 'POST',
@@ -46,30 +60,28 @@ $("form#addForm").submit(function (event) {
         },
         /*if the data return means success*/
         success: function (callback) {
-            console.log("callback is:" + callback);
-            if (callback == false) {
-                console.log("false");
-                setTimeout(check, 2000);
-                check();
+            if (callback == "NotLogin") {
                 location.href = '/Users/Login?ReturnUrl=' + jsurl;
-                
-
             }
-            else {
-            /*something coll for adding the product*/
-                console.log("true");
+            else if (callback == "Success") {
+                $('#shoppingcart').hide();
+                $('#AddedSuccessfully').hide();
+                /*something coll for adding the product*/
+                $('#error').hide();
                 $('#shoppingcart').fadeIn("slow");
-                $("#shoppingcart").delay(400).fadeOut("slow");
-                $('#AddedSuccessfully').fadein("slow");
-                setTimeout(check, 2000);
-                check();
-
+                $('#AddedSuccessfully').fadeIn("slow");
+            }
+            else if (callback == "Error") {
+                $('#error').fadeIn();
+                $('#addtocart').prop('disabled', true);
+                $('#nameOnProduct').prop('disabled', true);
             }
         },
         error: function (callback) {
             $('#error').fadeIn();
+            $('#addtocart').prop('disabled', true);
+            $('#nameOnProduct').prop('disabled', true);
         },
-
     });
 });
 
