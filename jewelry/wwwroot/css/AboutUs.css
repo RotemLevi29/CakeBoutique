@@ -76,5 +76,7 @@ input[type=text], select, textarea {
 }
 
 
-
+.center {
+    text-align: center;
+}
 

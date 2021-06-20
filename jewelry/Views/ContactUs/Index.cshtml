@@ -18,3 +18,51 @@
     <link rel="stylesheet" href="~/css/AboutUs.css" />
     <link rel="stylesheet" href="~/css/Us.css" />
 </head>
+
+
+<section>
+    <div class="container">
+        <div style="text-align:center">
+            <br />
+            <h2 class="font-italic my-5">Contact Us</h2>
+            <p class="text-align-center font-italic">
+                The new luxury.
+                History says fine jewelry for occasions, we say fine jewelry for every day.<br />
+                Minus the traditional markups, with new, limited-edition drops every Monday of the year.<br />
+                Handcrafted like the olden days, but designed for the golden days ahead.
+                <br /><br />
+                <hr />
+                So forget occasions.<br />
+                Here’s to fine jewelry for me.
+            </p>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="column">
+                @*<img src="/w3images/map.jpg" style="width:100%">*@
+                <iframe class="gmap_canvas" id="gmap_canvas" style="width:100%"
+                        src="https://maps.google.com/maps?q=the%20college%20of%20management%20academic%20studies&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        frameborder="1" scrolling="no" marginheight="0" marginwidth="0">
+                </iframe>
+            </div>
+            <div class="column">
+                <form action="/action_page.php">
+                    <label for="fname">First Name</label>
+                    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                    <label for="lname">Last Name</label>
+                    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+                    <label for="country">Country</label>
+                    <select id="country" name="country">
+                        <option value="israel">Israel</option>
+                        <option value="canada">Canada</option>
+                        <option value="usa">USA</option>
+                    </select>
+                    <label for="subject">Subject</label>
+                    <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea>
+                    <input type="submit" class="btn-primary" value="Submit" asp-controller="Home" asp-action="Index">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
