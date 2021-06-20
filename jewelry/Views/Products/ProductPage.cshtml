@@ -11,8 +11,7 @@
     }
     <link href="/css/productPage.css" rel="stylesheet" type="text/css" />
     <link href="~/css/cart.css" rel="stylesheet" type="text/css" />
-
-}
+ }
 <!------ Include the above in your HEAD tag ---------->
 <div class="container-fluid my-3 ">
     <div class="content-wrapper">
@@ -39,6 +38,9 @@
                     </div>
                     <div class="col-md-7 col">
                         <div class="product-title productname">@Model.Item1.ProductName</div>
+                       
+
+                      
                         <textarea readonly class="text-area">@Model.Item1.Description</textarea>
                         @*<div class="product-rating"><i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star-o"></i> </div>*@
                         <hr>
@@ -72,9 +74,8 @@
                             <hr>
                             <form id="addForm">
                                 <input hidden id="url" value="@Context.Request.Path" />
-                                <input hidden id="productId" value="@Model.Item1.Id"/>
+                                <input hidden id="productId" value="@Model.Item1.Id" />
                                 <input hidden id="productName" value="@Model.Item1.ProductName" />
-                                <input hidden id="cartId" value="@Context.User.Claims.FirstOrDefault(c => c.Type == "cartId")?.Value" />
                                 <div class="row">
                                     <div class="btn-group col-md-3">
                                         <button id="addtocart" type="submit" class="btn btn-success">
@@ -98,5 +99,6 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/cart/AddToCart.js"></script>
-
-
+<!-- MDB -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>

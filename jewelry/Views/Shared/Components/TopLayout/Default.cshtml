@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-1">
                 @if (Context.User != null && Context.User.Claims != null &&
-                  Context.User.Claims.Count() > 0)
+                 Context.User.Claims.Count() > 0)
                 {
                     <div class="m-3 textDesign">
                         Hello @Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
@@ -41,7 +41,7 @@
             <div class="col-md-4 rtl mt-4 d-sm-flex ">
                 <div class="flex-grow-1 row text-center justify-content-center">
                     @if (Context.User != null && Context.User.Claims != null &&
-           Context.User.Claims.Count() > 0)
+          Context.User.Claims.Count() > 0)
                     {
                         <div class="col-md-2 col-sm">
                             <button onclick="updateCart()" type="button" class="transparent-button" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
@@ -56,15 +56,16 @@
                     @*CartId*@
                     <input hidden id="cartId" value="@Context.User.Claims.FirstOrDefault(c => c.Type == "cartId")?.Value" />
                     <div class="modal fade" id="exampleModalScrollable" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable">
+                        <div id="modalScroller" class="modal-dialog modal-lg modal-dialog-scrollable">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalScrollableTitle">@Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value's Cart</h5>
+                                <div class="modal-header mainFont font-italic justify-content-center">
+                                    <h2 class="modal-title font-italic" id="exampleModalScrollableTitle">@Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value's Cart</h2>
                                 </div>
                                 <div class="modal-body">
+                                    
                                 </div>
                                 <div class="modal-footer">
-                                    <p1 class="font-italic">Total Price: @ViewData["totalPrice"]$ </p1>
+                                    <p1 class="font-italic">Total Price:</p1>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue shopping</button>
                                     <button type="button" class="btn btn-primary">Checkout</button>
                                 </div>

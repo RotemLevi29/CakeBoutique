@@ -1,5 +1,6 @@
 ﻿using jewelry.Data;
 using jewelry.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,29 @@ namespace jewelry.Controllers
         {
             _context = context;
             _logger = logger;
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult facebook()
+        {
+            return View();
+        }
+
+        public IActionResult Statistics()
+        {
+            List<Category> categories = _context.Category.ToList();
+
+            var result = (from o in _context.ProductCart
+                          group o by o.ProductId into o
+                          orderby o.Sum(c => c.Quantity) descending
+                          select new { o.Key, Total = o.Sum(c => c.Quantity) }).FirstOrDefault();
+            var bestProduct = _context.Product.Find(result.Key);
+            if (bestProduct != null)
+            {
+                ViewData["bestproductname"] = bestProduct.ProductName;
+            }
+
+            return View(categories);
         }
 
         public IActionResult Index()

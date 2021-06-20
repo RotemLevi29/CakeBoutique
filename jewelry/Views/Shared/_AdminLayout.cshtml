@@ -15,10 +15,16 @@
         <div class="sidenav">
             <div id="mySidebar" class="sidebar">
                 <a class="opt" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                <a class="opt" asp-controller="Products" asp-action="Index">Manage Products</a>
-                <a class="opt" asp-controller="CarouselImages" asp-action="Index">Edit Banner Images</a>
-                <a class="opt" asp-controller="Users" asp-action="Index">Edit Users</a>
-                <a class="opt" asp-controller="" asp-action="">Statistics</a>
+                <a class="opt" asp-controller="Products" asp-action="Index">&#10022; Manage Products</a>
+                <a class="opt" asp-controller="CarouselImages" asp-action="Index">&#10022; Edit Banner Images</a>
+                <a class="opt" asp-controller="Users" asp-action="Index">&#10022; Edit Users</a>
+                <a class="opt" asp-controller="Home" asp-action="facebook">
+                    &#10022;
+                    <img src="~/lib/icons/facebook.png" width="30" />
+                    Post to facebook
+                </a>
+
+                <a class="opt" asp-controller="Home" asp-action="Statistics">Statistics</a>
             </div>
         </div>
         <div id="main">
@@ -46,20 +52,15 @@
                     </section>
                 </main>
             </div>
-
-            <section>
-                @await Component.InvokeAsync("ButtomLayout")
-            </section>
         </div>
-
     </header>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/AdminLayout.js"></script>
     <script src="~/js/mainLoader.js"></script>
-
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

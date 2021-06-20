@@ -20,8 +20,6 @@ namespace jewelry.Controllers
             _context = context;
         }
 
-        
-
         // GET: Images
         public async Task<IActionResult> Index()
         {

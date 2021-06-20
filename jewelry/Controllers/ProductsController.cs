@@ -20,9 +20,11 @@ namespace jewelry.Controllers
     {
         private readonly jewelryContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
-
+        Dictionary<int, string> _categories;
         public ProductsController(jewelryContext context,IWebHostEnvironment hostEnvironment)
         {
+           _categories = new Dictionary<int, string>();
+
             _context = context;
             this._hostEnvironment = hostEnvironment;
         }
@@ -30,6 +32,12 @@ namespace jewelry.Controllers
         // GET: Catergory Products
         public async Task<IActionResult> CategoryPage(int categoryId)
         {
+            Category category = _context.Category.Find(categoryId);
+            if (category != null)
+            {
+                category.Interest++;
+                await _context.SaveChangesAsync();
+            }
             List<Product> products = _context.Product.Where(a => a.CategoryId.Equals(categoryId)).ToList();
             List<string> pathes = new List<string>();
             foreach (Product p in products)
@@ -72,6 +80,10 @@ namespace jewelry.Controllers
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
+            SelectList selectListCategories = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
+            getCategories();
+            ViewData["CategoryList"] = _categories;
+            ViewData["Categries"] = selectListCategories;
             return View(await _context.Product.ToListAsync());
         }
 
@@ -163,7 +175,7 @@ namespace jewelry.Controllers
 
 
         // GET: Products/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -216,13 +228,36 @@ namespace jewelry.Controllers
             return View(product);
         }
 
+        private void getCategories()
+        {
+            if(_categories.Count()==0)
+            {
+            SelectList selectListCategories = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
+            var categoriesId = _context.Category.Select(column => column.Id).ToList();
+            foreach (var catId in categoriesId)
+            {
+                string cat = selectListCategories.Where(a => a.Value.Equals(catId.ToString())).FirstOrDefault().Text;
+                if (cat != null)
+                {
+                    _categories.Add(catId, cat);
+                }
+            }
+
+            }
+        }
         /**
          * type = 0 : input is product name
          * type = 1 : input is product price
          * type = 2 : input is product type
          */
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Search(string input,string type)
         {
+            if (_categories.Count() == 0)
+            {
+                getCategories();
+            }
+            ViewData["CategoryList"] = _categories;
             switch (type)
             {
                 case "0":
@@ -243,14 +278,15 @@ namespace jewelry.Controllers
                     }
                 case "2":
                     {
-/*                        int theType = (Product.ProductType)Enum.Parse(typeof(Product.ProductType),input);
-*/                        return PartialView(await _context.Product.Where(a => a.CategoryId.Equals(input)).ToListAsync());
+                        int theType = Int32.Parse(input);
+                         return PartialView(await _context.Product.Where(a => a.CategoryId.Equals(theType)).ToListAsync());
                     }
             }
             return null;
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -271,6 +307,7 @@ namespace jewelry.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Product.FindAsync(id);
@@ -284,6 +321,7 @@ namespace jewelry.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Editor")]
         private bool ProductExists(int id)
         {
             return _context.Product.Any(e => e.Id == id);

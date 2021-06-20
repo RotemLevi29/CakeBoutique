@@ -199,5 +199,20 @@
 .cardTextHeight{
     height:130px;
 }
+/*facebook post*********/
+.facebooklogo{
+    width:400px;
+}
 
+.facebookPostArea{
+    width:400px;
+    height:200px;
+    resize:none;
+}
+/********************/
+
+/*using for all the site*/
+.a:hover{
+    text-decoration:none;
+}
 

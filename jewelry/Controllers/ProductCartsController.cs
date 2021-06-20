@@ -21,12 +21,14 @@ namespace jewelry.Controllers
         }
 
         // GET: ProductCarts
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.ProductCart.ToListAsync());
         }
 
         // GET: ProductCarts/Details/5
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,9 +44,10 @@ namespace jewelry.Controllers
             }
 
             return View(productCart);
-        }   
+        }
 
         // GET: ProductCarts/Create
+        [Authorize(Roles = "Admin,Editor")]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +58,7 @@ namespace jewelry.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Create([Bind("Id,Quantity,ProductId,ProductName,CustumName,CartId")] ProductCart productCart)
         {
             if (ModelState.IsValid)
@@ -65,6 +69,7 @@ namespace jewelry.Controllers
             }
             return View(productCart);
         }
+
 
         public void RemoveFromCart(int? id)
         {
@@ -87,14 +92,31 @@ namespace jewelry.Controllers
             }
         }
 
-        //[Authorize]
-        [HttpPost]
+/*        [Authorize]
+*/        [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<string> AddToCart(int productId, string productName, string input,int cartId,string url)
+        public async Task<string> AddToCart(int productId, string productName, string input,string url)
         {
             // if the product cart exist in this cart +1
             if (User.Identity.IsAuthenticated)
             {
+                int userid = Int32.Parse(User.Claims.SingleOrDefault(c => c.Type == "UserId").Value);
+                User user = _context.User.Find(userid);
+                int cartId = user.CartId;
+                Cart cartClaim = _context.Cart.Find(cartId);
+
+                if (cartClaim == null)//זה אומר שהעגלה לא קיימת(לא אמור לקרות)
+                {
+                    Cart newCart = new Cart();
+                    newCart.UserId = userid;
+                    _context.Cart.Add(newCart);
+                    _context.SaveChanges();
+                    cartId = newCart.Id;
+                    user.CartId = cartId;
+                    _context.SaveChanges();
+                    //אם זה קרה, נחזיר את הלקוח להתחבר מחדש כדי שהעגלה תתעדכן כמו שצריך, הפעולה לא תוסיף עדיין את המוצר
+                    return "NotLogin";
+                }
                 var productExist = (from u in _context.ProductCart
                                     where u.ProductId == productId &&
                                     u.CartId == cartId &&

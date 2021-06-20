@@ -24,6 +24,8 @@ namespace jewelry.Controllers
         }
 
         // GET: Users
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.User.ToListAsync());
@@ -125,10 +127,13 @@ namespace jewelry.Controllers
 
         // GET: Users
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             return View();
         }
+
+       
+
         //Register
         [HttpPost]
         public async Task<IActionResult> Register([Bind("Id,UserName,FirstName,LastName,Password,PasswordConfirm,Email,Birthdate,Gender,Type,CartId")] User user)
@@ -255,6 +260,7 @@ namespace jewelry.Controllers
                 new ClaimsPrincipal(claimsIdentity), authProperties);
         }
 
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Search(string input)
         {
             if (input != null)

@@ -22,7 +22,7 @@
         </div>*@
     <div id="searchForm" class="form-row search-form">
         <label class="mx-2">Search by: </label>
-        <select class="mx-2" id="selectSearchType" onchange="searchType()">
+        <select class="mx-2" id="selectSearchType"  onchange="searchType()">
             <option value="0">Title</option>
             <option value="1">Price</option>
             <option value="2">type</option>
@@ -34,12 +34,8 @@
             <input id="searchFormPrice" searchInput name="inputPrice" placeholder="Product price" />
         </div>
         <div class="default-hide mx-2" id="searchFormTypediv">
-            <select id="searchFormType" class="input-search-product" name="inputType"
-                    placeholder="Product date">
-                <option value="0">Necklace</option>
-                <option value="1">Ring</option>
-                <option value="2">Bracelet</option>
-                <option value="3">Earrings</option>
+            <select id="searchFormType" class="input-search-product" asp-items="@ViewBag.Categries" name="inputType">
+              
             </select>
         </div>
         <div class="mx-2">
@@ -64,7 +60,7 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.DisplayNameFor(model => model.CategoryId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Discount)
@@ -88,6 +84,7 @@
         </tr>
     </thead>
     <tbody>
+        
         @foreach (var item in Model)
         {
             <tr>
@@ -101,7 +98,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Type)
+                    @ViewBag.CategoryList[item.CategoryId]
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Discount)

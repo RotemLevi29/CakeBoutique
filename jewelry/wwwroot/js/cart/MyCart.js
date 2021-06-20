@@ -12,7 +12,7 @@ var updateCart = function () {
     });
 };
 
-function removeFromCart(productid){
+function removeFromCart(productid) {
     $.ajax({
         url: "/ProductCarts/RemoveFromCart",
         data: { id: productid }
@@ -21,7 +21,7 @@ function removeFromCart(productid){
     });
 };
 
-function checkout(totalproduct,idcart) {
+function checkout(totalproduct, idcart) {
     $.ajax({
         url: "/Orders/OrderForm",
         type: 'GET',
@@ -32,7 +32,7 @@ function checkout(totalproduct,idcart) {
     });
 }
 
-function order(totalproduct, idcart) {
+/*function order(totalproduct, idcart) {
     $.ajax({
         url: "/Orders/OrderForm",
         type: 'GET',
@@ -41,6 +41,5 @@ function order(totalproduct, idcart) {
         console.log(data);
         $('#exampleModalScrollable').html(data);
     });
-}
-
+}*/
 

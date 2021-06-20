@@ -1,7 +1,20 @@
 ﻿@model jewelry.Models.Cart
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Home Page";
+
+    if (Context.User != null && Context.User.Claims != null &&
+        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+        <section>
+            @await Component.InvokeAsync("CarouselManager")
+        </section>
+    }
 }
 
 <h1>Details</h1>
@@ -10,22 +23,22 @@
     <h4>Cart</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserId)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UserId)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TotalPrice)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TotalPrice)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastUpdate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastUpdate)
         </dd>
     </dl>

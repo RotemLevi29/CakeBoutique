@@ -49,7 +49,11 @@ namespace jewelry.Controllers
                     prices.Add(price);
                     totalPrice += price*productCart.Quantity;
                 }
-                _context.Cart.Find(id).TotalPrice = totalPrice;
+                Cart mycart = _context.Cart.Find(id);
+                if (mycart != null)
+                {
+                    mycart.TotalPrice = totalPrice;
+                }
                 _context.SaveChangesAsync();
                 ViewData["totalPrice"] = totalPrice;
                 ViewData["images"] = imagePathes;

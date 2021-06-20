@@ -1,0 +1,99 @@
+﻿@model List<Category>
+@{
+    ViewData["Title"] = "Home Page";
+
+    if (Context.User != null && Context.User.Claims != null &&
+        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+        <section>
+            @await Component.InvokeAsync("CarouselManager")
+        </section>
+    }
+}
+
+<link href="/css/MainDesign.css" rel="stylesheet" type="text/css" />
+<div class="text-center justify-content-center">
+    <h1>The most popular product in the site is</h1>
+    <h2 class=""> @ViewBag.bestproductname</h2>
+</div>
+<section class="my-5">
+    <div class="my-4 row justify-content-center">
+        <h1>Categories Interest Pie Charts</h1>
+    </div>
+    @{
+        @*Data*@
+
+        <input id="numberOfCategory" hidden value="@Model.Count()" />
+        var i = 0;
+        foreach (var cat in Model)
+        {
+            <input id="@i" hidden value="@cat.CategoryName" />
+            <input id="@cat.CategoryName" hidden value="@cat.Interest" />
+            i++;
+        }
+    }
+
+    <div class="container d-flex justify-content-center">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="donutchart" style="width: 900px; height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+    <hr />
+</section>
+
+<section class="my-5">
+    <div class="row justify-content-center">
+        <div class="my-4 col-md-12 text-center">
+            <h1>Categories Interest Charts</h1>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-6">
+            <div id="chart_div1" class="chart"></div>
+        </div>
+    </div>
+    <hr />
+</section>
+
+<!-- TradingView Widget BEGIN -->
+<section class="my-5">
+    <div class="my-4 col-md-12 text-center">
+        <h1>Gold Price</h1>
+    </div>
+    <div class="tradingview-widget-container">
+        <div id="tradingview_f3674"></div>
+        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView</div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+            new TradingView.widget(
+                {
+                    "width": 980,
+                    "height": 610,
+                    "symbol": "NASDAQ:AAPL",
+                    "interval": "D",
+                    "timezone": "Etc/UTC",
+                    "theme": "light",
+                    "style": "1",
+                    "locale": "en",
+                    "toolbar_bg": "#f1f3f6",
+                    "enable_publishing": false,
+                    "allow_symbol_change": true,
+                    "container_id": "tradingview_f3674"
+                }
+            );
+        </script>
+    </div>
+</section>
+<!-- TradingView Widget END -->
+
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js	"></script>
+<script src="~/js/Pie.js"></script>

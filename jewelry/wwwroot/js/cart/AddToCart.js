@@ -44,7 +44,6 @@ $("form#addForm").submit(function (event) {
     var jsproductId = $('#productId').val();
     var jsurl = $('#url').val();
     var jsproductName = $('#productName').val();
-    var jscartId = $('#cartId').val();
     var jsinput = $('#nameOnProduct').val();
     console.log('/Users/Login?ReturnUrl=' + jsurl);
     //calling the addtoccart function, recieving boolean
@@ -54,7 +53,6 @@ $("form#addForm").submit(function (event) {
         data: {
             productId: jsproductId,
             productName: jsproductName,
-            cartId: jscartId,
             input: jsinput,
             url: jsurl,
         },

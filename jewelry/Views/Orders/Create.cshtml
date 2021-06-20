@@ -1,7 +1,20 @@
 ﻿@model jewelry.Models.Order
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Home Page";
+
+    if (Context.User != null && Context.User.Claims != null &&
+        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+        <section>
+            @await Component.InvokeAsync("CarouselManager")
+        </section>
+    }
 }
 
 <h1>Create</h1>

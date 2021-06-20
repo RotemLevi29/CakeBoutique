@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    if (Context.User != null && Context.User.Claims != null &&
+        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+        <section>
+            @await Component.InvokeAsync("CarouselManager")
+        </section>
+    }
+}
+<link href="~/css/MainDesign.css" type="text/css" rel="stylesheet">
+<body>
+    <div class="container justify-content-center">
+        <div class="row text-center justify-content-center p-3">
+            @*facebook logo*@
+            <img class="facebooklogo" src="~/lib/icons/facebook-7.svg" />
+        </div>
+
+        <div class="row text-center justify-content-center my-3">
+            <p id="successPost" class="alert-success col-md-3 my-2 text-center font-italic font-weight-bold">Posted Successfully</p>
+        </div>
+
+        <div class="row text-center justify-content-center my-3">
+            <textarea placeholder="Type here..." class="facebookPostArea" id="poststring"></textarea>
+        </div>
+        <div class="my-3 row text-center justify-content-center">
+            <button id="FacebookPost" class=" btn btn-primary">post to facebook</button>
+        </div>
+
+    </div>
+    @section Scripts
+    {
+        <script src="~/js/FacebookPost.js"></script>
+    }
+</body>

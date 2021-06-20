@@ -13,7 +13,7 @@ namespace jewelry.Models
         public int Id { get; set; }
 
         [Required]
-        public Address Address { get; set; }
+        public int AddressId { get; set; }
 
         [Required]
         public DateTime Date { get; set; } = DateTime.Now;
@@ -27,7 +27,6 @@ namespace jewelry.Models
         [Required]
         public string Payment { get; set; } //paypal,visa,mastercard.....
 
-        [Required]
         public List<ProductCart> OrderProducts { get; set; }
 
         public Boolean Sended { get; set; }//

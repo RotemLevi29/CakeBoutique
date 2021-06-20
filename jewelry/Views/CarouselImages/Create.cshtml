@@ -17,8 +17,7 @@
 }
 <input type="hidden" id="imageNumber" value=@ViewData["count"]>
 <div class="text-center">
-    <h1>Create</h1>
-    <h4>CarouselImage</h4>
+    <h4>Commercial Banners</h4>
 </div>
 <hr />
 <div id="creationArea" class="row justify-content-center">
@@ -73,11 +72,14 @@
         </div>
     </div>
 </div>
+<div class="text-center">
 <a asp-controller="CarouselImages" asp-action="Index">
     <button class="btn btn-primary m-3">
         Edit Images
     </button>
 </a>
+
+</div>
 @section Scripts {
     <script src="/js/ImageUploader.js"></script>
     <script src="~/js/CarouselImageCreate.js"></script>

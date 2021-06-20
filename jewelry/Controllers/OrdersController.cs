@@ -19,24 +19,67 @@ namespace jewelry.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
+         [HttpPost]
+/*         [ValidateAntiForgeryToken]
+*/         public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
+         {
+
+             order.Sended = false;
+             order.UserId = Int32.Parse(User.Claims.Where(c => c.Type.Equals("UserId")).Select(c => c.Value).SingleOrDefault());
+             int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
+             order.Date = DateTime.Now;
+             order.TotalPrice = _context.Cart.Find(cartid).TotalPrice;
+             _context.Address.Add(address);
+             _context.SaveChanges();
+             order.AddressId = address.Id;
+
+             if (ModelState.IsValid)
+             {
+                 order.AddressId = address.Id;
+                 _context.Order.Add(order);
+                 _context.SaveChanges();
+                //clean cart await
+                List<ProductCart> productCarts = _context.ProductCart.Where(a => a.CartId.Equals(cartid)).ToList();
+                if(productCarts != null)
+                {
+                    foreach(ProductCart productcart in productCarts)
+                    {
+                        Product product = _context.Product.Find(productcart.ProductId);
+                        if (product != null)
+                        {
+                            product.StoreQuantity -= 1;
+                        }
+                        _context.ProductCart.Remove(productcart);
+                    }
+                }
+                Cart cart = _context.Cart.Find(cartid);
+                if (cart != null)
+                {
+                    cart.TotalPrice = 0;
+                }
+                _context.SaveChanges();
+                ViewData["orderid"] = order.Id;
+                ViewData["arrivalDate"] = DateTime.Now.AddDays(7).Date;
+                return PartialView("OrderDone");
+
+             }
+             return PartialView();
+         }
+
+
+
+
+        //OrderDone Get
+        public IActionResult OrderDone(int id)
         {
-            order.Sended = false;
-            order.UserId = Int32.Parse(User.Claims.Where(c => c.Type.Equals("userId")).Select(c => c.Value).SingleOrDefault());
+            ViewData["orderid"] = id;
+            ViewData["arrivalDate"] = DateTime.Now.AddDays(7).Date;
+            return PartialView();
+        }
 
-
-            int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
-            order.Date = DateTime.Now;
-            order.TotalPrice = _context.Cart.Find(cartid).TotalPrice;
-            if (ModelState.IsValid)
-            {
-
-
-                return PartialView("sda","asd");
-
-            }
+        public IActionResult r( )
+        {
+          
             return PartialView();
         }
 
@@ -51,7 +94,7 @@ namespace jewelry.Controllers
                 double totalPrice = 0;
                 List<ProductCart> cart = _context.ProductCart.Where(a => a.CartId.Equals(cartid)).ToList();
                 quantity = cart.Count();
-                if (quantity != total) // אם שינוי את הכמות תוך כדי
+                if (quantity != total || quantity == 0) // אם שינוי את הכמות תוך כדי
                 {
                     return View("MyCart", "Carts");
                 }
@@ -68,6 +111,10 @@ namespace jewelry.Controllers
                     totalPrice += price * productCart.Quantity;
 
                 }
+                if (totalPrice == 0)
+                {
+                    return View("MyCart", "Carts");
+                }
                 _context.Cart.Find(cartid).TotalPrice = totalPrice;
                 _context.SaveChangesAsync();
                 ViewData["totalPrice"] = totalPrice;
@@ -82,6 +129,10 @@ namespace jewelry.Controllers
 
         }
 
+        public IActionResult facebook()
+        {
+            return View();
+        }
 
         // GET: Orders
         public async Task<IActionResult> Index()
