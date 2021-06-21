@@ -3,6 +3,7 @@ using jewelry.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,12 @@ namespace jewelry.Controllers
     {
         private readonly jewelryContext _context;
         private readonly ILogger<HomeController> _logger;
-
+        Dictionary<int, string> _categories;
         public HomeController(ILogger<HomeController> logger, jewelryContext context)
         {
             _context = context;
             _logger = logger;
+            _categories = new Dictionary<int, string>();
         }
 
         [Authorize(Roles = "Admin")]
@@ -28,6 +30,15 @@ namespace jewelry.Controllers
         {
             return View();
         }
+
+        public IActionResult SearchPage()
+        {
+            SelectList selectListCategories = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
+            ViewData["CategoryList"] = selectListCategories;
+            return View();
+        }
+
+
 
         public IActionResult Statistics()
         {
@@ -46,6 +57,23 @@ namespace jewelry.Controllers
             return View(categories);
         }
 
+        private void getCategories()
+        {
+            if (_categories.Count() == 0)
+            {
+                SelectList selectListCategories = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
+                var categoriesId = _context.Category.Select(column => column.Id).ToList();
+                foreach (var catId in categoriesId)
+                {
+                    string cat = selectListCategories.Where(a => a.Value.Equals(catId.ToString())).FirstOrDefault().Text;
+                    if (cat != null)
+                    {
+                        _categories.Add(catId, cat);
+                    }
+                }
+
+            }
+        }
         public IActionResult Index()
         {
             List<string> imagePathes = new List<string>();

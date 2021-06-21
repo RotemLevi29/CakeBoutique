@@ -133,4 +133,7 @@ body {
         transform: rotate(360deg);
     }
 }
+a:hover{
+    text-decoration:none;
+}
 /*********************************************8*/

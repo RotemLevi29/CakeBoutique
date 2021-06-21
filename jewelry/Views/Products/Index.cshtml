@@ -1,4 +1,5 @@
-﻿@model IEnumerable<jewelry.Models.Product>
+﻿@*This page availble only for staff(Admin/Editor)*@
+@model IEnumerable<jewelry.Models.Product>
 
 @{
     if (Context.User != null && Context.User.Claims != null &&
@@ -11,126 +12,68 @@
         Layout = "_ClientLayout";
     }
 }
-
-
-
-<h1>Index</h1>
 <section>
     @*<div>
             <label class="mx-2">Search product: </label>
             <input id="TitleInput" placeholder="product name"/>
         </div>*@
-    <div id="searchForm" class="form-row search-form">
+    <div id="searchForm" class="text-secondary form-row row justify-content-center search-form">
         <label class="mx-2">Search by: </label>
-        <select class="mx-2" id="selectSearchType"  onchange="searchType()">
+        <select class="mx-2 form-control" id="selectSearchType" onchange="searchType()">
             <option value="0">Title</option>
             <option value="1">Price</option>
-            <option value="2">type</option>
+            <option value="2">Category</option>
         </select>
         <div class="mx-2" id="searchFormTitlediv">
-            <input class="input-search-product" id="searchFormTitle" name="inputTitle" placeholder="Product name" />
+            <input class="input-search-product form-control form-control" id="searchFormTitle" name="inputTitle" placeholder="Product name" />
         </div>
         <div id="searchFormPricediv" class="default-hide mx-2">
-            <input id="searchFormPrice" searchInput name="inputPrice" placeholder="Product price" />
+            <input id="searchFormPrice form-control" searchInput name="inputPrice" placeholder="Product price" />
         </div>
         <div class="default-hide mx-2" id="searchFormTypediv">
-            <select id="searchFormType" class="input-search-product" asp-items="@ViewBag.Categries" name="inputType">
-              
+            <select id="searchFormType" class="input-search-product form-control" asp-items="@ViewBag.Categories" name="inputType">
             </select>
         </div>
         <div class="mx-2">
-            <input class="btn btn-primary" type="submit" id="submit-btn" value="search" />
+            <input class="btn btn-primary " type="submit" id="submit-btn" value="search" />
         </div>
     </div>
 
-</section>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Discount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RateSum)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rates)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Orders)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreQuantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NameOption)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @ViewBag.CategoryList[item.CategoryId]
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Discount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RateSum)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rates)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Orders)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StoreQuantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NameOption)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    <a asp-action="ProductPage" asp-route-id="@item.Id">Page</a>
+    <p class="text-center">
+        <a asp-action="Create">Create new product</a>
+    </p>
 
-                </td>
-            </tr>
+    <div class="container">
+    <div id="prodctIndexSearch" class="my-4 row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
+
+        @{ var i = 0;
+            foreach (var item in Model)
+            {
+                <a class="my-3 pointer" onclick="location.href='@Url.Action("Edit", "Products", new { id = item.Id ,path = ViewBag.pathes[i]})'">
+                    <div class="col">
+                        <div class="card" style="width: 18rem;height:28rem;">
+                            <img class="card-img-top" src="@ViewBag.pathes[i]" alt="Card image cap">
+                            <div class="card-body">
+                                <div class="card-text font-italic font-weight-bold">
+                                    <p>@Html.DisplayFor(modelItem => item.ProductName)</p>
+                                    <p>@item.Price $</p>
+                                    <p>@ViewBag.CategoryList[item.CategoryId]</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                i++;
+            }
+
         }
-    </tbody>
-</table>
+        </div>
+
+    </div>
+    
+</section>
 
 @section Scripts{
 
-    <script src="~/js/searchProduct.js"></script>
+    <script src="~/js/searchProductStaff.js"></script>
 }

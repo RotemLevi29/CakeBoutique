@@ -92,6 +92,10 @@
     backface-visibility: hidden;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .middle {
     transition: .5s ease;
     opacity: 0;
@@ -212,7 +216,9 @@
 /********************/
 
 /*using for all the site*/
-.a:hover{
-    text-decoration:none;
-}
 
+
+/*using for searchPage(HomeController) div that display searched products*/
+#displaySearchDiv {
+    min-height: 400px;
+}

@@ -11,12 +11,12 @@
     }
     <link href="/css/productPage.css" rel="stylesheet" type="text/css" />
     <link href="~/css/cart.css" rel="stylesheet" type="text/css" />
- }
+}
 <!------ Include the above in your HEAD tag ---------->
 <div class="container-fluid my-3 ">
     <div class="content-wrapper">
         <div class="item-container">
-            <div class="container d-flex">
+            <div class="container flex-grow-1">
                 <div class="row row-cols-1 row-cols-md-4 g-4 productpageBox">
                     @*Data for the from*@
 
@@ -38,9 +38,6 @@
                     </div>
                     <div class="col-md-7 col">
                         <div class="product-title productname">@Model.Item1.ProductName</div>
-                       
-
-                      
                         <textarea readonly class="text-area">@Model.Item1.Description</textarea>
                         @*<div class="product-rating"><i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star-o"></i> </div>*@
                         <hr>
@@ -99,6 +96,3 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/cart/AddToCart.js"></script>
-<!-- MDB -->
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>

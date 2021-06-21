@@ -20,8 +20,7 @@ namespace jewelry.Controllers
         }
 
          [HttpPost]
-/*         [ValidateAntiForgeryToken]
-*/         public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
+         public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
          {
 
              order.Sended = false;

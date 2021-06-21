@@ -14,7 +14,8 @@
     <header>
         <div class="sidenav">
             <div id="mySidebar" class="sidebar">
-                <a class="opt" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a class="opt closebtn" href="javascript:void(0)" onclick="closeNav()">&times;</a>
+                <a class="opt" asp-controller="Categories" asp-action="Index">&#10022; Manage Categories</a>
                 <a class="opt" asp-controller="Products" asp-action="Index">&#10022; Manage Products</a>
                 <a class="opt" asp-controller="CarouselImages" asp-action="Index">&#10022; Edit Banner Images</a>
                 <a class="opt" asp-controller="Users" asp-action="Index">&#10022; Edit Users</a>
@@ -23,7 +24,6 @@
                     <img src="~/lib/icons/facebook.png" width="30" />
                     Post to facebook
                 </a>
-
                 <a class="opt" asp-controller="Home" asp-action="Statistics">Statistics</a>
             </div>
         </div>
@@ -60,7 +60,7 @@
     <script src="~/js/AdminLayout.js"></script>
     <script src="~/js/mainLoader.js"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-    
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -30,6 +30,7 @@ namespace jewelry.Controllers
         }
         
         // GET: Catergory Products
+        //Display page with products with categoryId type(necklace,ring.......)
         public async Task<IActionResult> CategoryPage(int categoryId)
         {
             Category category = _context.Category.Find(categoryId);
@@ -52,7 +53,9 @@ namespace jewelry.Controllers
         }
 
 
-        // GET: Products
+        // GET: ProductPage
+        //this is a productpage with option to add to cart
+        //it sending the product and list of pathes of it's images
         [HttpGet]
         public async Task<IActionResult> ProductPage(int? id)
         {
@@ -77,39 +80,37 @@ namespace jewelry.Controllers
 
 
         // GET: Products
+        //Display all the product to the admin,editor with search options
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
             SelectList selectListCategories = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
             getCategories();
             ViewData["CategoryList"] = _categories;
-            ViewData["Categries"] = selectListCategories;
+            ViewData["Categories"] = selectListCategories;
+
+            //images
+            List<Product> products =  _context.Product.ToList();
+            List<string> pathes = new List<string>();
+            foreach(var pro in products)
+            {
+                Image image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).FirstOrDefault();
+                if (image != null)
+                {
+                    pathes.Add(image.imagePath);
+                }
+            }
+            ViewData["pathes"] = pathes;
             return View(await _context.Product.ToListAsync());
         }
 
 
 
         // GET: Products/Details/5
-        [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
+        //Display the product details for the admin.editor
+        
 
         // GET: Products/Create
-
         [Authorize(Roles="Admin,Editor")]
         public IActionResult Create()
         {
@@ -120,6 +121,7 @@ namespace jewelry.Controllers
         // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //creating a product with maximum 3 picturs
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
@@ -130,8 +132,12 @@ namespace jewelry.Controllers
                 ViewData["error"] = "You can upload only 3 images!";
                 return View();
             }
-         // WE NEED TO TAKE CARE TO THE IMAGE TYPE 
-
+            if (postedFiles.Count() == 0)
+            {
+                ViewData["error"] = "You must upload atleast 1 image";
+                return View();
+            }
+            //if the data is valid creating product and adding it to database
             if (ModelState.IsValid)
             {
                 _context.Add(product);
@@ -166,8 +172,6 @@ namespace jewelry.Controllers
                     await _context.SaveChangesAsync();
                     i++;
                 }
-
-
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));
@@ -175,8 +179,9 @@ namespace jewelry.Controllers
 
 
         // GET: Products/Edit/5
+        //Displaying the Edit page with product details and image
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id,string path)
         {
             if (id == null)
             {
@@ -188,6 +193,7 @@ namespace jewelry.Controllers
             {
                 return NotFound();
             }
+            ViewData["path"] = path;
             ViewData["Categries"] = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
             return View(product);
         }
@@ -195,10 +201,11 @@ namespace jewelry.Controllers
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //updating the product details and updating also the images
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
         {
             if (id != product.Id)
             {
@@ -209,8 +216,46 @@ namespace jewelry.Controllers
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    string folder = "/lib/images/products/";
+                    string wwwRootpath = _hostEnvironment.WebRootPath + folder;
+                    string dir = wwwRootpath;
+                    // If directory does not exist, create it
+                    if (!Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    int i = 0;
+                    foreach (IFormFile postedFile in postedFiles)
+                    {
+                        string productName = product.ProductName;
+                        productName = productName.Replace(" ", "");
+                        string idString = Convert.ToString(product.Id);
+                        Random rnd = new Random();
+                        string random = (rnd.Next(1, 9999)).ToString();
+                        productName = productName + idString + i.ToString() +random;
+                        using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, productName + ".jpeg"), FileMode.Create))
+                        {
+                            postedFile.CopyTo(stream); //saving in the right folder
+
+                            List<Image> images = _context.Image.Where(a => a.ProductId.Equals(product.Id)).ToList();
+                            foreach (var image in images)
+                            {
+                                if (System.IO.File.Exists(image.imagePath))
+                                {
+                                    System.IO.File.Delete(image.imagePath);
+                                }
+                                _context.Remove(image);
+                            }
+                            Image newImage = new Image();
+
+                            newImage.imagePath = folder + productName + ".jpeg";
+                            newImage.Name = productName;
+                            newImage.ProductId = product.Id;
+                            _context.Add(newImage);
+                        };
+                    }
+                            _context.Update(product);
+                            await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -245,14 +290,70 @@ namespace jewelry.Controllers
 
             }
         }
+       
+    public async Task<IActionResult> SearchProductsClient(string input, string category,string maxprice)
+        {
+            int cat = Int32.Parse(category);
+            double price = Double.Parse(maxprice);
+            List<Product> products;
+            List<string> pathes = new List<string>();
+            ViewData["result"] = "";
+            if(input == null)
+            {
+                input = "";
+            }
+            if(price!=0 && cat != 0)
+            {
+                products = _context.Product.Where(a =>
+        (a.ProductName.Contains(input) || a.Description.Contains(input)) &&
+        (a.Price < price) && (a.CategoryId.Equals(cat))).ToList();
+            }
+            if (price == 0 && cat!=0)
+            {
+                products = _context.Product.Where(a =>
+                (a.ProductName.Contains(input) || a.Description.Contains(input)) &&
+                (a.CategoryId.Equals(cat))).ToList();
+            }
+            else if (cat == 0 && price!=0)
+            {
+                products = _context.Product.Where(a =>
+                                (a.ProductName.Contains(input) || a.Description.Contains(input)) &&
+                                (a.Price < price)).ToList();
+            }
+            else
+            {
+                products = _context.Product.Where(a =>
+        (a.ProductName.Contains(input) || a.Description.Contains(input))).ToList();
+            }
+          
+            if (products.Count() == 0)
+            {
+                ViewData["error"] = "Oopps couldn't find this product...........\n" +
+                    "but you can enjoy our popular products";
+                products = _context.Product.Take(10).ToList();
+            }
+            foreach (var pro in products)
+            {
+                var image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).First();
+                pathes.Add(image.imagePath);
+            }
+            ViewData["pathes"] = pathes;
+
+            return PartialView("SearchProductsClient", products);
+        }
+
+
+
         /**
          * type = 0 : input is product name
          * type = 1 : input is product price
          * type = 2 : input is product type
          */
-        [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Search(string input,string type)
-        {
+        /*        [Authorize(Roles = "Admin,Editor")]
+        */
+        public async Task<IActionResult> SearchProductsStaff(string input,string type)
+            {
+            List<Product> products = new List<Product>();
             if (_categories.Count() == 0)
             {
                 getCategories();
@@ -264,25 +365,48 @@ namespace jewelry.Controllers
                     {
                         if(input != null)
                         { 
-                        return PartialView(await _context.Product.Where(a => a.ProductName.Contains(input)).ToListAsync());
+                        products =  _context.Product.Where(a => a.ProductName.Contains(input)).ToList();
                         }
                         else
                         {
-                            return PartialView(await _context.Product.ToListAsync());
+                            products =  _context.Product.ToList();
                         }
+                        break;
                     }
                 case "1":
                     {
                         double price = Double.Parse(input);
-                        return PartialView(await _context.Product.Where(a => a.Price.Equals(price)).ToListAsync());
+                        products = _context.Product.Where(a => a.Price.Equals(price)).ToList();
+                        break;
                     }
                 case "2":
                     {
                         int theType = Int32.Parse(input);
-                         return PartialView(await _context.Product.Where(a => a.CategoryId.Equals(theType)).ToListAsync());
+                         products =  _context.Product.Where(a => a.CategoryId.Equals(theType)).ToList();
+                        break;
                     }
+                                }
+            List<string> pathes = new List<string>();
+            foreach (var pro in products)
+            {
+                Image image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).FirstOrDefault();
+                if (image != null)
+                {
+                    pathes.Add(image.imagePath);
+                }
+            
+            ViewData["pathes"] = pathes;
+
             }
-            return null;
+            if(User.IsInRole("Admin") || User.IsInRole("Editor"))
+            {
+                return PartialView("SearchProductsStaff", products);
+            }
+            else
+            {
+                return PartialView("SearchProductsClient", products);
+
+            }
         }
 
         // GET: Products/Delete/5
@@ -300,7 +424,6 @@ namespace jewelry.Controllers
             {
                 return NotFound();
             }
-
             return View(product);
         }
 
