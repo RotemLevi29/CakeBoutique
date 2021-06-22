@@ -12,19 +12,32 @@
                     <a class="nav-link pink text-nav" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li class="nav-item">
+                  
                     <a class="nav-link pink text-nav" asp-controller="AboutUs" asp-action="Index">About us</a>
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link pink text-nav" asp-controller="ContactUs" asp-action="Index">Contact us</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item nav-item mx-3">
+                    <label id="goldprice" class="font-italic font-weight-bold text-warning"></label>
+                </li>
+                <li class="nav-item nav-item mx-3">
+                    <label id="silverprice" class="font-italic font-weight-bold text-secondary"></label>
+
+                </li>
+            </ul>
+
+
         </div>
     </nav>
     <div class="">
         <div class="row">
             <div class="col-md-4 col-sm-1">
                 @if (Context.User != null && Context.User.Claims != null &&
-                 Context.User.Claims.Count() > 0)
+            Context.User.Claims.Count() > 0)
                 {
                     <div class="m-3 textDesign">
                         Hello @Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
@@ -34,14 +47,15 @@
             <div class="col-md-4 text-center">
                 <div>
                     <a asp-area="" asp-controller="Home" asp-action="Index">
-                        <img class="logo-image pos-center" src="~/lib/icons/MAIN.svg" />
+
+                        <img class="logo-image pos-center my-3" src="~/lib/images/mainLogo/mainLogo.jpg" />
                     </a>
                 </div>
             </div>
             <div class="col-md-4 rtl mt-4 d-sm-flex ">
                 <div class="flex-grow-1 row text-center justify-content-center">
                     @if (Context.User != null && Context.User.Claims != null &&
-          Context.User.Claims.Count() > 0)
+Context.User.Claims.Count() > 0)
                     {
                         <div class="col-md-2 col-sm">
                             <button onclick="updateCart()" type="button" class="transparent-button" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
@@ -62,7 +76,7 @@
                                     <h2 class="modal-title font-italic" id="exampleModalScrollableTitle">@Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value's Cart</h2>
                                 </div>
                                 <div class="modal-body">
-                                    
+
                                 </div>
                                 <div class="modal-footer">
                                     <p1 class="font-italic">Total Price:</p1>
@@ -74,7 +88,7 @@
                     </div>
 
                     @*************************************8*@
-                    <div class="col-md-2 col-sm">
+                    <div class="col-md-2  col-sm">
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                             <div class="btn-group" role="group">
                                 <button data-toggle="dropdown" class="transparent-button">
@@ -92,9 +106,17 @@
                                         <a asp-controller="Users" asp-action="Register" class="dropdown-item pinkActive">Register</a>
                                     }
                                 </div>
+
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-2 ">
+                        <a class="pointer col-1" id="">
+                            <img id="searchIcon" src="/lib/icons/loupe.png" width="25">
+                        </a>
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -102,4 +124,7 @@
 </section>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+<script src="~/js/cart/Order.js"></script>
 <script src="~/js/cart/MyCart.js"></script>
+<script src="~/js/goldprice.js"></script>
+<script src="~/js/SearchButtonTopLay.js"></script>

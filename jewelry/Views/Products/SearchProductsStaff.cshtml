@@ -1,0 +1,26 @@
+﻿@model IEnumerable<jewelry.Models.Product>
+
+@{
+    Layout = null;
+}
+
+@{ var i = 0;
+    foreach (var item in Model)
+    {
+        <a class="my-3" onclick="location.href='@Url.Action("Edit", "Products", new { id = item.Id })'">
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="@ViewBag.pathes[i]" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <p>@Html.DisplayFor(modelItem => item.ProductName)</p>
+                            <p>@item.Price $</p>
+                            <p>@ViewBag.CategoryList[item.CategoryId]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        i++;
+    }
+}

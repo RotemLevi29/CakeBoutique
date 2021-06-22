@@ -1,6 +1,7 @@
 ﻿console.log("this is order");
 
-function makeorder1() {
+
+$('#makeorder').click(function () {
     var phone = $('#PhoneNumber').val();
     var state = $('#state').val();
     var city = $('#city').val();
@@ -10,14 +11,15 @@ function makeorder1() {
     var postal = $('#postal').val();
     var payment = $('#payment').val();
 
-    if (PhoneNumber == "" || state == "" || city == "" || street == "" || housenumber == "" ||
+    if (phone == "" || state == "" || city == "" || street == "" || housenumber == "" ||
         apartmentnumber == "" || postal == "" || payment == "") {
         //please fill all the fields
     }
     else {
+        console.log("print shit");
         $.ajax({
             url: "/Orders/OrderForm",
-            type:'POST',
+            type: 'POST',
             data: {
                 Payment: payment,
                 PhoneNumber: phone,
@@ -27,13 +29,14 @@ function makeorder1() {
                 HouseNumber: housenumber,
                 ApartmentNumber: apartmentnumber,
                 PostalCode: postal
-                            }
+            }
         }).done(function (data) {
             console.log(data);
             $('#exampleModalScrollable').html(data);
         });
-      
-    };
-}
 
-$('#makeorder').click(makeorder1());
+    };
+
+
+}
+);

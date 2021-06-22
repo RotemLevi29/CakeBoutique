@@ -144,7 +144,6 @@ namespace jewelry.Controllers
             _context.Image.Remove(image);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-
         }
 
         public async void regularDelete(int id, string root)

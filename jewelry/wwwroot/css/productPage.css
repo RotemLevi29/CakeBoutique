@@ -46,7 +46,7 @@
 /****************RANKING STARS****************/
 
 
-div.stars {
+/*div.stars {
     width: 270px;
     display: inline-block
 }
@@ -89,5 +89,5 @@ label.star:hover {
 label.star:before {
     content: '\f006';
     font-family: FontAwesome
-}
+}*/
 /*****************************************/

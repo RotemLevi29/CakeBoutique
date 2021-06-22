@@ -1,40 +1,39 @@
-﻿@model Tuple<List<Product>, List<string>>
+﻿@model IEnumerable<jewelry.Models.Product>
+
 @{
-    if (Context.User != null && Context.User.Claims != null &&
-       Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
-    {
-        Layout = "_AdminLayout";
-    }
-    else
-    {
-        Layout = "_ClientLayout";
-    }
+    Layout = null;
+
 }
-@{
-    int i = 0;
-    <div class="row row-cols-1 row-cols-md-3 g-3 categoryDiv justify-content-center">
-        @foreach (var product in Model.Item1)
+
+
+<div class="text-center">
+    <h2 class="font-italic text-secondary">Displaying Result For: @ViewBag.searchedInput</h2>
+    <h2 class="font-italic text-secondary">@ViewBag.error</h2>
+</div>
+<div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
+
+
+    @{
+        int i = 0;
+        @foreach (var product in Model)
         {
             <a onclick="location.href='@Url.Action("ProductPage", "Products", new { id = product.Id })'">
                 <div class="col">
                     <div class="card h-75 w-250 my-3 cardBorder categoryButton">
                         <div class="containerImg">
-                            <img src="@Model.Item2[i]" class="card-img-top imgCategory" alt="..." />
+                            <img src="@ViewBag.pathes[i]" class="card-img-top imgCategory" alt="..." />
                             <div class="card-body whiteSmoke cardTextHeight ">
                                 <h5 class="card-title">@product.ProductName</h5>
                                 <div class="font-italic font-weight-bold">
                                     Price: @product.Price$
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
             </a>
             i++;
         }
-    </div>
-}
-@section Scripts{
-    <script src="~/js/searchProduct.js"></script>
-}
+    }
+</div>

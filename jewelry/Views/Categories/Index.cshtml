@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<jewelry.Models.Category>
-
 @{
     if (Context.User != null && Context.User.Claims != null &&
        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
@@ -11,33 +10,35 @@
         Layout = "_ClientLayout";
     }
 }
-<h1>Index</h1>
+<body>
+    <h2 class="text-center">Edit Categories</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+    <div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center text-center">
+        @{
+            List<string> pathes = ViewBag.ImagePathes;
+            int i = 0;//interator for pathes
+            foreach (var cat in Model)
+            {
+                <a onclick="location.href='@Url.Action("Edit", "Categories", new { id = cat.Id, path=pathes[i] })'">
+                    <div class="col">
+                        <div class="card h-75 w-250 my-3 cardBorder categoryButton">
+                            <div class="containerImg">
+                                <img src=@pathes[i] class="card-img-top imgCategory" alt="..." />
+                                <div class="card-body whiteSmoke">
+                                    <h5 class="card-title">@cat.CategoryName</h5>
+                                </div>
+                                <div class="middle">
+                                    <div class="text bg-success">Edit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                i++;
+            }
         }
-    </tbody>
-</table>
+    </div>
+    <p class="text-center">
+        <a asp-action="Create">Create New</a>
+    </p>
+</body>

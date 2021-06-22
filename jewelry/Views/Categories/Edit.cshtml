@@ -11,22 +11,33 @@
         Layout = "_ClientLayout";
     }
 }
+<link href="~/css/ImageUploader.css" rel="stylesheet" />
 
-<h1>Edit</h1>
-
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<h4 class="text-center">Category</h4>
+<hr />      
+<div class="row justify-content-center">
+    <div class="col-md-4 text-center">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="CategoryName" class="control-label"></label>
+                <label asp-for="CategoryName" class="control-label font-italic font-weight-bold"></label>
                 <input asp-for="CategoryName" class="form-control" />
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
+            <label class="control-label ont-italic font-weight-bold">CategoryImage</label>
             <div class="form-group">
+                <div id='img_container' class="text-center p-4 my-4">
+
+                    <img class="imgContainer my-2" id="preview" src="@ViewData["path"]" alt="your image" title='' />
+                    <div class="custom-file">
+                        <input type="file" name="postedFiles" id="inputGroupFile01" class="imgInp custom-file-input" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group text-center">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -36,4 +47,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+<script src="~/js/ImageUploader.js"></script>

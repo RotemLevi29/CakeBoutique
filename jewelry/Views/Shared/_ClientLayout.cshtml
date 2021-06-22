@@ -11,7 +11,7 @@
     <link href="/css/MainDesign.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    
+
     <header>
         <section class="section-nav">
             <section>
@@ -36,25 +36,28 @@
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">
-            @RenderBody()
-            <div class="loader">
-            <div class="center-vertical">
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
+            <div id="mainSectionClient">
+                @RenderBody()
             </div>
+            <div class="loader">
+                <div class="center-vertical">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
             </div>
             <section>
                 @await Component.InvokeAsync("ButtomLayout")
             </section>
         </main>
     </div>
-    
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/mainLoader.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
 
