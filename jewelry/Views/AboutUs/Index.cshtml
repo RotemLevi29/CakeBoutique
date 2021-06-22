@@ -10,7 +10,7 @@
     else
     {
         Layout = "_ClientLayout";
-        
+
     }
 }
 <head>
@@ -18,96 +18,73 @@
     <link rel="stylesheet" href="~/css/Us.css" />
 </head>
 
-<section>
-    <div class="container">
-        <div style="text-align:center">
-            <h2 class="font-italic">Contact Us</h2>
-            <p class="text-align-center font-italic" >
-                The new luxury.
-                History says fine jewelry for occasions, we say fine jewelry for every day.<br />
-                Minus the traditional markups, with new, limited-edition drops every Monday of the year.<br />
-                Handcrafted like the olden days, but designed for the golden days ahead.
-                <br /><br />
-                So forget occasions.<br />
-                Here’s to fine jewelry for me.
-            </p>
-        </div>
-        <div class="row">
-            <div class="column">
-                @*<img src="/w3images/map.jpg" style="width:100%">*@
-                <iframe class="gmap_canvas" id="gmap_canvas" style="width:100%"
-                        src="https://maps.google.com/maps?q=the%20college%20of%20management%20academic%20studies&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                        frameborder="1" scrolling="no" marginheight="0" marginwidth="0">
-                </iframe>
+<section class="my-5"><br /><br /><hr />
+    <div class="about-section my-5">
+        <br />
+        <h1 class="font-italic">About Us</h1><br />
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="align-text-center">
+                    <a href="mailto:nadavv10@walla.com">
+                        <img src="/lib/student/nadav.jpg" alt="Nadav" style="height:180px">
+                    </a>
+                </div>
+                <div class="container">
+                    <h3>Nadav Voikovitch</h3>
+                    <p class="title">Student</p>
+                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                    <p>
+                        <button class="button">Contact</button>
+                    </p>
+                </div>
             </div>
-            <div class="column">
-                <form action="/action_page.php">
-                    <label for="fname">First Name</label>
-                    <input type="text" id="fname" name="firstname" placeholder="Your name..">
-                    <label for="lname">Last Name</label>
-                    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
-                    <label for="country">Country</label>
-                    <select id="country" name="country">
-                        <option value="israel">Israel</option>
-                        <option value="canada">Canada</option>
-                        <option value="usa">USA</option>
-                    </select>
-                    <label for="subject">Subject</label>
-                    <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea>
-                    <input type="submit" class="btn-primary" value="Submit" asp-controller="Home" asp-action="Index">
-                </form>
+        </div>
+        <hr />
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="align-text-center">
+                    <a href="mailto:imorkravitz@gmail.com">
+                        <img src="/lib/student/or.jpg" alt="Or" class="align-content-center" style="height: 180px">
+                    </a>
+                </div>
+                <div class="container">
+                    <h3>Or Kravitz</h3>
+                    <p class="title">Student</p>
+                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                    <p>
+                        <button class="button">Contact</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="align-text-center">
+                    <a href="mailto:inonshazo47@gmail.com">
+                        <img src="/lib/student/inon.jpg" alt="Inon" class="align-content-center" style="height: 180px">
+                    </a>
+                </div>
+                <div class="container">
+                    <h3>Inon Shazo</h3>
+                    <p class="title">Student</p>
+                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                    <p>
+                        <button class="button">Contact</button>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<section>
-
-    <div class="about-section">
-        <br />
-        <h1>About Us</h1>
-        <br />
-       
-    </div>
-
-    <h2 style="text-align:center">Our Team</h2>
-    <div class="row">
-        <div @*class="column"*@class ="col-md-4 text-center">
-            <div class="card">
-                <img src="/w3images/team1.jpg" alt="Nadav" style="width:100%">
-                <div class="container">
-                    <h2>Nadav Voikovitch</h2>
-                    <p class="title">CEO & Founder</p>
-                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                    <p>nadav@gmail.com</p>
-                    <p><button class="button">Contact</button></p>
-                </div>
-            </div>
+<section class="my-5"> <hr />
+    <center>
+        <div class="align-text-center">
+            <iframe class="gmap_canvas align-middle" id="gmap_canvas" style="width:75%"
+                    src="https://www.youtube.com/embed/iuNJLtj10Lg"
+                    frameborder="1" scrolling="no" marginheight="0" marginwidth="0">
+            </iframe>
         </div>
-
-        <div @*class="column"*@ class ="col-md-4 text-center">
-            <div class="card">
-                <img src="/w3images/team2.jpg" alt="Or" style="width:100%">
-                <div class="container">
-                    <h2>Or Kravitz</h2>
-                    <p class="title">Art Director</p>
-                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                    <p>or@gmail.com</p>
-                    <p><button class="button">Contact</button></p>
-                </div>
-            </div>
-        </div>
-
-        <div @*class="column"*@ class ="col-md-4 text-center">
-            <div class="card">
-                <img src="/w3images/team3.jpg" alt="Inon" style="width:100%">
-                <div class="container">
-                    <h2>Inon Shazo</h2>
-                    <p class="title">Designer</p>
-                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                    <p>inon@gmail.com</p>
-                    <p><button class="button">Contact</button></p>
-                </div>
-            </div>
-        </div>
-    </div>
+    </center>
 </section>

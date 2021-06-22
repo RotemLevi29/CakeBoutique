@@ -9,13 +9,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link pink text-nav" asp-controller="Home" asp-action="Index">Home </a>
+                    <a class="nav-link pink text-nav" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link pink text-nav" asp-area="" asp-controller="AboutUs" asp-action="Index">About us</a>
+                  
+                    <a class="nav-link pink text-nav" asp-controller="AboutUs" asp-action="Index">About us</a>
+
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link pink text-nav" href="#">Contact us</a>
+                    <a class="nav-link pink text-nav" asp-controller="ContactUs" asp-action="Index">Contact us</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
@@ -45,6 +47,7 @@
             <div class="col-md-4 text-center">
                 <div>
                     <a asp-area="" asp-controller="Home" asp-action="Index">
+
                         <img class="logo-image pos-center my-3" src="~/lib/images/mainLogo/mainLogo.jpg" />
                     </a>
                 </div>

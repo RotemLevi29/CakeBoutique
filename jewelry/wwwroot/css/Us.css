@@ -26,7 +26,7 @@ html {
 .about-section {
     padding: 50px;
     text-align: center;
-    background-color: #474e5d;
+    background-color: #3b434a;
     color: white;
 }
 
@@ -50,14 +50,14 @@ html {
     display: inline-block;
     padding: 8px;
     color: white;
-    background-color: #000;
+    background-color: #ffac5a;
     text-align: center;
     cursor: pointer;
     width: 100%;
 }
 
     .button:hover {
-        background-color: #555;
+        background-color: #474e5d;
     }
 
 @media screen and (max-width: 650px) {
@@ -65,4 +65,13 @@ html {
         width: 100%;
         display: block;
     }
+}
+h1 {
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 40px;
+    font-size: 4em;
+    text-transform: uppercase;
+    font-family: 'Lato', sans-serif;
+    font-weight: 100;
+    color: #ffac5a;
 }
