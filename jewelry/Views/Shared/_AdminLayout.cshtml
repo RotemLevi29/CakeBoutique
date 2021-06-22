@@ -39,7 +39,9 @@
             </section>
             <div class="container-fluid">
                 <main role="main" class="pb-3">
-                    @RenderBody()
+                    <div id="mainSectionClient">
+                        @RenderBody()
+                    </div>                    
                     <div class="loader">
                         <div class="center-vertical">
                             <div class="spinner-border" role="status">
@@ -50,7 +52,7 @@
                     <section>
                         @await Component.InvokeAsync("ButtomLayout")
                     </section>
-                </main>
+                    </mainid="mainSectionClient">
             </div>
         </div>
     </header>
@@ -59,6 +61,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/AdminLayout.js"></script>
     <script src="~/js/mainLoader.js"></script>
+
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 
 

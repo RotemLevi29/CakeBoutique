@@ -76,11 +76,6 @@ namespace jewelry.Controllers
             return PartialView();
         }
 
-        public IActionResult r( )
-        {
-          
-            return PartialView();
-        }
 
         //order get:
         [HttpGet]

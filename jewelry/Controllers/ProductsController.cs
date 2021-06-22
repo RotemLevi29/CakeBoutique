@@ -207,9 +207,15 @@ namespace jewelry.Controllers
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
         {
+            ViewData["error"] = "";
             if (id != product.Id)
             {
                 return NotFound();
+            }
+            if (postedFiles.Count() > 3)
+            {
+                ViewData["error"] = "You can uploade maximum 3 images";
+                return View();
             }
 
             if (ModelState.IsValid)
@@ -227,6 +233,10 @@ namespace jewelry.Controllers
                     int i = 0;
                     foreach (IFormFile postedFile in postedFiles)
                     {
+                        if (!postedFile.ContentType.Contains("image")) //make sure this is an image
+                        {
+                            continue;
+                        }
                         string productName = product.ProductName;
                         productName = productName.Replace(" ", "");
                         string idString = Convert.ToString(product.Id);
@@ -291,12 +301,18 @@ namespace jewelry.Controllers
             }
         }
        
-    public async Task<IActionResult> SearchProductsClient(string input, string category,string maxprice)
+        public IActionResult SearchProductClientFrame()
         {
+            return PartialView();
+        }
+
+    public async Task<IActionResult> SearchProductsClient(string input, string category,string maxprice)
+            {
             int cat = Int32.Parse(category);
             double price = Double.Parse(maxprice);
             List<Product> products;
             List<string> pathes = new List<string>();
+            ViewData["searchedInput"]='"' + input + '"';
             ViewData["result"] = "";
             if(input == null)
             {

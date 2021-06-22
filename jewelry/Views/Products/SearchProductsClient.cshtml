@@ -2,14 +2,17 @@
 
 @{
     Layout = null;
+
 }
 
+
 <div class="text-center">
+    <h2 class="font-italic text-secondary">Displaying Result For: @ViewBag.searchedInput</h2>
     <h2 class="font-italic text-secondary">@ViewBag.error</h2>
 </div>
 <div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
 
-    
+
     @{
         int i = 0;
         @foreach (var product in Model)

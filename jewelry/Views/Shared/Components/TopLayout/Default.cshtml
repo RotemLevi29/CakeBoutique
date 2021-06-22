@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-1">
                 @if (Context.User != null && Context.User.Claims != null &&
-                Context.User.Claims.Count() > 0)
+            Context.User.Claims.Count() > 0)
                 {
                     <div class="m-3 textDesign">
                         Hello @Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
@@ -45,14 +45,14 @@
             <div class="col-md-4 text-center">
                 <div>
                     <a asp-area="" asp-controller="Home" asp-action="Index">
-                        <img class="logo-image pos-center" src="~/lib/icons/main-photo.png" />
+                        <img class="logo-image pos-center my-3" src="~/lib/images/mainLogo/mainLogo.jpg" />
                     </a>
                 </div>
             </div>
             <div class="col-md-4 rtl mt-4 d-sm-flex ">
                 <div class="flex-grow-1 row text-center justify-content-center">
                     @if (Context.User != null && Context.User.Claims != null &&
-         Context.User.Claims.Count() > 0)
+Context.User.Claims.Count() > 0)
                     {
                         <div class="col-md-2 col-sm">
                             <button onclick="updateCart()" type="button" class="transparent-button" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
@@ -85,7 +85,7 @@
                     </div>
 
                     @*************************************8*@
-                    <div class="col-md-2 col-sm">
+                    <div class="col-md-2  col-sm">
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                             <div class="btn-group" role="group">
                                 <button data-toggle="dropdown" class="transparent-button">
@@ -107,11 +107,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm">
-                        <a class="pointer" onclick="location.href='@Url.Action("SearchPage", "Home")'">
-                            <img src="~/lib/icons/loupe.png" width="25" />
+                    <div class="col-md-2 ">
+                        <a class="pointer col-1" id="">
+                            <img id="searchIcon" src="/lib/icons/loupe.png" width="25">
                         </a>
+
                     </div>
+
                 </div>
             </div>
         </div>
@@ -122,3 +124,4 @@
 <script src="~/js/cart/Order.js"></script>
 <script src="~/js/cart/MyCart.js"></script>
 <script src="~/js/goldprice.js"></script>
+<script src="~/js/SearchButtonTopLay.js"></script>
