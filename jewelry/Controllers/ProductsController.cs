@@ -314,7 +314,8 @@ namespace jewelry.Controllers
             List<string> pathes = new List<string>();
             ViewData["searchedInput"]='"' + input + '"';
             ViewData["result"] = "";
-            if(input == null)
+            ViewData["error"] = "error";
+            if (input == null)
             {
                 input = "";
             }
@@ -344,8 +345,7 @@ namespace jewelry.Controllers
           
             if (products.Count() == 0)
             {
-                ViewData["error"] = "Oopps couldn't find this product...........\n" +
-                    "but you can enjoy our popular products";
+                ViewData["error"] = "error";
                 products = _context.Product.Take(10).ToList();
             }
             foreach (var pro in products)
@@ -453,10 +453,10 @@ namespace jewelry.Controllers
             var productImages = _context.Image.Where(a => a.ProductId.Equals(id)).ToList();
             foreach(var image in productImages)
             {
-                 new ImagesController(_context).regularDelete(image.Id, _hostEnvironment.WebRootPath);
+                new ImagesController(_context).regularDelete(image.Id, _hostEnvironment.WebRootPath);
             }
              _context.Product.Remove(product);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 

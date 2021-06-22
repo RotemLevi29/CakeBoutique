@@ -141,7 +141,7 @@ namespace jewelry.Controllers
                         productcart.ProductName = productName;
                         productcart.CartId = cartId;
                         _context.Add(productcart);
-                        await _context.SaveChangesAsync();
+                        _context.SaveChanges();
                         return "Success";
                     }
                     else

@@ -26,7 +26,7 @@ namespace jewelry.Controllers
             {
                 double totalPrice = 0;
                 List<double> prices = new List<double>();
-                List<ProductCart> cart =  _context.ProductCart.Where(a => a.CartId.Equals(id)).ToList();
+                List<ProductCart> cart =   _context.ProductCart.Where(a => a.CartId.Equals(id)).ToList();
                 List<string> imagePathes = new List<string>();
                 string imagePath = null;
                 foreach(var productCart in cart)
@@ -41,7 +41,7 @@ namespace jewelry.Controllers
                     if (product == null) //אם מחקו את המוצר תסיר אותו מהעגלה גם ואז תקרא לפונצקיה מחדש
                     {
                         _context.ProductCart.Remove(productCart);
-                        _context.SaveChangesAsync();
+                        _context.SaveChanges();
                         return (MyCart(id));
                     }
                     double price = product.Price;
