@@ -1,6 +1,8 @@
 ﻿/**
  *this function changing the input type while the user change the search type selector
  */
+//Search of admin/editor
+
 function searchType() {
     var type = $("#selectSearchType").val();
     switch (type){
@@ -50,11 +52,11 @@ $(function () {
         }
 
     $.ajax({
-        url: "/Products/Search",
+        url: "/Products/SearchProductsStaff",
         data: { input: searchInput, type: searchtype }
     }).done(function (data) {
         console.log(data);
-        $('tbody').html(data);
+        $('#prodctIndexSearch').html(data);
     });
     });
 })
@@ -67,11 +69,11 @@ $(function () {
         console.log("exe");
         value = $('#searchFormTitle').val();
         $.ajax({
-            url: "/Products/Search",
+            url: "/Products/SearchSatff",
             data: { input: value, type: '0' }
         }).done(function (data) {
             console.log(data);
-            $('tbody').html(data);
+            $('#prodctIndexSearch').html(data);
         });
     });
 })

@@ -1,7 +1,5 @@
 ﻿@model Tuple<List<ProductCart>, List<double>>
-
 <link href="~/css/cart.css" type="text/css" rel="stylesheet">
-
 <div id ="modalScroller" class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
         <div class="modal-header mainFont font-italic justify-content-center">
@@ -32,7 +30,7 @@
 
                             <div class="col-md-3">
                                 @*custom name*@
-                                @if (Model.Item1[i].CustumName != "")
+                                @if (Model.Item1[i].CustumName != null)
                                 {
                                     <p class="customName font-italic font-weight-bold ">Custom Name: @Model.Item1[i].CustumName</p>
                                 }

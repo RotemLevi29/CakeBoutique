@@ -22,7 +22,7 @@
 
 /*main logo in the main layout*/
 .logo-image {
-    width: 170px;
+    width: 300px;
 }
 
 /*using for the carousle banner framework*/
@@ -90,6 +90,10 @@
     height: auto;
     transition: .5s ease;
     backface-visibility: hidden;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .middle {
@@ -212,7 +216,9 @@
 /********************/
 
 /*using for all the site*/
-.a:hover{
-    text-decoration:none;
-}
 
+
+/*using for searchPage(HomeController) div that display searched products*/
+#displaySearchDiv {
+    min-height: 400px;
+}
