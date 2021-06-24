@@ -29,11 +29,17 @@ namespace jewelry.Controllers
                 ViewData["UserProblem"] = "error";
                 return PartialView();
             }
+            int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
+            Cart cart = _context.Cart.Include(a => a.ProductCartId).Where(a => a.Id.Equals(cartid)).First();
+            foreach(var procart in cart.ProductCartId)
+            {
+                var pro = _context.Product.Find(procart.ProductId);
+                pro.StoreQuantity -= 1;
+            }
             order.Sended = false;
             order.UserId = userId;
-             int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
              order.Date = DateTime.Now;
-             order.TotalPrice = _context.Cart.Find(cartid).TotalPrice;
+             order.TotalPrice = cart.TotalPrice;
              _context.Address.Add(address);
              _context.SaveChanges();
              order.AddressId = address.Id;
@@ -57,7 +63,6 @@ namespace jewelry.Controllers
                         _context.ProductCart.Remove(productcart);
                     }
                 }
-                Cart cart = _context.Cart.Find(cartid);
                 if (cart != null)
                 {
                     cart.TotalPrice = 0;
@@ -88,17 +93,18 @@ namespace jewelry.Controllers
         public IActionResult OrderForm(int total, int cartid)
         {
             //finding all the product, if the quantity are different than theres missing product
-            if (cartid != null)
+            Cart cart = _context.Cart.Include(a => a.ProductCartId).Where(a => a.Id.Equals(cartid)).First();
+            if (cart != null)
             {
                 int quantity = 0;
                 double totalPrice = 0;
-                List<ProductCart> cart = _context.ProductCart.Where(a => a.CartId.Equals(cartid)).ToList();
-                quantity = cart.Count();
+                List<ProductCart> productscarts = cart.ProductCartId;
+                quantity = productscarts.Count();
                 if (quantity != total || quantity == 0) // אם שינוי את הכמות תוך כדי
                 {
                     return View("MyCart", "Carts");
                 }
-                foreach (var productCart in cart)
+                foreach (var productCart in productscarts)
                 {
                     Product product = _context.Product.Find(productCart.ProductId);
 
@@ -115,10 +121,10 @@ namespace jewelry.Controllers
                 {
                     return View("MyCart", "Carts");
                 }
-                _context.Cart.Find(cartid).TotalPrice = totalPrice;
-                _context.SaveChangesAsync();
+                cart.TotalPrice = totalPrice;
+                _context.Update(cart);
                 ViewData["totalPrice"] = totalPrice;
-                ViewData["productCartList"] = cart;
+                ViewData["productCartList"] = productscarts;
                 return PartialView();
                 //אחר כך צריך לעשות creat order ושם להוריד את המלאי
             }

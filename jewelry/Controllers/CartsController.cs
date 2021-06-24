@@ -25,11 +25,16 @@ namespace jewelry.Controllers
             if (id != null)
             {
                 double totalPrice = 0;
+                Cart mycart = (_context.Cart.Include(a=>a.ProductCartId)).First(a=>a.Id.Equals(id));
+                if(mycart == null)
+                {
+                    return View("Index", "Home");
+                }
                 List<double> prices = new List<double>();
-                List<ProductCart> cart =   _context.ProductCart.Where(a => a.CartId.Equals(id)).ToList();
+                List<ProductCart> productcarts = mycart.ProductCartId;
                 List<string> imagePathes = new List<string>();
                 string imagePath = null;
-                foreach(var productCart in cart)
+                foreach(var productCart in productcarts)
                 {
                     Image image = _context.Image.Where(a => a.ProductId.Equals(productCart.ProductId)).FirstOrDefault();
                     if (image != null)
@@ -49,7 +54,6 @@ namespace jewelry.Controllers
                     prices.Add(price);
                     totalPrice += price*productCart.Quantity;
                 }
-                Cart mycart = _context.Cart.Find(id);
                 if (mycart != null)
                 {
                     mycart.TotalPrice = totalPrice;
@@ -57,7 +61,7 @@ namespace jewelry.Controllers
                 _context.SaveChangesAsync();
                 ViewData["totalPrice"] = totalPrice;
                 ViewData["images"] = imagePathes;
-                Tuple<List<ProductCart>, List<double>> tuple = new Tuple<List<ProductCart>, List<double>>(cart, prices);
+                Tuple<List<ProductCart>, List<double>> tuple = new Tuple<List<ProductCart>, List<double>>(productcarts, prices);
                 return PartialView(tuple);
             }
             else

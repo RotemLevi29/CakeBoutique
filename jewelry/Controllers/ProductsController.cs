@@ -33,13 +33,13 @@ namespace jewelry.Controllers
         //Display page with products with categoryId type(necklace,ring.......)
         public async Task<IActionResult> CategoryPage(int categoryId)
         {
-            Category category = _context.Category.Find(categoryId);
+            Category category = _context.Category.Include(a => a.products).Where(a => a.Id.Equals(categoryId)).First();
             if (category != null)
             {
                 category.Interest++;
                 await _context.SaveChangesAsync();
             }
-            List<Product> products = _context.Product.Where(a => a.CategoryId.Equals(categoryId)).ToList();
+            List<Product> products = category.products;
             List<string> pathes = new List<string>();
             foreach (Product p in products)
             {
@@ -90,14 +90,14 @@ namespace jewelry.Controllers
             ViewData["Categories"] = selectListCategories;
 
             //images
-            List<Product> products =  _context.Product.Take(10).ToList();
+            List<Product> products = _context.Product.Include(a=>a.Images).Take(10).ToList();
             List<string> pathes = new List<string>();
             foreach(var pro in products)
             {
-                Image image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).FirstOrDefault();
-                if (image != null)
+/*                Image image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).FirstOrDefault();
+*/                if (pro.Images != null)//if there are images take the first
                 {
-                    pathes.Add(image.imagePath);
+                    pathes.Add(pro.Images[0].imagePath);
                 }
             }
             ViewData["pathes"] = pathes;

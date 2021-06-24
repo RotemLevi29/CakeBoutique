@@ -56,6 +56,7 @@ namespace jewelry.Models
 
         public int StoreQuantity { get; set; } = 100;
 
+        public List<Image> Images { get; set; }
 
         //product attributes
         [Display(Name ="Name option")]
