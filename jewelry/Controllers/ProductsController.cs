@@ -90,7 +90,7 @@ namespace jewelry.Controllers
             ViewData["Categories"] = selectListCategories;
 
             //images
-            List<Product> products =  _context.Product.ToList();
+            List<Product> products =  _context.Product.Take(10).ToList();
             List<string> pathes = new List<string>();
             foreach(var pro in products)
             {
@@ -101,7 +101,7 @@ namespace jewelry.Controllers
                 }
             }
             ViewData["pathes"] = pathes;
-            return View(await _context.Product.ToListAsync());
+            return View(products);
         }
 
 
@@ -314,7 +314,7 @@ namespace jewelry.Controllers
             List<string> pathes = new List<string>();
             ViewData["searchedInput"]='"' + input + '"';
             ViewData["result"] = "";
-            ViewData["error"] = "error";
+            ViewData["error"] = "";
             if (input == null)
             {
                 input = "";

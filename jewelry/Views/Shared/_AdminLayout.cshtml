@@ -15,16 +15,31 @@
         <div class="sidenav">
             <div id="mySidebar" class="sidebar">
                 <a class="opt closebtn" href="javascript:void(0)" onclick="closeNav()">&times;</a>
-                <a class="opt" asp-controller="Categories" asp-action="Index">&#10022; Manage Categories</a>
-                <a class="opt" asp-controller="Products" asp-action="Index">&#10022; Manage Products</a>
-                <a class="opt" asp-controller="CarouselImages" asp-action="Index">&#10022; Edit Banner Images</a>
-                <a class="opt" asp-controller="Users" asp-action="Index">&#10022; Edit Users</a>
-                <a class="opt" asp-controller="Home" asp-action="facebook">
-                    &#10022;
-                    <img src="~/lib/icons/facebook.png" width="30" />
-                    Post to facebook
+                <a class="opt" asp-controller="Categories" asp-action="Index">
+@*                    &#10022;
+*@                    <img src="~/lib/icons/category.png" width="27" />
+                    Categories
                 </a>
-                <a class="opt" asp-controller="Home" asp-action="Statistics">Statistics</a>
+                <a class="opt" asp-controller="Products" asp-action="Index">
+                    <img src="~/lib/icons/necklace.png" width="30" />
+                    Products
+                </a>    
+                <a class="opt" asp-controller="CarouselImages" asp-action="Index">
+                    <img src="~/lib/icons/advertisement.png" width="30" />
+                    Banners
+                </a>
+                <a class="opt" asp-controller="Users" asp-action="Index">
+                    <img src="~/lib/icons/team.png" width="30" />
+                    Users
+                </a>
+                <a class="opt" asp-controller="Home" asp-action="facebook">
+                    <img src="~/lib/icons/facebook.png" width="30" />
+                    Post
+                </a>
+                <a class="opt" asp-controller="Home" asp-action="Statistics">
+                    <img src="~/lib/icons/statistics.png" width="30" />
+                    Statistics
+                </a>
             </div>
         </div>
         <div id="main">
@@ -41,7 +56,7 @@
                 <main role="main" class="pb-3">
                     <div id="mainSectionClient">
                         @RenderBody()
-                    </div>                    
+                    </div>
                     <div class="loader">
                         <div class="center-vertical">
                             <div class="spinner-border" role="status">

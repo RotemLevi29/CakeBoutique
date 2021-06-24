@@ -49,34 +49,39 @@
             </p>
 
         </div>
+    </div>
 
-        <div class="container">
-            <div id="prodctIndexSearch" class="my-4 row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
 
-                @{ var i = 0;
-                    foreach (var item in Model)
-                    {
-                        <a class="my-3 pointer" onclick="location.href='@Url.Action("Edit", "Products", new { id = item.Id ,path = ViewBag.pathes[i]})'">
-                            <div class="col">
-                                <div class="card" style="width: 18rem;height:28rem;">
-                                    <img class="card-img-top" src="@ViewBag.pathes[i]" alt="Card image cap">
-                                    <div class="card-body">
-                                        <div class="card-text font-italic font-weight-bold">
-                                            <p>@Html.DisplayFor(modelItem => item.ProductName)</p>
-                                            <p>@item.Price $</p>
-                                            <p>@ViewBag.CategoryList[item.CategoryId]</p>
-                                        </div>
+    <div class="container">
+        <div id="prodctIndexSearch" class="my-4 row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
+
+            @{ var i = 0;
+                foreach (var item in Model)
+                {
+                    <a class="my-3" onclick="location.href='@Url.Action("Edit", "Products", new { id = item.Id ,path = ViewBag.pathes[i]})'">
+                        <div class="col">
+                            <div class="card pointer containerImg cardBorder" style="width: 18rem;height:28rem;">
+                                <img class="card-img-top" src="@ViewBag.pathes[i]" alt="Card image cap">
+                                <div class="card-body">
+                                    <div class="card-text font-italic font-weight-bold">
+                                        <p>@Html.DisplayFor(modelItem => item.ProductName)</p>
+                                        <p>@item.Price $</p>
+                                        <p>@ViewBag.CategoryList[item.CategoryId]</p>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="text bg-success">Edit</div>
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                        i++;
-                    }
-
+                        </div>
+                    </a>
+                    i++;
                 }
-            </div>
 
+            }
         </div>
+
+    </div>
 
 </section>
 

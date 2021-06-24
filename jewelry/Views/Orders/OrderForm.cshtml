@@ -6,6 +6,11 @@
         <div class="modal-header mainFont font-italic justify-content-center">
             <h2 class="modal-title font-italic" id="exampleModalScrollableTitle">@Context.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value's Cart</h2>
         </div>
+        @if (ViewBag.UserProblem == "error")
+        {
+            <p class="alert-danger">We having a technical problem with your account,<br />
+            Please call our client service in tel:050-000000</p>
+        }
         <div class="modal-body">
             <div class="row justify-content-center">
                 <div class="col-md-8">

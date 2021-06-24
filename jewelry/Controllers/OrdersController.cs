@@ -22,9 +22,15 @@ namespace jewelry.Controllers
          [HttpPost]
          public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
          {
+            int userId = Int32.Parse(User.Claims.Where(c => c.Type.Equals("UserId")).Select(c => c.Value).SingleOrDefault());
 
-             order.Sended = false;
-             order.UserId = Int32.Parse(User.Claims.Where(c => c.Type.Equals("UserId")).Select(c => c.Value).SingleOrDefault());
+            //check if the user still exist 
+            if (_context.User.Find(userId) == null){
+                ViewData["UserProblem"] = "error";
+                return PartialView();
+            }
+            order.Sended = false;
+            order.UserId = userId;
              int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
              order.Date = DateTime.Now;
              order.TotalPrice = _context.Cart.Find(cartid).TotalPrice;
