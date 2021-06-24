@@ -76,7 +76,7 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,FirstName,LastName,Password,Email,Birthdate,Gender,Type,CartId")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,FirstName,LastName,Password,PasswordConfirm,Email,Birthdate,Gender,Type,CartId")] User user)
         {
             if (id != user.Id)
             {

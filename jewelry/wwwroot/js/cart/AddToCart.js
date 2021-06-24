@@ -24,7 +24,7 @@ $('#nameOnProduct').keyup(function () {
     $('#enteraName').removeClass('alert-danger');
 });
 
-$("form#addForm").submit(function (event) {
+$('#addtocart').click(function (event) {
     event.preventDefault();
     if ($('#nameOnProduct')) {
         if ($('#nameOnProduct').val() == "") {
