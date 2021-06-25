@@ -8,8 +8,6 @@ namespace jewelry.Models
     public class CarouselImage
     {
         public int  Id { get; set; }
-        public int? Width { get; set; } = 0;
-        public int? Height { get; set; } = 0;   
-        public int CarImageId { get; set; } //Image object
+        public byte[] Image { get; set; }
     }
 }

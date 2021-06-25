@@ -20,18 +20,25 @@
     <div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center ">
         @{
             var i = 0;
-            foreach (KeyValuePair<string, int> item in ViewBag.pathes)
+            foreach (var item in Model)
             {
-                <div class="col">
+
+
+<div class="col">
                     <div class="card h-100 w-250 my-3">
                         @*@Html.ActionLink("", "CategoryPage", "Products",
                             new { type = Product.ProductType.Necklace }, null)*@
                         <div class="containerImg">
-                            <img src="@item.Key" class="card-img-top imgCategory" alt="..." />
+                            @if (item.Image != null)
+                                    {
+                                        string img = Convert.ToBase64String(item.Image);
+                                <img src="data:image/png;base64,@img" class="card-img-top imgCategory" alt="..." />
+
+                            }
                         </div>
                         <div class="card-body row">
                             <h5 class="card-title col">Banner - @(i+1)</h5>
-                            <a class="col" onclick="location.href='@Url.Action("Delete", "CarouselImages",new { id = item.Value  })'">
+                            <a class="col" onclick="location.href='@Url.Action("Delete", "CarouselImages",new { id = item.Id  })'">
                                 <input type="submit" value="Delete" class="btn btn-danger" />
                             </a>
                         </div>

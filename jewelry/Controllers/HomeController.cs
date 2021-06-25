@@ -76,24 +76,7 @@ namespace jewelry.Controllers
         }
         public IActionResult Index()
         {
-            List<string> imagePathes = new List<string>();
-            var categories = _context.Category.ToList();
-            string path = null;
-            List<Image> images = null;
-            foreach(var cat in categories)
-            {
-                images =_context.Image.Where(a => a.Id.Equals(cat.ImageId)).ToList();
-                if (images.Count!=0)
-                {
-                    path = images[0].imagePath;
-                }
-             
-                imagePathes.Add(path);
-
-                images = null;
-            }
-            ViewData["ImagePathes"] = imagePathes;
-            return View(categories);
+            return View(_context.Category.ToList());
         }
 
         public IActionResult Privacy()

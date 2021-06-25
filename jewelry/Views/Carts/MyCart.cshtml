@@ -19,7 +19,11 @@
                             </div>
                             <div class="col-md-2">
                                 @*product image*@
-                                <img class="cartProductImage" src="@ViewBag.images[i]" />
+                                @if (ViewBag.images[i] != null && ViewBag.images[i].image != null)
+                                {
+                                    string img = Convert.ToBase64String(ViewBag.images[i].image);
+                                    <img class="cartProductImage" src="data:image/png;base64,@img" />
+                                }
                             </div>
 
                             <div class="col-md-2">

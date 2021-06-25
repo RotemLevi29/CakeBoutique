@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jewelry.Data;
 
 namespace jewelry.Migrations
 {
     [DbContext(typeof(jewelryContext))]
-    partial class jewelryContextModelSnapshot : ModelSnapshot
+    [Migration("20210625095415_imgDataBaseCarousel")]
+    partial class imgDataBaseCarousel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,8 +64,17 @@ namespace jewelry.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CarImageId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Height")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<int?>("Width")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -101,8 +112,8 @@ namespace jewelry.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Interest")
                         .HasColumnType("int");
@@ -130,6 +141,9 @@ namespace jewelry.Migrations
 
                     b.Property<byte[]>("image")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("imagePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -201,6 +215,12 @@ namespace jewelry.Migrations
                         .IsRequired()
                         .HasMaxLength(38)
                         .HasColumnType("nvarchar(38)");
+
+                    b.Property<float>("RateSum")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Rates")
+                        .HasColumnType("int");
 
                     b.Property<int>("StoreQuantity")
                         .HasColumnType("int");

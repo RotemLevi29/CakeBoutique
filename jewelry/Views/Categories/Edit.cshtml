@@ -28,10 +28,14 @@
             <label class="control-label ont-italic font-weight-bold">CategoryImage</label>
             <div class="form-group">
                 <div id='img_container' class="text-center p-4 my-4">
+                    @if (Model.Image != null)
+                    {
+                        string img = Convert.ToBase64String(Model.Image);
+                        <img class="imgContainer my-2" id="preview" src="data:image/png;base64,@img" alt="your image" title='' />
 
-                    <img class="imgContainer my-2" id="preview" src="@ViewData["path"]" alt="your image" title='' />
+                    }
                     <div class="custom-file">
-                        <input type="file" name="postedFiles" id="inputGroupFile01" class="imgInp custom-file-input" aria-describedby="inputGroupFileAddon01">
+                        <input type="file" name="postedFile" id="inputGroupFile01" class="imgInp custom-file-input" aria-describedby="inputGroupFileAddon01">
                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                     </div>
                 </div>
@@ -44,7 +48,7 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="text-center">
+    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
 </div>
 <script src="~/js/ImageUploader.js"></script>

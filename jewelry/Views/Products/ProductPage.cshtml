@@ -1,4 +1,4 @@
-﻿@model Tuple<Product, List<string>>
+﻿@model jewelry.Models.Product
 @{
     if (Context.User != null && Context.User.Claims != null &&
        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
@@ -22,32 +22,44 @@
 
                     <div class="product col col-md-5 service-image-left">
                         <div>
-                            <img id="mainImage" src="@Model.Item2[0]" />
+                            @{
+                                string img = Convert.ToBase64String(Model.Images[0].image);
+                                if (img != null)
+                                {
+                                    <img id="mainImage" src="data:image/png;base64,@img" />
+                                }
+                            }
+
+
                         </div>
                         <div class="row my-3">
-                            @{foreach (var path in Model.Item2)
+                            @{foreach (var image in Model.Images)
                                 {
+                                    img = Convert.ToBase64String(image.image);
                                     <div class="col-sm-3">
-                                        <button onclick='imageToMain("@path")'>
-                                            <img class="imagePeview" src=@path />
+                                        @if (img != null)
+                                        {
+                                        <button onclick='imageToMain("data:image/png;base64,@img")'>
+                                            <img class="imagePeview" src="data:image/png;base64,@img" />
                                         </button>
+                                        }
                                     </div>
                                 }
                             }
                         </div>
                     </div>
                     <div class="col-md-7 col">
-                        <div class="product-title productname">@Model.Item1.ProductName</div>
-                        <textarea readonly class="text-area">@Model.Item1.Description</textarea>
+                        <div class="product-title productname">@Model.ProductName</div>
+                        <textarea readonly class="text-area">@Model.Description</textarea>
                         @*<div class="product-rating"><i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star-o"></i> </div>*@
                         <hr>
                         @{
-                            if (Model.Item1.NameOption == 1)
+                            if (Model.NameOption == 1)
                             {
                                 <label id="enteraName" class="font-weight-bold">Enter a name: </label>
                                 <input placeholder="maximum 10 letters" name="input" maxlength="10" id="nameOnProduct" type="text" class="form-control " />
                             }
-                            else if (Model.Item1.NameOption == 2)
+                            else if (Model.NameOption == 2)
                             {
                                 <label id="enteraName" class="font-weight-bold">Enter a letter: </label>
                                 <input type="text" name="input" id="nameOnProduct" placeholder="one letter" class="form-control" maxlength="1" />
@@ -55,9 +67,9 @@
 
                         }
                         <div class="align-text-bottom py-3">
-                            <div class="font-italic font-weight-bold product-price">Price: @Model.Item1.Price &#8362</div>
+                            <div class="font-italic font-weight-bold product-price">Price: @Model.Price &#8362</div>
                             @{
-                                if (Model.Item1.StoreQuantity <= 0)
+                                if (Model.StoreQuantity <= 0)
                                 {
                                     <img src="~/lib/icons/outofstock.jpg" width="60" />
                                     <input hidden value="0" id="outofstock" />
@@ -71,8 +83,8 @@
                             <hr>
                             <form id="addForm">
                                 <input hidden id="url" value="@Context.Request.Path" />
-                                <input hidden id="productId" value="@Model.Item1.Id" />
-                                <input hidden id="productName" value="@Model.Item1.ProductName" />
+                                <input hidden id="productId" value="@Model.Id" />
+                                <input hidden id="productName" value="@Model.ProductName" />
                                 <div class="row">
                                     <div class="btn-group col-md-3">
                                         <button id="addtocart" type="submit" class="btn btn-success">

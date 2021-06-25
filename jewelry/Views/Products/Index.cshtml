@@ -58,10 +58,14 @@
             @{ var i = 0;
                 foreach (var item in Model)
                 {
-                    <a class="my-3" onclick="location.href='@Url.Action("Edit", "Products", new { id = item.Id ,path = ViewBag.pathes[i]})'">
+                    <a class="my-3" onclick="location.href='@Url.Action("Edit", "Products", new { id = item.Id})'">
                         <div class="col">
                             <div class="card pointer containerImg cardBorder" style="width: 18rem;height:28rem;">
-                                <img class="card-img-top" src="@ViewBag.pathes[i]" alt="Card image cap">
+                                @if (ViewBag.images[i]!=null && ViewBag.images[i].image != null)
+                                {
+                                    string img = Convert.ToBase64String(ViewBag.images[i].image);
+                                    <img class="card-img-top" src="data:image/png;base64,@img" alt="Card image cap">
+                                }
                                 <div class="card-body">
                                     <div class="card-text font-italic font-weight-bold">
                                         <p>@Html.DisplayFor(modelItem => item.ProductName)</p>

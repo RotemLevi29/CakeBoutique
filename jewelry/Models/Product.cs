@@ -44,13 +44,6 @@ namespace jewelry.Models
         [Range(0, 100)]
         public int Discount { get; set; } = 0;//precent
 
-
-        //The rate will be = RateSum/Rates
-        public float RateSum { get; set; } = 0;
-
-        public int Rates { get; set; } = 0;
-        
-
         public int Orders { get; set; } = 0;//++1 for each oreder with this product
 
 

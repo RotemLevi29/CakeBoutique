@@ -23,7 +23,7 @@ namespace jewelry.Models
 
         public string Name { get; set; }
 
-        public string imagePath { get; set; }
+        public byte[] image { get; set; }
 
         public int? ProductId { get; set; }
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jewelry.Data;
 
 namespace jewelry.Migrations
 {
     [DbContext(typeof(jewelryContext))]
-    partial class jewelryContextModelSnapshot : ModelSnapshot
+    [Migration("20210625130556_imagetion")]
+    partial class imagetion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,6 +203,12 @@ namespace jewelry.Migrations
                         .IsRequired()
                         .HasMaxLength(38)
                         .HasColumnType("nvarchar(38)");
+
+                    b.Property<float>("RateSum")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Rates")
+                        .HasColumnType("int");
 
                     b.Property<int>("StoreQuantity")
                         .HasColumnType("int");

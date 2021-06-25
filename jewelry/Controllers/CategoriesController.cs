@@ -28,24 +28,7 @@ namespace jewelry.Controllers
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
-            List<string> imagePathes = new List<string>();
-            var categories = _context.Category.ToList();
-            string path = null;
-            List<Image> images = null;
-            foreach (var cat in categories)
-            {
-                images = _context.Image.Where(a => a.Id.Equals(cat.ImageId)).ToList();
-                if (images.Count != 0)
-                {
-                    path = images[0].imagePath;
-                }
-
-                imagePathes.Add(path);
-
-                images = null;
-            }
-            ViewData["ImagePathes"] = imagePathes;
-            return View(categories);
+            return View(_context.Category.ToList());
         }
 
         // GET: Categories/Details/5
@@ -80,49 +63,29 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Create([Bind("Id,CategoryName,ImageId")] Category category, List<IFormFile> postedFiles)
+        public async Task<IActionResult> Create([Bind("Id,CategoryName")] Category category, IFormFile postedFile)
         {
             if (ModelState.IsValid)
             {
-               
-                string folder = "/lib/images/Categories/";
-                string wwwRootpath = _hostEnvironment.WebRootPath + folder;
-                string dir = wwwRootpath;
-                // If directory does not exist, create it
-                if (!Directory.Exists(dir))
+                if (postedFile != null)
                 {
-                    Directory.CreateDirectory(dir);
-                }
-
-                foreach (IFormFile postedFile in postedFiles)
-                {
-                    string categoryName = category.CategoryName;
-                    categoryName = categoryName.Replace(" ", "");
-                    string idString = Convert.ToString(category.Id);
-                    categoryName = categoryName + idString;
-
-                    using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, categoryName + ".jpeg"), FileMode.Create))
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        postedFile.CopyTo(stream); //saving in the right folder
-
-                        Image image = new Image();
-                        image.imagePath = folder + categoryName + ".jpeg";
-                        image.Name = categoryName;
-                        _context.Add(image);
-                         _context.SaveChanges();
-                        category.ImageId = image.Id;
-                    };
-                    _context.Add(category);
-                    await _context.SaveChangesAsync();
+                        postedFile.CopyTo(ms);
+                        category.Image = ms.ToArray();
+                        _context.Add(category);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
+    
 
         // GET: Categories/Edit/5
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Edit(int? id,string path)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -134,7 +97,6 @@ namespace jewelry.Controllers
             {
                 return NotFound();
             }
-            ViewData["path"] = path;
             return View(category);
         }
 
@@ -144,76 +106,29 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName")] Category category, List<IFormFile> postedFiles)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName")] Category category, IFormFile postedFile)
         {
-
             if (id != category.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
-                try
+                if (postedFile != null)
                 {
-                    if (postedFiles.Count() != 0)
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        string folder = "/lib/images/Categories/";
-                        string wwwRootpath = _hostEnvironment.WebRootPath + folder;
-                        string dir = wwwRootpath;
-                        // If directory does not exist, create it
-                        if (!Directory.Exists(dir))
-                        {
-                            Directory.CreateDirectory(dir);
-                        }
-
-                        foreach (IFormFile postedFile in postedFiles)
-                        {
-                            string categoryName = category.CategoryName;
-                            categoryName = categoryName.Replace(" ", "");
-                            string idString = Convert.ToString(category.Id);
-                            categoryName = categoryName + idString;
-
-                            using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, categoryName + ".jpeg"), FileMode.Create))
-                            {
-                                postedFile.CopyTo(stream); //saving in the right folder
-
-                                Image image = _context.Image.Find(category.ImageId);
-                                if(image!=null)
-                                {
-                                    image.imagePath = folder + categoryName + ".jpeg";
-                                    _context.Update(image);
-                                }
-                                else
-                                {
-                                    image = new Image();
-                                    image.imagePath = folder + categoryName + ".jpeg"; ;
-                                    image.Name = categoryName;
-                                    _context.Add(image);
-                                    _context.SaveChanges();
-                                }
-                                category.ImageId = image.Id;
-                            };
-                        }
-                    }
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        postedFile.CopyTo(ms);
+                        category.Image = ms.ToArray();
+                        _context.Update(category);
+                        await _context.SaveChangesAsync();
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
+    
 
         // GET: Categories/Delete/5
         [Authorize(Roles = "Admin,Editor")]

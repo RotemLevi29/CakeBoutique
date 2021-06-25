@@ -33,14 +33,17 @@
                 <div class="col">
                     <div class="card h-75 w-250 my-3 cardBorder categoryButton">
                         <div class="containerImg">
-                            <img src="@ViewBag.pathes[i]" class="card-img-top imgCategory" alt="..." />
+                            @if (ViewBag.images[i]!=null)
+                            {
+                                string img =Convert.ToBase64String(ViewBag.images[i]);
+                                <img src="data:image/png;base64,@img" class="card-img-top imgCategory" alt="..." />
+                            }
                             <div class="card-body whiteSmoke cardTextHeight ">
                                 <h5 class="card-title">@product.ProductName</h5>
                                 <div class="font-italic font-weight-bold">
                                     Price: @product.Price$
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

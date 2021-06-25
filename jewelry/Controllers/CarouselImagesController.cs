@@ -30,19 +30,8 @@ namespace jewelry.Controllers
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
-            Dictionary<string,int> pathes = new Dictionary<string, int>();
-            List<CarouselImage> carouselImages = (List<CarouselImage>)_context.CarouselImage.ToList();
-            foreach(CarouselImage carImg in carouselImages)
-            {
-                try
-                {
-                    pathes.Add(_context.Image.Where(a => a.Id.Equals(carImg.CarImageId)).FirstOrDefault().imagePath,carImg.Id);
-                }
-                catch{}
-
-                }
-            ViewBag.pathes = pathes;
-            return View(await _context.CarouselImage.ToListAsync());
+           
+           return View(await _context.CarouselImage.ToListAsync());
         }
 
         // GET: CarouselImages/Details/5
@@ -78,49 +67,19 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Create([Bind("Id,Width,Height")] CarouselImage carouselImage, List<IFormFile> postedFiles)
+        public async Task<IActionResult> Create([Bind("Id")] CarouselImage carouselImage, IFormFile postedFile)
         {
-            if(carouselImage.Width == 0 || carouselImage.Height == 0)//using default sizes
-                    {
-                carouselImage.Width = _context.CarouselImage.FirstOrDefault().Width;
-                carouselImage.Height = _context.CarouselImage.FirstOrDefault().Height;
-                    }
-            
-
             if (ModelState.IsValid)
             {
-                string folder = "/lib/images/MainCarousel/";
-                string wwwRootpath = _hostEnvironment.WebRootPath + folder;
-                string dir = wwwRootpath;
-                // If directory does not exist, create it
-                if (!Directory.Exists(dir))
+                if (postedFile != null)
                 {
-                    Directory.CreateDirectory(dir);
-                }
-                foreach (IFormFile postedFile in postedFiles)
-                {
-                    string originalName = postedFile.FileName.Replace(" ", "");
-                    //string filename = Path.GetFileName(postedFile.FileName);
-                    int imageNumber = _context.CarouselImage.Count();
-                    string imageName = "carousel" + imageNumber.ToString() + originalName + ".jpeg";
-                    using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, imageName), FileMode.Create))
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        postedFile.CopyTo(stream); //saving in the right folder
-
-                        Image image = new Image();
-                        image.imagePath = folder + imageName;
-                        image.Name = imageName;
-                        image.ProductId = null;//carousel is 0
-                        image.Type = Image.ImageType.Carousel;
-                        _context.Add(image);
+                        postedFile.CopyTo(ms);
+                        carouselImage.Image = ms.ToArray();
+                        _context.Add(carouselImage);
                         await _context.SaveChangesAsync();
-                        carouselImage.CarImageId = image.Id;
-                    };
-                    _context.Add(carouselImage);
-                    await _context.SaveChangesAsync();
-                    //    return RedirectToAction(nameof(Index));
-                    return RedirectToAction(nameof(Index));
-
+                    }
                 }
             }
             return RedirectToAction(nameof(Index));
@@ -211,30 +170,18 @@ namespace jewelry.Controllers
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var carouselImage = await _context.CarouselImage.FindAsync(id);
-            //remove the image itself
-            var images = _context.Image.Where(a => a.Id.Equals(carouselImage.CarImageId)).ToList();
-            foreach(var img in images)
+            CarouselImage carousel = _context.CarouselImage.Where(a=>a.Id.Equals(id)).FirstOrDefault();
+            if (carousel != null)
             {
-                new ImagesController(_context).regularDelete(img.Id, _hostEnvironment.WebRootPath);
+                _context.CarouselImage.Remove(carousel);
+                await _context.SaveChangesAsync();
             }
-            _context.CarouselImage.Remove(carouselImage);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         private bool CarouselImageExists(int id)
         {
             return _context.CarouselImage.Any(e => e.Id == id);
         }
-        public List<string> getImages()
-        {
-            List<string> pathes = new List<string>();
-           var imageid = _context.CarouselImage.Select(column => column.CarImageId);
-            foreach(var id in imageid)
-            {
-                    pathes.Add(_context.Image.Where(a => a.Id == id).FirstOrDefault().imagePath);
-            }
-            return pathes;
-        }
+     
     }
 }

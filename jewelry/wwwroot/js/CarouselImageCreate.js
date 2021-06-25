@@ -1,10 +1,5 @@
 ﻿//main carousel
-$('.CarouselSize').each(function (e) {
-    $(this).style.display = "none";
-    $(this).text = "32342";
-   
-})
-SizesEdit();
+
 
 var num = $("#imageNumber").val();
 if (num >= 3) {
@@ -23,12 +18,4 @@ $(document).ready(function () {
 });
 
 
-//functions
-function SizesEdit() {
-    if ($("#checkbox")[0].checked == true) {
-        $('#CarouselSize').css('display', 'block');
-    }
-    else {
-        $('#CarouselSize').css('display', 'none');
-    }
-}
+

@@ -40,15 +40,14 @@ namespace jewelry.Controllers
                 await _context.SaveChangesAsync();
             }
             List<Product> products = category.products;
-            List<string> pathes = new List<string>();
+            List<Image> images = new List<Image>();
             foreach (Product p in products)
             {
-                string path = (_context.Image.Where(a => a.ProductId.Equals(p.Id)).
-                    Select(column => column.imagePath).FirstOrDefault());
-                pathes.Add(path);
+                Image image = (_context.Image.Where(a => a.ProductId.Equals(p.Id)).FirstOrDefault());
+                images.Add(image);
             }
-            ViewData["pathes"] = pathes;
-            Tuple<List<Product>, List<string>> tuple = new Tuple<List<Product>, List<string>>(products, pathes); 
+            ViewData["images"] = images;
+            Tuple<List<Product>, List<Image>> tuple = new Tuple<List<Product>, List<Image>>(products, images); 
             return View(nameof(CategoryPage), tuple);
         }
 
@@ -64,16 +63,13 @@ namespace jewelry.Controllers
                 {
                     return NotFound();
                 }
-
                 var product = await _context.Product
                     .FirstOrDefaultAsync(m => m.Id == id);
                 if (product == null)
                 {
                     return NotFound();
                 }
-                List<string> pathes =_context.Image.Where(a => a.ProductId.Equals(id)).Select(column=>column.imagePath).ToList();
-                Tuple<Product, List<string>> tuple = new Tuple<Product, List<string>>(product, pathes);
-                return View(tuple);
+                return View(_context.Product.Where(a=>a.Id.Equals(id)).Include(a=>a.Images).First());
             }
         }
 
@@ -90,17 +86,17 @@ namespace jewelry.Controllers
             ViewData["Categories"] = selectListCategories;
 
             //images
-            List<Product> products = _context.Product.Include(a=>a.Images).Take(10).ToList();
-            List<string> pathes = new List<string>();
+            List<Product> products = _context.Product.Take(10).ToList();
+            List<Image> images = new List<Image>();
             foreach(var pro in products)
             {
-/*                Image image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).FirstOrDefault();
-*/                if (pro.Images != null)//if there are images take the first
+                  Image image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).FirstOrDefault();
+                  if (image != null)//if there are images take the first
                 {
-                    pathes.Add(pro.Images[0].imagePath);
+                    images.Add(image);
                 }
             }
-            ViewData["pathes"] = pathes;
+            ViewData["images"] = images;
             return View(products);
         }
 
@@ -125,7 +121,7 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
+        public async Task<IActionResult> Create([Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
         {
             if (postedFiles.Count() > 3)
             {
@@ -137,40 +133,29 @@ namespace jewelry.Controllers
                 ViewData["error"] = "You must upload atleast 1 image";
                 return View();
             }
+            Image image;
             //if the data is valid creating product and adding it to database
             if (ModelState.IsValid)
             {
                 _context.Add(product);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
+                //than adding the new images
 
-                //images
-                string folder = "/lib/images/products/";
-                string wwwRootpath = _hostEnvironment.WebRootPath + folder;
-                string dir = wwwRootpath;
-                // If directory does not exist, create it
-                if (!Directory.Exists(dir))
-                {
-                    Directory.CreateDirectory(dir);
-                }
-                int i = 0;
                 foreach (IFormFile postedFile in postedFiles)
                 {
-                    string productName = product.ProductName;
-                    productName = productName.Replace(" ", "");
-                    string idString = Convert.ToString(product.Id);
-                    productName = productName + idString + i.ToString();
-                    using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, productName + ".jpeg"), FileMode.Create))
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        postedFile.CopyTo(stream); //saving in the right folder
-
-                        Image image = new Image();
-                        image.imagePath = folder + productName + ".jpeg";
-                        image.Name = productName;
+                        if (!postedFile.ContentType.Contains("image")) //make sure this is an image
+                        {
+                            continue;
+                        }
+                        image = new Image();
+                        postedFile.CopyTo(ms);
+                        image.image = ms.ToArray();
                         image.ProductId = product.Id;
-                        _context.Add(image);
-                    };
-                    await _context.SaveChangesAsync();
-                    i++;
+                        _context.Image.Add(image);
+                        _context.SaveChanges();
+                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -181,7 +166,7 @@ namespace jewelry.Controllers
         // GET: Products/Edit/5
         //Displaying the Edit page with product details and image
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Edit(int? id,string path)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -193,7 +178,11 @@ namespace jewelry.Controllers
             {
                 return NotFound();
             }
-            ViewData["path"] = path;
+            Image image = _context.Image.Where(a => a.ProductId.Equals(id)).FirstOrDefault();
+            if (image != null)
+            {
+                ViewData["image"] =image.image ;
+            }
             ViewData["Categries"] = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
             return View(product);
         }
@@ -205,7 +194,7 @@ namespace jewelry.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,RateSum,Rates,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Price,Description,Type,CategoryId,Discount,Orders,StoreQuantity,NameOption")] Product product, List<IFormFile> postedFiles)
         {
             ViewData["error"] = "";
             if (id != product.Id)
@@ -217,71 +206,47 @@ namespace jewelry.Controllers
                 ViewData["error"] = "You can uploade maximum 3 images";
                 return View();
             }
-
             if (ModelState.IsValid)
             {
-                try
+            //first we are deleting the old images of this product
+            if(postedFiles.Count()!=0)
                 {
-                    string folder = "/lib/images/products/";
-                    string wwwRootpath = _hostEnvironment.WebRootPath + folder;
-                    string dir = wwwRootpath;
-                    // If directory does not exist, create it
-                    if (!Directory.Exists(dir))
+                    List<Image> oldImages = _context.Image.Where(a => a.ProductId.Equals(product.Id)).ToList();
+                    foreach(Image img in oldImages)
                     {
-                        Directory.CreateDirectory(dir);
+                        _context.Image.Remove(img);
                     }
-                    int i = 0;
+                }
+                //than adding the new images
+                if (postedFiles.Count() != 0)
+                {
+
                     foreach (IFormFile postedFile in postedFiles)
                     {
-                        if (!postedFile.ContentType.Contains("image")) //make sure this is an image
+                        using (MemoryStream ms = new MemoryStream())
                         {
-                            continue;
-                        }
-                        string productName = product.ProductName;
-                        productName = productName.Replace(" ", "");
-                        string idString = Convert.ToString(product.Id);
-                        Random rnd = new Random();
-                        string random = (rnd.Next(1, 9999)).ToString();
-                        productName = productName + idString + i.ToString() +random;
-                        using (FileStream stream = new FileStream(Path.Combine(wwwRootpath, productName + ".jpeg"), FileMode.Create))
-                        {
-                            postedFile.CopyTo(stream); //saving in the right folder
-
-                            List<Image> images = _context.Image.Where(a => a.ProductId.Equals(product.Id)).ToList();
-                            foreach (var image in images)
+                            if (!postedFile.ContentType.Contains("image")) //make sure this is an image
                             {
-                                if (System.IO.File.Exists(image.imagePath))
-                                {
-                                    System.IO.File.Delete(image.imagePath);
-                                }
-                                _context.Remove(image);
+                                continue;
                             }
-                            Image newImage = new Image();
-
-                            newImage.imagePath = folder + productName + ".jpeg";
-                            newImage.Name = productName;
-                            newImage.ProductId = product.Id;
-                            _context.Add(newImage);
-                        };
-                    }
-                            _context.Update(product);
-                            await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                            Image image = new Image();
+                            postedFile.CopyTo(ms);
+                            image.image = ms.ToArray();
+                            image.ProductId = product.Id;
+                            _context.Add(image);
+                        }
                     }
                 }
+                _context.Update(product);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
+
         }
+
+    
+
 
         private void getCategories()
         {
@@ -297,7 +262,6 @@ namespace jewelry.Controllers
                     _categories.Add(catId, cat);
                 }
             }
-
             }
         }
        
@@ -311,7 +275,7 @@ namespace jewelry.Controllers
             int cat = Int32.Parse(category);
             double price = Double.Parse(maxprice);
             List<Product> products;
-            List<string> pathes = new List<string>();
+            List<Image> images = new List<Image>();
             ViewData["searchedInput"]='"' + input + '"';
             ViewData["result"] = "";
             ViewData["error"] = "";
@@ -351,10 +315,12 @@ namespace jewelry.Controllers
             foreach (var pro in products)
             {
                 var image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).First();
-                pathes.Add(image.imagePath);
+                if (image != null)
+                {
+                    images.Add(image);
+                }
             }
-            ViewData["pathes"] = pathes;
-
+            ViewData["images"] = images;
             return PartialView("SearchProductsClient", products);
         }
 
@@ -402,16 +368,16 @@ namespace jewelry.Controllers
                         break;
                     }
                                 }
-            List<string> pathes = new List<string>();
+            List<Image> images = new List<Image>();
             foreach (var pro in products)
             {
                 Image image = _context.Image.Where(a => a.ProductId.Equals(pro.Id)).FirstOrDefault();
                 if (image != null)
                 {
-                    pathes.Add(image.imagePath);
+                    images.Add(image);
                 }
             
-            ViewData["pathes"] = pathes;
+            ViewData["images"] = images;
 
             }
             if(User.IsInRole("Admin") || User.IsInRole("Editor"))
@@ -453,7 +419,7 @@ namespace jewelry.Controllers
             var productImages = _context.Image.Where(a => a.ProductId.Equals(id)).ToList();
             foreach(var image in productImages)
             {
-                new ImagesController(_context).regularDelete(image.Id, _hostEnvironment.WebRootPath);
+                new ImagesController(_context).regularDelete(image.Id);
             }
              _context.Product.Remove(product);
             _context.SaveChanges();

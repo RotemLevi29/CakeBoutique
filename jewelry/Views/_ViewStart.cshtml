@@ -1,3 +1,11 @@
 ﻿@{
-    Layout = "_Layout";
+    if (Context.User != null && Context.User.Claims != null &&
+       Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+    }
 }

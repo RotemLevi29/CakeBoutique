@@ -20,142 +20,15 @@ namespace jewelry.Controllers
             _context = context;
         }
 
-        // GET: Images
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Image.ToListAsync());
-        }
 
-        // GET: Images/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var image = await _context.Image
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-
-            return View(image);
-        }
-
-        // GET: Images/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Images/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,imagePath,ProductId,Type")] Image image)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(image);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(image);
-        }
-
-        // GET: Images/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var image = await _context.Image.FindAsync(id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-            return View(image);
-        }
-
-        // POST: Images/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,imagePath,ProductId,Type")] Image image)
-        {
-            if (id != image.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(image);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ImageExists(image.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(image);
-        }
-
-        // GET: Images/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var image = await _context.Image
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-
-            return View(image);
-        }
-
-        // POST: Images/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async void regularDelete(int id)
         {
             var image = await _context.Image.FindAsync(id);
-            _context.Image.Remove(image);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async void regularDelete(int id, string root)
-        {
-            var image = await _context.Image.FindAsync(id);
-            string fullpath = root + image.imagePath;
-            if (System.IO.File.Exists(fullpath))
+            if (image != null)
             {
-                System.IO.File.Delete(fullpath);
                 _context.Image.Remove(image);
-                //await _context.SaveChangesAsync(); //saving changes in the calling functions
             }
+            
         }
             private bool ImageExists(int id)
         {
