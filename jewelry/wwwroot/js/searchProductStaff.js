@@ -66,13 +66,11 @@ $(function () {
  */
 $(function () {
     $('#searchFormTitle').keyup(function (e) {
-        console.log("exe");
         value = $('#searchFormTitle').val();
         $.ajax({
-            url: "/Products/SearchSatff",
+            url: "/Products/SearchStaff",
             data: { input: value, type: '0' }
         }).done(function (data) {
-            console.log(data);
             $('#prodctIndexSearch').html(data);
         });
     });

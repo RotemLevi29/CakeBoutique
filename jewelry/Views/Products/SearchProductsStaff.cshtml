@@ -12,7 +12,7 @@
                 <div class="card pointer containerImg cardBorder" style="width: 18rem;height:28rem;">
                     @if (ViewBag.images[i]!=null && ViewBag.images[i].image != null)
                     {
-                        string img = Convert.ToBase64String(ViewBag.images[i]);
+                        string img = Convert.ToBase64String(ViewBag.images[i].image);
                         <img class="card-img-top" src="data:image/png;base64,@img" alt="Card image cap">
                     }
                     <div class="card-body">

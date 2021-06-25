@@ -1,5 +1,4 @@
-﻿console.log("this is order");
-
+﻿
 
 $('#makeorder').click(function () {
     var phone = $('#PhoneNumber').val();
@@ -16,7 +15,6 @@ $('#makeorder').click(function () {
         //please fill all the fields
     }
     else {
-        console.log("print shit");
         $.ajax({
             url: "/Orders/OrderForm",
             type: 'POST',
@@ -31,7 +29,6 @@ $('#makeorder').click(function () {
                 PostalCode: postal
             }
         }).done(function (data) {
-            console.log(data);
             $('#exampleModalScrollable').html(data);
         });
 

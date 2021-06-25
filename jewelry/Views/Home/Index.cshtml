@@ -31,9 +31,9 @@
                         <div class="card h-75 w-250 my-3 cardBorder categoryButton">
 
                             <div class="containerImg">
-                                @if (cat.Image != null)
+                                @if (cat.image != null)
                                 {
-                                    string img = Convert.ToBase64String(cat.Image);
+                                    string img = Convert.ToBase64String(cat.image.image);
                                     <img src="data:image/png;base64,@img" class="card-img-top imgCategory" alt="..." />
 
                                 }

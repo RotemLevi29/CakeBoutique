@@ -16,7 +16,7 @@ namespace jewelry.Models
 
         public List<Product> products { get; set; }
 
-        public byte[] Image { get; set; }
+        public Image image { get; set; }
 
         public int Interest { get; set; } = 0;
     }

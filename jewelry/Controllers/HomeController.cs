@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -76,7 +77,8 @@ namespace jewelry.Controllers
         }
         public IActionResult Index()
         {
-            return View(_context.Category.ToList());
+           
+            return View(_context.Category.Include(a=>a.image).ToList());
         }
 
         public IActionResult Privacy()

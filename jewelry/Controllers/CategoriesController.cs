@@ -28,7 +28,7 @@ namespace jewelry.Controllers
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
-            return View(_context.Category.ToList());
+            return View(_context.Category.Include(a=>a.image).ToList());
         }
 
         // GET: Categories/Details/5
@@ -71,8 +71,12 @@ namespace jewelry.Controllers
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
+                        Image image = new Image();
+                        image.Name = "Banner";
                         postedFile.CopyTo(ms);
-                        category.Image = ms.ToArray();
+                        category.image = image;
+                        category.image.image = ms.ToArray();
+                        _context.Image.Add(category.image);
                         _context.Add(category);
                         await _context.SaveChangesAsync();
                     }
@@ -92,7 +96,7 @@ namespace jewelry.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category =  _context.Category.Include(a=>a.image).Where(a=>a.Id.Equals(id)).First();
             if (category == null)
             {
                 return NotFound();
@@ -116,10 +120,20 @@ namespace jewelry.Controllers
             {
                 if (postedFile != null)
                 {
+                    //deleting the old banner
+                    category = _context.Category.Include(a => a.image).Where(a => a.Id.Equals(id)).First();
+                    if (category.image != null)
+                    {
+                        (new ImagesController(_context)).regularDelete(category.image.Id);
+                    }
                     using (MemoryStream ms = new MemoryStream())
                     {
+                        Image image = new Image();
+                        image.Name = "Banner";
                         postedFile.CopyTo(ms);
-                        category.Image = ms.ToArray();
+                        category.image = image;
+                        category.image.image = ms.ToArray();
+                        _context.Image.Add(category.image);
                         _context.Update(category);
                         await _context.SaveChangesAsync();
                     }
@@ -155,7 +169,11 @@ namespace jewelry.Controllers
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Category.FindAsync(id);
+            var category =  _context.Category.Include(a => a.image).Where(a => a.Id.Equals(id)).First();
+            if (category.image != null)
+            {
+                (new ImagesController(_context)).regularDelete(id);
+            }
             _context.Category.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -26,9 +26,9 @@
     </dl>
     <div class="form-group">
         <div id='img_container' class="text-center p-4 my-4">
-            @if (Model.Image != null)
+            @if (Model.image != null)
             {
-                string img = Convert.ToBase64String(Model.Image);
+                string img = Convert.ToBase64String(Model.image.image);
                 <img class="imgContainer my-2" id="preview" src="data:image/png;base64,@img" alt="your image" title='' />
             }
         </div>

@@ -33,9 +33,9 @@
                 <div class="col">
                     <div class="card h-75 w-250 my-3 cardBorder categoryButton">
                         <div class="containerImg">
-                            @if (ViewBag.images[i]!=null)
+                            @if (ViewBag.images[i]!=null && ViewBag.images[i].image!=null)
                             {
-                                string img =Convert.ToBase64String(ViewBag.images[i]);
+                                string img =Convert.ToBase64String(ViewBag.images[i].image);
                                 <img src="data:image/png;base64,@img" class="card-img-top imgCategory" alt="..." />
                             }
                             <div class="card-body whiteSmoke cardTextHeight ">

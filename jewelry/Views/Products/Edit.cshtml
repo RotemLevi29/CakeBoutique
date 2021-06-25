@@ -50,7 +50,7 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="form-group col">
-                    <label asp-for="CategoryId" class="control-label"></label>
+                    <label class="control-label">Category</label>
                     <select asp-for="CategoryId" asp-items="@ViewBag.Categries" class="form-control"> </select>
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
@@ -69,7 +69,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="form-group col">
-                    <label asp-for="StoreQuantity" class="control-label"></label>
+                    <label class="control-label">Store Quantity</label>
                     <input asp-for="StoreQuantity" class="form-control" />
                     <span asp-validation-for="StoreQuantity" class="text-danger"></span>
                 </div>
