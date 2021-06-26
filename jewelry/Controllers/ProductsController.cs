@@ -289,7 +289,7 @@ namespace jewelry.Controllers
         (a.ProductName.Contains(input) || a.Description.Contains(input)) &&
         (a.Price < price) && (a.CategoryId.Equals(cat))).ToList();
             }
-            if (price == 0 && cat!=0)
+            else if (price == 0 && cat!=0)
             {
                 products = _context.Product.Where(a =>
                 (a.ProductName.Contains(input) || a.Description.Contains(input)) &&
