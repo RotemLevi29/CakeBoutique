@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="manifest.json" />
     <Content Remove="wwwroot\css\AdminLayout.css" />
     <Content Remove="wwwroot\css\ImageUploader.css" />
   </ItemGroup>

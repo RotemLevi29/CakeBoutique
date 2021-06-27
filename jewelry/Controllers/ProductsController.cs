@@ -245,8 +245,6 @@ namespace jewelry.Controllers
 
         }
 
-    
-
 
         private void getCategories()
         {
@@ -267,7 +265,7 @@ namespace jewelry.Controllers
        
         public IActionResult SearchProductClientFrame()
         {
-            return PartialView();
+            return PartialView(new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName)));
         }
 
     public async Task<IActionResult> SearchProductsClient(string input, string category,string maxprice)

@@ -55,7 +55,6 @@ $(function () {
         url: "/Products/SearchProductsStaff",
         data: { input: searchInput, type: searchtype }
     }).done(function (data) {
-        console.log(data);
         $('#prodctIndexSearch').html(data);
     });
     });

@@ -1,4 +1,4 @@
-﻿
+﻿@model SelectList
 @{
     Layout = null;
 
@@ -17,26 +17,20 @@
 
             <div class="col-md-5">
                 <p1 class="text-secondary">Category:</p1>
-                <select id="categoryInput" class="form-control">
-                    <option value="0">All</option>
-                    <option value="1">Necklace</option>
-                    <option value="2">Ring</option>
-                    <option value="3">Earring</option>
-                    <option value="4">Bracelet</option>
-                    <option value="5">Men</option>
+                <select id="categoryInput" class="form-control" asp-items="@Model">
                 </select>
             </div>
 
             <div class="col-md-4">
                 <p1 class="text-secondary">Max price:</p1>
                 <select id="maxprice" class="form-control">
-                    <option value="0">no limit</option>
-                    <option value="50">50$</option>
-                    <option value="100">100$</option>
-                    <option value="150">150$</option>
-                    <option value="200">200$</option>
-                    <option value="250">250$</option>
-                    <option value="300">300$</option>
+                    <option value=0>no limit</option>
+                    <option value=50>50$</option>
+                    <option value=100>100$</option>
+                    <option value=150>150$</option>
+                    <option value=200>200$</option>
+                    <option value=250>250$</option>
+                    <option value=300>300$</option>
                 </select>
             </div>
         </div>

@@ -33,12 +33,7 @@
                 <input id="searchFormPrice" class="form-control text-center" searchinput="" name="inputPrice" placeholder="Product price">
             </div>
             <div class="default-hide mx-2" id="searchFormTypediv">
-                <select id="searchFormType" class="input-search-product form-control" name="inputType">
-                    <option value="1">Necklace</option>
-                    <option value="2">Ring</option>
-                    <option value="3">Earring</option>
-                    <option value="4">Bracelet</option>
-                    <option value="5">Men</option>
+                <select id="searchFormType" class="input-search-product form-control" asp-items="@ViewBag.Categories" name="inputType">
                 </select>
             </div>
             <div class="m-2 text-center">
