@@ -77,6 +77,11 @@ $('#addtocart').click(function (event) {
                 $('#addtocart').prop('disabled', true);
                 $('#nameOnProduct').prop('disabled', true);
             }
+            else if (callback == "toomany") {
+                $('#error').text("can't add this amount to your cart");
+                $('#error').fadeIn();
+
+            }
         },
         error: function (callback) {
             $('#error').fadeIn();

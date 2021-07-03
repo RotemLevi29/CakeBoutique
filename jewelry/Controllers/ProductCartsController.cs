@@ -146,17 +146,23 @@ namespace jewelry.Controllers
                                     u.CartId == cartId &&
                                     u.CustumName == input
                                     select u).FirstOrDefault();
-                if (productExist != null && _context.Product.Find(productId).StoreQuantity > 0)
+                if (productExist != null) 
                 {
-                    productExist.Quantity += quantity;
-                    await _context.SaveChangesAsync();
-                    return "Success";
+                    var prod = _context.Product.Find(productId);
+                    if (prod != null && prod.StoreQuantity - quantity >= 0)
+                    {
+                        productExist.Quantity += quantity;
+                        await _context.SaveChangesAsync();
+                        return "Success";
+
+                    }
+                    else return "toomany";
                 }
                
                 Product product = _context.Product.Find(productId);
                 if (product != null)
                 {
-                    if (product.StoreQuantity > 0)
+                    if (product.StoreQuantity -quantity >= 0)
                     {
                         ProductCart productcart = new ProductCart();
                         productcart.CustumName = input;
@@ -170,7 +176,7 @@ namespace jewelry.Controllers
                     }
                     else
                     {
-                        return "Error";
+                        return "toomany";
                     }
                 }
                 else
