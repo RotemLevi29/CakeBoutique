@@ -1,6 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
+<div class="loader">
+    <div class="center-vertical">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,13 +63,7 @@
                     <div id="mainSectionClient">
                         @RenderBody()
                     </div>
-                    <div class="loader">
-                        <div class="center-vertical">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <section>
                         @await Component.InvokeAsync("ButtomLayout")
                     </section>

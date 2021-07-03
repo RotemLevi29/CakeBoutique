@@ -106,16 +106,21 @@ body {
 
 /*Loader*/
 .loader {
-    position:fixed;
-    top:0;
-    left:0;
-    background-color:white;
-    height:100%;
-    width:100%;
-    display:flex;
+    z-index:1;
+    background-repeat: no-repeat;
+    background-size: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    display: flex;
     justify-content: center;
-    align-content:center;
+    align-content: center;
 }
+
+
 
 .center-vertical {
     vertical-align: central;
