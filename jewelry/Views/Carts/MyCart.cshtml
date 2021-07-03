@@ -10,12 +10,19 @@
                 for (int i = 0; i < Model.Item1.Count(); i++)
                 {
                     <div class="productInCart">
-                        <div class="row">
-                            <div class="col-md-1">
-                                <a onclick="removeFromCart(@Model.Item1[i].Id)" id="removeFromCart" class="transparent-button">
-                                    <img width="30" src="~/lib/icons/icons8-remove.svg" />
-                                </a>
-                                <p class="text-center font-italic font-weight-bold">@Model.Item1[i].Quantity</p>
+                        <div id="@Model.Item1[i].Id" class="row">
+                            <div class="col-md-2">
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <button id="minus.@Model.Item1[i].Id" onclick="minus(@Model.Item1[i].Id)" value="@Model.Item1[i].Id" class="transparent-button font-weight-bold minus">-</button>
+                                        <input id="input.@Model.Item1[i].Id" onchange="changeQuantity(@Model.Item1[i].Id)" class="form-control inputQuantity text-center" type="number" value="@Model.Item1[i].Quantity" />
+                                        <button id="plus.@Model.Item1[i].Id" onclick="plus(@Model.Item1[i].Id)" value="@Model.Item1[i].Id" class="transparent-button font-weight-bold minus">+</button>
+                                    </div>
+                                </div>
+                                @********************88*@
+                                @*<a onclick="removeFromCart(@Model.Item1[i].Id)" id="removeFromCart" class="transparent-button">
+            <img width="30" src="~/lib/icons/icons8-remove.svg" />
+        </a>*@
                             </div>
                             <div class="col-md-2">
                                 @*product image*@
@@ -26,10 +33,16 @@
                                 }
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 @*price*@
-                                <p class="font-italic font-weight-bold">price: @Model.Item2[i]$</p>
-                                <p class="font-italic font-weight-bold">Total: @{var a = Model.Item2[i] * Model.Item1[i].Quantity;}@a$</p>
+                                <span class="font-italic font-weight-bold">
+                                    Price:
+                                    <span id="price.@Model.Item1[i].Id" class="font-italic font-weight-bold">@Model.Item2[i]</span>
+                                </span>
+                                <span class="font-italic font-weight-bold">
+                                    Total:
+                                    <span id="totalproductprice.@Model.Item1[i].Id" class="font-italic font-weight-bold">@{var a = Model.Item2[i] * Model.Item1[i].Quantity;}@a</span>
+                                </span>
                             </div>
 
                             <div class="col-md-3">
@@ -51,7 +64,11 @@
             }
         </div>
         <div class="modal-footer">
-            <p1 class="font-italic">Total Price: @ViewData["totalPrice"]$ </p1>
+            <span id="quantityError" class="alert-danger"></span>
+            <p class="font-italic">
+                Total Price:
+                <p1 id="totalprice" class="font-italic"> @ViewData["totalPrice"]$ </p1>
+            </p>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue shopping</button>
             <button onclick='checkout(@Model.Item1.Count(),@Context.User.Claims.FirstOrDefault(c => c.Type == "cartId")?.Value)' type="button" class="btn btn-primary">Checkout</button>
         </div>

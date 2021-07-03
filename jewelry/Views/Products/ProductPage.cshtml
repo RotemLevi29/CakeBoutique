@@ -67,7 +67,7 @@
 
                         }
                         <div class="align-text-bottom py-3">
-                            <div class="font-italic font-weight-bold product-price">Price: @Model.Price &#8362</div>
+                            <div class="font-italic font-weight-bold product-price">Price: @Model.Price $</div>
                             @{
                                 if (Model.StoreQuantity <= 0)
                                 {
@@ -86,8 +86,14 @@
                                 <input hidden id="productId" value="@Model.Id" />
                                 <input hidden id="productName" value="@Model.ProductName" />
                                 <div class="row">
+                                    <label class="font-italic">Quantity</label>
+                                    <div class="col-2">
+                                    <input id="quantity" type="number" class="form-control" value="1" />
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="btn-group col-md-3">
-                                        <button id="addtocart" type="submit" class="btn btn-success">
+                                        <button id="addtocart" type="submit" class="btn btn-success my-2">
                                             Add to cart
                                         </button>
                                     </div>

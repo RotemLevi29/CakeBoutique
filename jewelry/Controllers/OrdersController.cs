@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
 using jewelry.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace jewelry.Controllers
 {
@@ -20,66 +21,74 @@ namespace jewelry.Controllers
         }
 
          [HttpPost]
-         public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
+        public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
          {
-            int userId = Int32.Parse(User.Claims.Where(c => c.Type.Equals("UserId")).Select(c => c.Value).SingleOrDefault());
+            if (User.Identity.IsAuthenticated)
+            {
+                int userId = Int32.Parse(User.Claims.Where(c => c.Type.Equals("UserId")).Select(c => c.Value).SingleOrDefault());
 
-            //check if the user still exist 
-            if (_context.User.Find(userId) == null){
-                ViewData["UserProblem"] = "error";
+                //check if the user still exist 
+                if (_context.User.Find(userId) == null)
+                {
+                    ViewData["UserProblem"] = "error";
+                    return PartialView();
+                }
+                int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
+                Cart cart = _context.Cart.Include(a => a.ProductCartId).Where(a => a.Id.Equals(cartid)).First();
+                foreach (var procart in cart.ProductCartId)
+                {
+                    var pro = _context.Product.Find(procart.ProductId);
+                    pro.StoreQuantity -= 1;
+                }
+                order.Sended = false;
+                order.UserId = userId;
+                order.Date = DateTime.Now;
+                order.TotalPrice = cart.TotalPrice;
+                _context.Address.Add(address);
+                _context.SaveChanges();
+                order.AddressId = address.Id;
+
+                if (ModelState.IsValid)
+                {
+                    order.AddressId = address.Id;
+                    _context.Order.Add(order);
+                    _context.SaveChanges();
+                    //clean cart await
+                    List<ProductCart> productCarts = _context.ProductCart.Where(a => a.CartId.Equals(cartid)).ToList();
+                    if (productCarts != null)
+                    {
+                        foreach (ProductCart productcart in productCarts)
+                        {
+                            Product product = _context.Product.Find(productcart.ProductId);
+                            if (product != null)
+                            {
+                                product.StoreQuantity -= 1;
+                            }
+                            _context.ProductCart.Remove(productcart);
+                        }
+                    }
+                    if (cart != null)
+                    {
+                        cart.TotalPrice = 0;
+                    }
+                    _context.SaveChanges();
+                    ViewData["orderid"] = order.Id;
+                    ViewData["arrivalDate"] = DateTime.Now.AddDays(7).Date;
+                    return PartialView("OrderDone");
+
+                }
                 return PartialView();
             }
-            int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
-            Cart cart = _context.Cart.Include(a => a.ProductCartId).Where(a => a.Id.Equals(cartid)).First();
-            foreach(var procart in cart.ProductCartId)
-            {
-                var pro = _context.Product.Find(procart.ProductId);
-                pro.StoreQuantity -= 1;
-            }
-            order.Sended = false;
-            order.UserId = userId;
-             order.Date = DateTime.Now;
-             order.TotalPrice = cart.TotalPrice;
-             _context.Address.Add(address);
-             _context.SaveChanges();
-             order.AddressId = address.Id;
+            else return NotFound();
 
-             if (ModelState.IsValid)
-             {
-                 order.AddressId = address.Id;
-                 _context.Order.Add(order);
-                 _context.SaveChanges();
-                //clean cart await
-                List<ProductCart> productCarts = _context.ProductCart.Where(a => a.CartId.Equals(cartid)).ToList();
-                if(productCarts != null)
-                {
-                    foreach(ProductCart productcart in productCarts)
-                    {
-                        Product product = _context.Product.Find(productcart.ProductId);
-                        if (product != null)
-                        {
-                            product.StoreQuantity -= 1;
-                        }
-                        _context.ProductCart.Remove(productcart);
-                    }
-                }
-                if (cart != null)
-                {
-                    cart.TotalPrice = 0;
-                }
-                _context.SaveChanges();
-                ViewData["orderid"] = order.Id;
-                ViewData["arrivalDate"] = DateTime.Now.AddDays(7).Date;
-                return PartialView("OrderDone");
-
-             }
-             return PartialView();
+          
          }
 
 
 
 
         //OrderDone Get
+        [Authorize]
         public IActionResult OrderDone(int id)
         {
             ViewData["orderid"] = id;
@@ -89,8 +98,9 @@ namespace jewelry.Controllers
 
 
         //order get:
+        [Authorize]
         [HttpGet]
-        public IActionResult OrderForm(int total, int cartid)
+        public IActionResult OrderForm(int total, int cartid,float currenttotalprice)
         {
             //finding all the product, if the quantity are different than theres missing product
             Cart cart = _context.Cart.Include(a => a.ProductCartId).Where(a => a.Id.Equals(cartid)).First();
@@ -100,10 +110,12 @@ namespace jewelry.Controllers
                 double totalPrice = 0;
                 List<ProductCart> productscarts = cart.ProductCartId;
                 quantity = productscarts.Count();
-                if (quantity != total || quantity == 0) // אם שינוי את הכמות תוך כדי
+                if (quantity != total || quantity == 0 || currenttotalprice!= cart.TotalPrice) // אם שינוי את הכמות תוך כדי
                 {
-                    return View("MyCart", "Carts");
-                }
+                    return RedirectToAction("MyCart", "Carts",new { id = cartid });
+/*                    PartialViewResult partial = PartialView((new CartsController(_context)).MyCart(cartid));
+*//*                    return ;
+*/                }
                 foreach (var productCart in productscarts)
                 {
                     Product product = _context.Product.Find(productCart.ProductId);
@@ -211,6 +223,7 @@ namespace jewelry.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Date,TotalPrice,Payment,Sended")] Order order)
         {
+            if (id != order.Id)
             if (id != order.Id)
             {
                 return NotFound();

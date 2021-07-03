@@ -19,6 +19,20 @@ namespace jewelry.Controllers
             _context = context;
         }
 
+       /* public string isCartLegall(int cartid,int quantity)
+        {
+            Cart cart = _context.Cart.Find(cartid);
+
+            if(cart == null)
+            {
+                return "error";
+            }
+
+            
+
+            return "sad";
+        }
+*/
         // GET: Carts
         public IActionResult MyCart(int? id)
         {
@@ -28,7 +42,7 @@ namespace jewelry.Controllers
                 Cart mycart = (_context.Cart.Include(a=>a.ProductCartId)).First(a=>a.Id.Equals(id));
                 if(mycart == null)
                 {
-                    return View("Index", "Home");
+                    return NotFound();
                 }
                 List<double> prices = new List<double>();
                 List<ProductCart> productcarts = mycart.ProductCartId;

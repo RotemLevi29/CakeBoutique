@@ -281,9 +281,14 @@ namespace jewelry.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int? id)
         {
             var user = await _context.User.FindAsync(id);
+            if(user==null || id == null)
+            {
+                return NotFound();
+
+            }
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

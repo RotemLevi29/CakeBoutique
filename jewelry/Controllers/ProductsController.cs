@@ -411,9 +411,14 @@ namespace jewelry.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Editor")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int? id)
         {
+            
             var product = await _context.Product.FindAsync(id);
+            if (id == null || product == null)
+            {
+                return NotFound();
+            }
             var productImages = _context.Image.Where(a => a.ProductId.Equals(id)).ToList();
             foreach(var image in productImages)
             {

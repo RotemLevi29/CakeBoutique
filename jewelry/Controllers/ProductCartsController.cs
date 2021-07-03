@@ -29,12 +29,12 @@ namespace jewelry.Controllers
 
         public void RemoveFromCart(int? id)
         {
-            if (id != null)
+            if (id != null) 
             {
                 var productToRemove = _context.ProductCart.Find(id);
                 if(productToRemove != null)
                 {
-                    if(productToRemove.Quantity==1)
+                    if (productToRemove.Quantity == 1)
                     {
                         _context.Remove(productToRemove);
                     }
@@ -42,26 +42,94 @@ namespace jewelry.Controllers
                     {
                         productToRemove.Quantity -= 1;
                     }
-                    _context.SaveChanges();
+                    _context.SaveChangesAsync();
 
                 }
             }
         }
 
+        public async Task<string> changeQuantity(int ? id, int quantity)
+        {
+            if (id != null)
+            {
+                var prodcutToChange = _context.ProductCart.Find(id);
+                if (prodcutToChange != null)
+                //check if the products exist.....
+                {
+                    
+                    var pro = _context.Product.Find(prodcutToChange.ProductId);
+                    Cart cart = _context.Cart.Find(prodcutToChange.CartId);
+                    var oldQuantity = prodcutToChange.Quantity;
+                    if (pro != null)
+                    {
+                        if (pro.StoreQuantity - quantity >= 0)
+                        {
+                            prodcutToChange.Quantity = quantity;
+
+                        }
+                        else
+                        {
+                            return "quantityError";
+
+                        }
+                        if (quantity == 0)
+                        {
+                            _context.ProductCart.Remove(prodcutToChange);
+                            _context.SaveChanges();
+                            return "zeroQuantity";
+                            
+                        }
+                        double newTotal = cart.TotalPrice + (pro.Price * (quantity-oldQuantity));
+                        cart.TotalPrice = newTotal;
+                        await _context.SaveChangesAsync();
+                        return pro.Price.ToString() + ',' + newTotal.ToString() + ',' + (quantity*pro.Price).ToString() +','+ quantity.ToString();
+                    }
+                }
+            }
+            return "error";
+        }
+
+
+        public void AddFromCart(int? id)
+        {
+            if (id != null)
+            {
+                var productToAdd = _context.ProductCart.Find(id);
+                if (productToAdd != null)
+                //check if the products exist.....
+                {
+                    var pro = _context.Product.Find(productToAdd.ProductId);
+                    if (pro != null)
+                    {
+                        if (pro.StoreQuantity - productToAdd.Quantity - 1 >= 0)
+                        {
+                            productToAdd.Quantity += 1;
+                        }
+                        _context.SaveChanges();
+                    }
+                }
+            }
+        }
+        
+
 /*        [Authorize]
 */        [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<string> AddToCart(int productId, string productName, string input,string url)
+        public async Task<string> AddToCart(int productId, string productName, string input,string url,int quantity)
         {
             // if the product cart exist in this cart +1
             if (User.Identity.IsAuthenticated)
             {
                 int userid = Int32.Parse(User.Claims.SingleOrDefault(c => c.Type == "UserId").Value);
                 User user = _context.User.Find(userid);
+                if (user == null)
+                {
+                    return "Error";
+                }
                 int cartId = user.CartId;
                 Cart cartClaim = _context.Cart.Find(cartId);
 
-                if (cartClaim == null)//זה אומר שהעגלה לא קיימת(לא אמור לקרות)
+                if (cartClaim == null)//if the cart doesn't exist, creating new cart fot this user
                 {
                     Cart newCart = new Cart();
                     newCart.UserId = userid;
@@ -70,7 +138,7 @@ namespace jewelry.Controllers
                     cartId = newCart.Id;
                     user.CartId = cartId;
                     _context.SaveChanges();
-                    //אם זה קרה, נחזיר את הלקוח להתחבר מחדש כדי שהעגלה תתעדכן כמו שצריך, הפעולה לא תוסיף עדיין את המוצר
+                   //created the cart id, telling the user to relogin
                     return "NotLogin";
                 }
                 var productExist = (from u in _context.ProductCart
@@ -80,11 +148,11 @@ namespace jewelry.Controllers
                                     select u).FirstOrDefault();
                 if (productExist != null && _context.Product.Find(productId).StoreQuantity > 0)
                 {
-                    productExist.Quantity += 1;
+                    productExist.Quantity += quantity;
                     await _context.SaveChangesAsync();
                     return "Success";
                 }
-
+               
                 Product product = _context.Product.Find(productId);
                 if (product != null)
                 {
@@ -93,7 +161,7 @@ namespace jewelry.Controllers
                         ProductCart productcart = new ProductCart();
                         productcart.CustumName = input;
                         productcart.ProductId = productId;
-                        productcart.Quantity = 1;
+                        productcart.Quantity = quantity;
                         productcart.ProductName = productName;
                         productcart.CartId = cartId;
                         _context.Add(productcart);

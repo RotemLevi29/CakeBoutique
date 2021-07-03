@@ -45,6 +45,8 @@ $('#addtocart').click(function (event) {
     var jsurl = $('#url').val();
     var jsproductName = $('#productName').val();
     var jsinput = $('#nameOnProduct').val();
+    var jquantity = $('#quantity').val();
+
     console.log('/Users/Login?ReturnUrl=' + jsurl);
     //calling the addtoccart function, recieving boolean
     $.ajax({
@@ -55,6 +57,7 @@ $('#addtocart').click(function (event) {
             productName: jsproductName,
             input: jsinput,
             url: jsurl,
+            quantity: jquantity,
         },
         /*if the data return means success*/
         success: function (callback) {
