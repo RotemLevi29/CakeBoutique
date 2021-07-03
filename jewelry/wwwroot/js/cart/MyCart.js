@@ -46,9 +46,14 @@ function plus(productid) {
 }
 
 function changeQuantity(productid, newquantitiy) {
+    $('#input\\.' + productid).attr('disabled', true);
     $("#quantityError").text('');
     if (newquantitiy == 0 || newquantitiy == null) {
         newquantitiy = $('#input\\.' + productid).val();
+    }
+    if (newquantitiy > 99999) {
+        $("#quantityError").text("can't add this quantity");
+        return;
     }
     $.ajax({
         url: "/ProductCarts/changeQuantity",
@@ -72,10 +77,13 @@ function changeQuantity(productid, newquantitiy) {
             $('#totalproductprice\\.' + productid).text(producttotalprice + '$');
             $('#price\\.' + productid).text(price + '$');
             $('#input\\.' + productid).val(parseInt(updatedQuantity));
-            $('#minus\\.' + productid).attr('disabled', false);
-            $('#plus\\.' + productid).attr('disabled', false);
+            
 /*            $('#price\\.' + productid).text(price);*/
         }
+        $('#minus\\.' + productid).attr('disabled', false);
+        $('#plus\\.' + productid).attr('disabled', false);
+        $('#input\\.' + productid).attr('disabled', false);
+
     })
 }
 /*************************************/

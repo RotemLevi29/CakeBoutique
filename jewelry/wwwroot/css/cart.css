@@ -49,10 +49,26 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.inputQuantity{
-    width : 3px;
+.inputQuantity {
+    width: 50px;
+    border-radius: 10px;
+    border-color:white;
 }
 
 button:disabled{
     color:black;
+}
+
+input {
+    border-radius: 10px;
+}
+disabled-nocolor:disabled {
+    background-color: white;
+    background:white;
+    opacity: 1;
+}
+
+input[type="number"]:disabled {
+    background: white;
+    border-radius:10px;
 }
