@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
 using jewelry.Models;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace jewelry.Controllers
 {
@@ -20,6 +21,7 @@ namespace jewelry.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin,Editor")]
 
         public async void regularDelete(int id)
         {
@@ -28,9 +30,10 @@ namespace jewelry.Controllers
             {
                 _context.Image.Remove(image);
             }
-            
         }
-            private bool ImageExists(int id)
+        [Authorize(Roles = "Admin,Editor")]
+
+        private bool ImageExists(int id)
         {
             return _context.Image.Any(e => e.Id == id);
         }

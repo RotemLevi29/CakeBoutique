@@ -27,27 +27,6 @@ namespace jewelry.Controllers
             return View(await _context.ProductCart.ToListAsync());
         }
 
-        public void RemoveFromCart(int? id)
-        {
-            if (id != null) 
-            {
-                var productToRemove = _context.ProductCart.Find(id);
-                if(productToRemove != null)
-                {
-                    if (productToRemove.Quantity == 1)
-                    {
-                        _context.Remove(productToRemove);
-                    }
-                    else
-                    {
-                        productToRemove.Quantity -= 1;
-                    }
-                    _context.SaveChangesAsync();
-
-                }
-            }
-        }
-
         public async Task<string> changeQuantity(int ? id, int quantity)
         {
             if (id != null)
@@ -89,27 +68,6 @@ namespace jewelry.Controllers
             return "error";
         }
 
-
-        public void AddFromCart(int? id)
-        {
-            if (id != null)
-            {
-                var productToAdd = _context.ProductCart.Find(id);
-                if (productToAdd != null)
-                //check if the products exist.....
-                {
-                    var pro = _context.Product.Find(productToAdd.ProductId);
-                    if (pro != null)
-                    {
-                        if (pro.StoreQuantity - productToAdd.Quantity - 1 >= 0)
-                        {
-                            productToAdd.Quantity += 1;
-                        }
-                        _context.SaveChanges();
-                    }
-                }
-            }
-        }
         
 
 /*        [Authorize]
@@ -117,6 +75,10 @@ namespace jewelry.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<string> AddToCart(int productId, string productName, string input,string url,int quantity)
         {
+            if (quantity < 0)
+            {
+                return "toomany";
+            }
             // if the product cart exist in this cart +1
             if (User.Identity.IsAuthenticated)
             {

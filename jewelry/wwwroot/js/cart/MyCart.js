@@ -51,7 +51,7 @@ function changeQuantity(productid, newquantitiy) {
     if (newquantitiy == 0 || newquantitiy == null) {
         newquantitiy = $('#input\\.' + productid).val();
     }
-    if (newquantitiy > 99999) {
+    if (newquantitiy > 99999 || newquantitiy<0) {
         $("#quantityError").text("can't add this quantity");
         return;
     }

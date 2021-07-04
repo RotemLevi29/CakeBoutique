@@ -21,6 +21,7 @@ namespace jewelry.Controllers
         }
 
          [HttpPost]
+        [Authorize]
         public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
          {
             if (User.Identity.IsAuthenticated)
@@ -84,9 +85,6 @@ namespace jewelry.Controllers
           
          }
 
-
-
-
         //OrderDone Get
         [Authorize]
         public IActionResult OrderDone(int id)
@@ -147,18 +145,21 @@ namespace jewelry.Controllers
 
         }
 
+        [Authorize(Roles = "Admin,Editor")]
         public IActionResult facebook()
         {
             return View();
         }
 
         // GET: Orders
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Order.ToListAsync());
         }
 
         // GET: Orders/Details/5
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -177,6 +178,7 @@ namespace jewelry.Controllers
         }
 
         // GET: Orders/Create
+        [Authorize(Roles = "Admin,Editor")]
         public IActionResult Create()
         {
             return View();

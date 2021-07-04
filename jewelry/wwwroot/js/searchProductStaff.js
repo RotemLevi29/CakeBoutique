@@ -65,9 +65,11 @@ $(function () {
  */
 $(function () {
     $('#searchFormTitle').keyup(function (e) {
+        console.log("key");
         value = $('#searchFormTitle').val();
+        console.log(value);
         $.ajax({
-            url: "/Products/SearchStaff",
+            url: "/Products/SearchProductsStaff",
             data: { input: value, type: '0' }
         }).done(function (data) {
             $('#prodctIndexSearch').html(data);

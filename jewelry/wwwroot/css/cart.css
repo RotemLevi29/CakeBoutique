@@ -55,12 +55,23 @@ input[type=number] {
     border-color:white;
 }
 
-button:disabled{
-    color:black;
-}
+    .inputQuantity:focus: {
+        border-color: white;
+        border: none;
+        border: 0px solid;
+    }
+
+    button:disabled {
+        color: black;
+    }
 
 input {
     border-radius: 10px;
+    border: 0px solid;
+}
+
+input:focus {
+    border:none;
 }
 disabled-nocolor:disabled {
     background-color: white;

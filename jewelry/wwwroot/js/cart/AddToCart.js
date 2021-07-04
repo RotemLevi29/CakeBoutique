@@ -18,6 +18,12 @@ $('#shoppingcart').hide();
 $('#error').hide();
 $('#AddedSuccessfully').hide();
 //on keyup(changing the input), remove the aproved adding to cart signs
+$('#quantity').keyup(function () {
+    $("#shoppingcart").delay(400).fadeOut("slow");
+    $('#AddedSuccessfully').fadeOut("slow");
+    $('#enteraName').removeClass('alert-danger');
+});
+
 $('#nameOnProduct').keyup(function () {
     $("#shoppingcart").delay(400).fadeOut("slow");
     $('#AddedSuccessfully').fadeOut("slow");
@@ -46,8 +52,12 @@ $('#addtocart').click(function (event) {
     var jsproductName = $('#productName').val();
     var jsinput = $('#nameOnProduct').val();
     var jquantity = $('#quantity').val();
+    if (jquantity <= 0) {
+        $('#error').text("please enter positive quantity");
+        $('#error').fadeIn();
+        return;
+    }
 
-    console.log('/Users/Login?ReturnUrl=' + jsurl);
     //calling the addtoccart function, recieving boolean
     $.ajax({
         url: '/ProductCarts/AddToCart',
@@ -71,6 +81,8 @@ $('#addtocart').click(function (event) {
                 $('#error').hide();
                 $('#shoppingcart').fadeIn("slow");
                 $('#AddedSuccessfully').fadeIn("slow");
+                $('#AddedSuccessfully').fadeout("slow");
+
             }
             else if (callback == "Error") {
                 $('#error').fadeIn();

@@ -37,11 +37,11 @@
                                 @*price*@
                                 <span class="font-italic font-weight-bold">
                                     Price:
-                                    <span id="price.@Model.Item1[i].Id" class="font-italic font-weight-bold">@Model.Item2[i]</span>
+                                    <p id="price.@Model.Item1[i].Id" class="font-italic font-weight-bold">@Model.Item2[i]$</p>
                                 </span>
                                 <span class="font-italic font-weight-bold">
                                     Total:
-                                    <span id="totalproductprice.@Model.Item1[i].Id" class="font-italic font-weight-bold">@{var a = Model.Item2[i] * Model.Item1[i].Quantity;}@a</span>
+                                    <p id="totalproductprice.@Model.Item1[i].Id" class="font-italic font-weight-bold">@{var a = Model.Item2[i] * Model.Item1[i].Quantity;}@a$</p>
                                 </span>
                             </div>
 
@@ -64,7 +64,7 @@
             }
         </div>
         <div class="modal-footer">
-            <span id="quantityError" class="alert-danger"></span>
+            <span id="quantityError" class="alert-danger mx-3"></span>
             <p class="font-italic">
                 Total Price:
                 <p1 id="totalprice" class="font-italic"> @ViewData["totalPrice"]$ </p1>

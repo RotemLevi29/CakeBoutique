@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\ContactUs\" />
     <Folder Include="Views\Design\" />
     <Folder Include="Views\Images\" />
     <Folder Include="wwwroot\lib\images\MainCarousel\" />

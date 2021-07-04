@@ -140,6 +140,7 @@ namespace jewelry.Controllers
 
         //Preview
         [HttpGet]
+        [Authorize(Roles = "Admin,Editor")]
         public IActionResult Preview()
         {
             return View();

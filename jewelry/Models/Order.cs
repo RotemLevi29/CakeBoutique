@@ -21,10 +21,11 @@ namespace jewelry.Models
         [Required]
         public int UserId { get; set; }
         
-        [Required]
+        
         public double TotalPrice { get; set; }
 
         [Required]
+        [DataType(DataType.CreditCard)]
         public string Payment { get; set; } //paypal,visa,mastercard.....
 
         public List<ProductCart> OrderProducts { get; set; }

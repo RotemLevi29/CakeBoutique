@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using jewelry.Data;
 using jewelry.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace jewelry.Controllers
 {
@@ -19,21 +20,8 @@ namespace jewelry.Controllers
             _context = context;
         }
 
-       /* public string isCartLegall(int cartid,int quantity)
-        {
-            Cart cart = _context.Cart.Find(cartid);
-
-            if(cart == null)
-            {
-                return "error";
-            }
-
-            
-
-            return "sad";
-        }
-*/
         // GET: Carts
+        [Authorize]
         public IActionResult MyCart(int? id)
         {
             if (id != null)
@@ -81,15 +69,5 @@ namespace jewelry.Controllers
                 return RedirectToAction("Login", "Users");
             }
         }
-
-
-        // GET: Carts
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Cart.ToListAsync());
-        }
-
-
-       
     }
 }
