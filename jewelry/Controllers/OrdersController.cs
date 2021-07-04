@@ -36,11 +36,11 @@ namespace jewelry.Controllers
                 }
                 int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
                 Cart cart = _context.Cart.Include(a => a.ProductCartId).Where(a => a.Id.Equals(cartid)).First();
-                foreach (var procart in cart.ProductCartId)
+                /*foreach (var procart in cart.ProductCartId)
                 {
                     var pro = _context.Product.Find(procart.ProductId);
-                    pro.StoreQuantity -= 1;
-                }
+                    pro.StoreQuantity -= procart.Quantity;
+                }*/
                 order.Sended = false;
                 order.UserId = userId;
                 order.Date = DateTime.Now;
@@ -63,7 +63,7 @@ namespace jewelry.Controllers
                             Product product = _context.Product.Find(productcart.ProductId);
                             if (product != null)
                             {
-                                product.StoreQuantity -= 1;
+                                product.StoreQuantity -= productcart.Quantity;
                             }
                             _context.ProductCart.Remove(productcart);
                         }
@@ -120,9 +120,12 @@ namespace jewelry.Controllers
 
                     if (product == null)//אם מחקו את המוצר תוך כדי
                     {
-                      return View("MyCart", "Carts");
-                     }
-                    
+                        TempData["cartError"] = "error";
+                        _context.ProductCart.Remove(productCart);
+                        _context.SaveChanges();
+                        return RedirectToAction("MyCart", "Carts", new { id = cartid });
+                    }
+
                     double price = product.Price;
                     totalPrice += price * productCart.Quantity;
 

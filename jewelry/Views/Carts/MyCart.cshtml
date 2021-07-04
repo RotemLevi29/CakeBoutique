@@ -65,6 +65,10 @@
         </div>
         <div class="modal-footer">
             <span id="quantityError" class="alert-danger mx-3"></span>
+            @if (ViewBag.cartError == "error")
+            {
+                <span class="alert-danger mx-3">Technical issues with the products</span>
+            }
             <p class="font-italic">
                 Total Price:
                 <p1 id="totalprice" class="font-italic"> @ViewData["totalPrice"]$ </p1>

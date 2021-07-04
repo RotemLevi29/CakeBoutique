@@ -46,6 +46,8 @@ function plus(productid) {
 }
 
 function changeQuantity(productid, newquantitiy) {
+   
+
     $('#input\\.' + productid).attr('disabled', true);
     $("#quantityError").text('');
     if (newquantitiy == 0 || newquantitiy == null) {
@@ -53,6 +55,8 @@ function changeQuantity(productid, newquantitiy) {
     }
     if (newquantitiy > 99999 || newquantitiy<0) {
         $("#quantityError").text("can't add this quantity");
+        $('#input\\.' + productid).attr('disabled', false);
+        console.log("dsfsdfds");
         return;
     }
     $.ajax({

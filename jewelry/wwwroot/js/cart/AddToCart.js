@@ -81,7 +81,7 @@ $('#addtocart').click(function (event) {
                 $('#error').hide();
                 $('#shoppingcart').fadeIn("slow");
                 $('#AddedSuccessfully').fadeIn("slow");
-                $('#AddedSuccessfully').fadeout("slow");
+                $('#AddedSuccessfully').fadeOut("slow");    
 
             }
             else if (callback == "Error") {

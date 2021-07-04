@@ -31,6 +31,7 @@ namespace jewelry.Models
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:C0}")]
+        [Range(0, 9999)]
 
         public double Price { get; set; }
 

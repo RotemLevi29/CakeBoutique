@@ -270,6 +270,7 @@ namespace jewelry.Controllers
 
     public async Task<IActionResult> SearchProductsClient(string input, string category,string maxprice)
             {
+          
             int cat = Int32.Parse(category);
             double price = Double.Parse(maxprice);
             List<Product> products;
@@ -277,6 +278,10 @@ namespace jewelry.Controllers
             ViewData["searchedInput"]='"' + input + '"';
             ViewData["result"] = "";
             ViewData["error"] = "";
+            if (input == null || input == "")
+            {
+                ViewData["error"] = "emptyInput";
+            }
             if (input == null)
             {
                 input = "";
@@ -307,6 +312,7 @@ namespace jewelry.Controllers
           
             if (products.Count() == 0)
             {
+               
                 ViewData["error"] = "error";
                 products = _context.Product.Take(10).ToList();
             }

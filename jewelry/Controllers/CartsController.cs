@@ -24,6 +24,10 @@ namespace jewelry.Controllers
         [Authorize]
         public IActionResult MyCart(int? id)
         {
+            if (TempData["cartError"]!=null)
+            {
+                ViewData["cartError"] = "error";
+            }
             if (id != null)
             {
                 double totalPrice = 0;
