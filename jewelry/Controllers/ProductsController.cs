@@ -47,6 +47,7 @@ namespace jewelry.Controllers
                 images.Add(image);
             }
             ViewData["images"] = images;
+            ViewData["CategoryName"] = category.CategoryName;
             Tuple<List<Product>, List<Image>> tuple = new Tuple<List<Product>, List<Image>>(products, images); 
             return View(nameof(CategoryPage), tuple);
         }
