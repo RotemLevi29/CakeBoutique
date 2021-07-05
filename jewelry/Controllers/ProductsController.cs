@@ -157,7 +157,7 @@ namespace jewelry.Controllers
                         _context.SaveChanges();
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ProductPage",new { id = product.Id });
             }
             return RedirectToAction(nameof(Index));
         }
