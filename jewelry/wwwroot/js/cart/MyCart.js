@@ -56,7 +56,6 @@ function changeQuantity(productid, newquantitiy) {
     if (newquantitiy > 99999 || newquantitiy<0) {
         $("#quantityError").text("can't add this quantity");
         $('#input\\.' + productid).attr('disabled', false);
-        console.log("dsfsdfds");
         return;
     }
     $.ajax({
@@ -114,11 +113,9 @@ function AddFromCart(productid) {
 }
 
 function checkout(totalproduct, idcart) {
-    console.log($('#totalprice').text());
 
     var total = $('#totalprice').text();
     total = total.replace('$', ' ');
-    console.log(total);
     $.ajax({
         url: "/Orders/OrderForm",
         type: 'GET',

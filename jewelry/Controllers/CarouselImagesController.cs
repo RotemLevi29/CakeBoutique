@@ -77,6 +77,7 @@ namespace jewelry.Controllers
                     {
                         postedFile.CopyTo(ms);
                         carouselImage.Image = ms.ToArray();
+                       
                         _context.Add(carouselImage);
                         await _context.SaveChangesAsync();
                     }

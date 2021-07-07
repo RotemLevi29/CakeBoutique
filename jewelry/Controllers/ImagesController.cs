@@ -21,8 +21,12 @@ namespace jewelry.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Admin,Editor")]
 
+        /**
+         * This function using only by other entities,
+         * because every image related to some model.
+         */
+        [Authorize(Roles = "Admin,Editor")]
         public async void regularDelete(int id)
         {
             var image = await _context.Image.FindAsync(id);

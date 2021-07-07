@@ -72,7 +72,7 @@ namespace jewelry.Controllers
                     using (MemoryStream ms = new MemoryStream())
                     {
                         Image image = new Image();
-                        image.Name = "Banner";
+                        image.Name = "Category";
                         postedFile.CopyTo(ms);
                         category.image = image;
                         category.image.image = ms.ToArray();
