@@ -30,7 +30,10 @@ namespace jewelry.Controllers
         }
         
         // GET: Catergory Products
-        //Display page with products with categoryId type(necklace,ring.......)
+        /**
+         * This function gets category id and displaying page with products
+         * in this cateogry.
+         */
         public async Task<IActionResult> CategoryPage(int categoryId)
         {
             Category category = _context.Category.Include(a => a.products).Where(a => a.Id.Equals(categoryId)).First();

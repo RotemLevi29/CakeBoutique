@@ -222,6 +222,9 @@ namespace jewelry.Controllers
 
        
         //Signin
+        /**
+         * Sign in function that starting 10 minutes session and saving name,id,cartId and mail as claims.
+         */
         private async void Signin(User account)
         {
             var claims = new List<Claim>
@@ -241,6 +244,11 @@ namespace jewelry.Controllers
                 new ClaimsPrincipal(claimsIdentity), authProperties);
         }
 
+
+        /**
+         * Search user fuction that return list of users with the input string in their 
+         * name,email or username.
+         */
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Search(string input)
         {

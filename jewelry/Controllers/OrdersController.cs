@@ -20,7 +20,12 @@ namespace jewelry.Controllers
             _context = context;
         }
 
-         [HttpPost]
+
+        /**
+         * This function getting the payment details and reduce the products from the 
+         * store quantity
+         */
+        [HttpPost]
         [Authorize]
         public IActionResult OrderForm([Bind("Id,Date,TotalPrice,Payment,Sended")] Order order,[Bind("PhoneNumber,State,City,Street,HouseNumber,ApartmentNumber,PostalCode")] Address address)
          {
@@ -36,11 +41,7 @@ namespace jewelry.Controllers
                 }
                 int cartid = Int32.Parse(User.Claims.Where(c => c.Type.Equals("cartId")).Select(c => c.Value).SingleOrDefault());
                 Cart cart = _context.Cart.Include(a => a.ProductCartId).Where(a => a.Id.Equals(cartid)).First();
-                /*foreach (var procart in cart.ProductCartId)
-                {
-                    var pro = _context.Product.Find(procart.ProductId);
-                    pro.StoreQuantity -= procart.Quantity;
-                }*/
+              
                 order.Sended = false;
                 order.UserId = userId;
                 order.Date = DateTime.Now;
@@ -96,6 +97,11 @@ namespace jewelry.Controllers
 
 
         //order get:
+        /**
+         * This function getting the order form, it also check if all the products are still
+         * in the store, if there's a missing products it returning to the cart and 
+         * updating the cart, it also noting the user there's missing products.
+         */
         [Authorize]
         [HttpGet]
         public IActionResult OrderForm(int total, int cartid,float currenttotalprice)
@@ -111,14 +117,12 @@ namespace jewelry.Controllers
                 if (quantity != total || quantity == 0 || currenttotalprice!= cart.TotalPrice) // אם שינוי את הכמות תוך כדי
                 {
                     return RedirectToAction("MyCart", "Carts",new { id = cartid });
-/*                    PartialViewResult partial = PartialView((new CartsController(_context)).MyCart(cartid));
-*//*                    return ;
-*/                }
+                }
                 foreach (var productCart in productscarts)
                 {
                     Product product = _context.Product.Find(productCart.ProductId);
 
-                    if (product == null)//אם מחקו את המוצר תוך כדי
+                    if (product == null)
                     {
                         TempData["cartError"] = "error";
                         _context.ProductCart.Remove(productCart);
@@ -139,7 +143,6 @@ namespace jewelry.Controllers
                 ViewData["totalPrice"] = totalPrice;
                 ViewData["productCartList"] = productscarts;
                 return PartialView();
-                //אחר כך צריך לעשות creat order ושם להוריד את המלאי
             }
             else
             {
@@ -148,13 +151,12 @@ namespace jewelry.Controllers
 
         }
 
-        [Authorize(Roles = "Admin,Editor")]
-        public IActionResult facebook()
-        {
-            return View();
-        }
 
         // GET: Orders
+        /**
+         * Right knoe we don't using this function
+         * but we keeping it for improving and continue this project
+         */
         [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> Index()
         {

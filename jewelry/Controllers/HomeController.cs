@@ -26,12 +26,14 @@ namespace jewelry.Controllers
             _categories = new Dictionary<int, string>();
         }
 
+        //Get:Facebook post page
         [Authorize(Roles = "Admin")]
         public IActionResult facebook()
         {
             return View();
         }
 
+        //We don't using this page right now
         public IActionResult SearchPage()
         {
             SelectList selectListCategories = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.CategoryName));
@@ -40,7 +42,16 @@ namespace jewelry.Controllers
         }
 
 
-
+        //Get:Statistics page
+        /**
+         * This function displaying some statistics data about the webstie,
+         * first it making sql query from ProductCart table, actualyy grouping
+         * all the productcarts from the same type and sum the quantity, than ordering 
+         * by descending so the most attractive product will be in the top.
+         *It also sending the categories list to the page, in every category there an insterest
+         *variable which updating when someone pressing the category so the manager of the site
+         *can understang in which categories to invest more.
+         */
         public IActionResult Statistics()
         {
             List<Category> categories = _context.Category.ToList();
@@ -58,6 +69,7 @@ namespace jewelry.Controllers
             return View(categories);
         }
 
+        //Get list of categories, using in other functions.
         private void getCategories()
         {
             if (_categories.Count() == 0)

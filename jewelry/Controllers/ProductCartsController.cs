@@ -69,10 +69,11 @@ namespace jewelry.Controllers
         }
 
         
-
-/*        [Authorize]
-*/        [HttpPost]
-        //[ValidateAntiForgeryToken]
+        /**
+         * This function gets custom product and details, if the product is valid
+         * so the quantity exist it adding the custom product to the cart.
+         */
+        [HttpPost]
         public async Task<string> AddToCart(int productId, string productName, string input,string url,int quantity)
         {
             if (quantity < 0)
