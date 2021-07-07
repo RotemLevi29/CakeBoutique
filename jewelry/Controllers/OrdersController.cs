@@ -114,7 +114,7 @@ namespace jewelry.Controllers
                 double totalPrice = 0;
                 List<ProductCart> productscarts = cart.ProductCartId;
                 quantity = productscarts.Count();
-                if (quantity != total || quantity == 0 || currenttotalprice!= cart.TotalPrice) // אם שינוי את הכמות תוך כדי
+                if (quantity != total || quantity == 0 || currenttotalprice!= cart.TotalPrice)
                 {
                     return RedirectToAction("MyCart", "Carts",new { id = cartid });
                 }

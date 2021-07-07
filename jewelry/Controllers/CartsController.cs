@@ -47,7 +47,7 @@ namespace jewelry.Controllers
                         images.Add(image);
                     }
                     Product product= _context.Product.Find(productCart.ProductId);
-                    if (product == null) //אם מחקו את המוצר תסיר אותו מהעגלה גם ואז תקרא לפונצקיה מחדש
+                    if (product == null)
                     {
                         _context.ProductCart.Remove(productCart);
                         _context.SaveChanges();
