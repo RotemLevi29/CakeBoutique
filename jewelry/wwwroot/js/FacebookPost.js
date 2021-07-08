@@ -11,7 +11,6 @@ window.fbAsyncInit = function () {
 //facebook post to jewelry page 
 
 $('#FacebookPost').click(function () {
-    console.log("facebook post");
     var input = $('#poststring').val();
     if (input != "") {
         FB.api(
@@ -19,16 +18,14 @@ $('#FacebookPost').click(function () {
             'POST',
             {
                 "message": input,
-                "access_token": "EAAMskAqVPusBALeCKZAp7ntQ4QJfUOORSm3ODgxzdTFMBZAYXmT8H0swqlxaarzbhKLlL3IYqNgG1jdYjhDZCo8CvmubdDjHwZBpiVnkPFobiQYRxUHbcJIx6ahpNTx92D4RJL1RK3t2V97Malef5aTCLvY9SGOrGElYGI1eAol2laMJFaMZA"
+                "access_token": "EAAMskAqVPusBAHUpbcmPuGIoINpmZA4J4paiKZCQ78jbKKhbQpzb3ZArm9oIb9TgotNNyNavRgEI2qroJqZBeqZCNHGXHaMrooHVKkCbnICHnkQErLjhCx8foX9GiVMOZA2NSbZAEmWHZBHPresO4PoydcBnJXFSvCsMDf4JdmDBwErmlct8tDm3"
             },
             function (response) {
                 /*respone.error=="" =>no error = success*/
                /* console.log("code: " + response.error == undefined);
                 console.log("subcode: " + response.error_subcode)
                 console.log(response);*/
-
                 if (response.error == undefined) {
-                    console.log("suceess");
                     $('#successPost').fadeIn('slow');
                 }
             }

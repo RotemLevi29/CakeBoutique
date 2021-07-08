@@ -5,15 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\ContactUs\**" />
+    <Compile Remove="Views\Design\**" />
+    <Compile Remove="Views\Images\**" />
+    <Content Remove="Views\ContactUs\**" />
+    <Content Remove="Views\Design\**" />
+    <Content Remove="Views\Images\**" />
+    <EmbeddedResource Remove="Views\ContactUs\**" />
+    <EmbeddedResource Remove="Views\Design\**" />
+    <EmbeddedResource Remove="Views\Images\**" />
+    <None Remove="Views\ContactUs\**" />
+    <None Remove="Views\Design\**" />
+    <None Remove="Views\Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="manifest.json" />
     <Content Remove="wwwroot\css\AdminLayout.css" />
     <Content Remove="wwwroot\css\ImageUploader.css" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\ContactUs\" />
-    <Folder Include="Views\Design\" />
-    <Folder Include="Views\Images\" />
     <Folder Include="wwwroot\lib\images\MainCarousel\" />
   </ItemGroup>
 

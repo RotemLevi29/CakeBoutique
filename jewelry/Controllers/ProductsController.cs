@@ -36,7 +36,15 @@ namespace jewelry.Controllers
          */
         public async Task<IActionResult> CategoryPage(int categoryId)
         {
-            Category category = _context.Category.Include(a => a.products).Where(a => a.Id.Equals(categoryId)).First();
+
+            var q = from c in _context.Category
+                    join p in _context.Product on
+                    c.Id equals p.CategoryId
+                    where c.Id == categoryId
+                    select c;
+
+            /*Category category = _context.Category.Include(a => a.products).Where(a => a.Id.Equals(categoryId)).First();*/
+            Category category = q.Include(a=>a.products).FirstOrDefault();
             if (category != null)
             {
                 category.Interest++;
