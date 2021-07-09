@@ -19,7 +19,7 @@ var settings2 = {
     "method": "GET",
     "timeout": 0,
     "headers": {
-        "x-access-token": "goldapi-dl2qpukqpk4jic-io",
+        "x-access-token": "goldapi-19e3l7ukqvwmgh8-io",
         "Content-Type": "application/json"
     },
 };  
