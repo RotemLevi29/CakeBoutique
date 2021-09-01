@@ -1,0 +1,26 @@
+﻿@model IEnumerable<CakeBoutique.Models.CarouselImage>
+
+@{
+    ViewData["Title"] = "Index";
+
+    if (Context.User != null && Context.User.Claims != null &&
+        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+    }
+    <div class="container">
+        @await Component.InvokeAsync("CarouselManager");
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/CarouselImageIndex - Copy.js"></script>

@@ -1,0 +1,106 @@
+﻿@model object
+@{
+    ViewData["Title"] = "AboutUs";
+
+    if (Context.User != null && Context.User.Claims != null &&
+        Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+
+    }
+}
+<head>
+    <link rel="stylesheet" href="~/css/AboutUs.css" />
+    <link rel="stylesheet" href="~/css/Us.css" />
+</head>
+
+<section>
+
+    <div class="about-section my-3">
+        <br />
+        <h1 class="font-italic">About Us</h1>
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="align-text-center">
+                    <img src="/lib/student/nadav.jpg" alt="Nadav" style="height:180px">
+                </div>
+                <div class="container">
+                    <h3>Yaara Machluf</h3>
+                    <p class="title">Confectionery</p>
+                    <p>
+                        <a href="mailto:yaramac@gmail.com">
+                            <button class="button">Contact</button>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="align-text-center">
+                    <img src="/lib/student/nadav.jpg" alt="Nadav" style="height:180px">
+                </div>
+                <div class="container">
+                    <h3>Lihi Katzur</h3>
+                    <p class="title">Confectionery</p>
+                    <p>
+                        <a href="mailto:Lihi.katzur@gmail.com">
+                            <button class="button">Contact</button>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="align-text-center">
+                    <img src="/lib/student/or.jpg" alt="Or" class="align-content-center" style="height: 180px">
+                </div>
+                <div class="container">
+                    <h3>Rotem Levi</h3>
+                    <p class="title">Confectionery</p>
+                    <p>
+                        <a href="mailto:rotemleviii29@gmail.com">
+                            <button class="button">Contact</button>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="align-text-center">
+                    <img src="/lib/student/inon.jpg" alt="Inon" class="align-content-center" style="height: 180px">
+                </div>
+                <div class="container">
+                    <h3>Chen Gafson</h3>
+                    <p class="title">Confectionery</p>
+                    <p>
+                        <a href="mailto:chengafson@gmail.com">
+                            <button class="button">Contact</button>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="my-5">
+    <hr />
+    <center>
+        <div class="align-text-center">
+            <iframe class="gmap_canvas align-middle" id="gmap_canvas" style="width:75%"
+                    src="https://www.youtube.com/watch?v=xVWwDc5aNDM"
+                    frameborder="1" scrolling="no" marginheight="0" marginwidth="0">
+            </iframe>
+        </div>
+    </center>
+</section>

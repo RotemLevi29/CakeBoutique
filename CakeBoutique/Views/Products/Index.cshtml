@@ -1,0 +1,87 @@
+﻿@*This page availble only for staff(Admin/Editor)*@
+@model IEnumerable<CakeBoutique.Models.Product>
+
+@{
+    if (Context.User != null && Context.User.Claims != null &&
+       Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+    }
+}
+<section>
+
+    <div id="searchForm" class="text-secondary form-row row justify-content-center search-form">
+        <div class="col-3 p-3">
+
+            <label class="mx-2">Search by: </label>
+            <select class="m-2 form-control" id="selectSearchType" onchange="searchType()">
+                <option value="0">Title</option>
+                <option value="1">Price</option>
+                <option value="2">Category</option>
+            </select>
+            <div class="m-2" id="searchFormTitlediv">
+                <input class="input-search-product form-control form-control" id="searchFormTitle" name="inputTitle" placeholder="Product name">
+            </div>
+            <div id="searchFormPricediv" class="default-hide mx-2">
+                <input id="searchFormPrice" class="form-control text-center" searchinput="" name="inputPrice" placeholder="Product price">
+            </div>
+            <div class="default-hide mx-2" id="searchFormTypediv">
+                <select id="searchFormType" class="input-search-product form-control" asp-items="@ViewBag.Categories" name="inputType">
+                </select>
+            </div>
+            <div class="m-2 text-center">
+                <input class="btn btn-primary " type="submit" id="submit-btn" value="search">
+            </div>
+            <p class="text-center">
+                <a asp-action="Create">Create new product</a>
+            </p>
+
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div id="prodctIndexSearch" class="my-4 row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center">
+
+            @{ var i = 0;
+                foreach (var item in Model)
+                {
+                    <a class="my-3" onclick="location.href='@Url.Action("Edit", "Products", new { id = item.Id})'">
+                        <div class="col">
+                            <div class="card pointer containerImg cardBorder" style="width: 18rem;height:28rem;">
+                                @if (ViewBag.images[i]!=null && ViewBag.images[i].image != null)
+                                {
+                                    string img = Convert.ToBase64String(ViewBag.images[i].image);
+                                    <img class="card-img-top" src="data:image/png;base64,@img" alt="Card image cap">
+                                }
+                                <div class="card-body">
+                                    <div class="card-text font-italic font-weight-bold">
+                                        <p>@Html.DisplayFor(modelItem => item.ProductName)</p>
+                                        <p>@item.Price $</p>
+                                        <p>@ViewBag.CategoryList[item.CategoryId]</p>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="text bg-success">Edit</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    i++;
+                }
+
+            }
+        </div>
+
+    </div>
+
+</section>
+
+@section Scripts{
+
+    <script src="~/js/searchProductStaff.js"></script>
+}

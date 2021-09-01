@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CakeBoutique.Models.Category>
+@{
+    if (Context.User != null && Context.User.Claims != null &&
+       Context.User.Claims.Count() > 0 && (Context.User.IsInRole("Admin") || Context.User.IsInRole("Editor")))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_ClientLayout";
+    }
+}
+<body>
+    <h2 class="text-center">Edit Categories</h2>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 categoryDiv justify-content-center text-center">
+        @{
+            int i = 0;//interator for pathes
+            foreach (var cat in Model)
+            {
+                <a onclick="location.href='@Url.Action("Edit", "Categories", new { id = cat.Id })'">
+                    <div class="col">
+                        <div class="card h-75 w-250 my-3 cardBorder categoryButton">
+                            <div class="containerImg">
+                                @if (cat.image != null)
+                                {
+                                    string img = Convert.ToBase64String(cat.image.image);
+                                    <img src="data:image/png;base64,@img" class="card-img-top imgCategory" alt="..." />
+
+                                }
+                                <div class="card-body whiteSmoke">
+                                    <h5 class="card-title">@cat.CategoryName</h5>
+                                </div>
+                                <div class="middle">
+                                    <div class="text bg-success">Edit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                i++;
+            }
+        }
+    </div>
+    <p class="text-center">
+        <a asp-action="Create">Create New</a>
+    </p>
+</body>
